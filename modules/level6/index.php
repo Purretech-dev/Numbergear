@@ -288,6 +288,7 @@ session_start();
     </style>
 </head>
 <body>
+<canvas id="confettiCanvas6" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;display:none;"></canvas>
 <div class="app-shell">
 
     <header class="app-header">
@@ -681,9 +682,9 @@ function checkMatchAnswer(selected, btn, correct) {
         learnedSet.add(correct);
         updateLearnedCount();
         saveProgress();
-        // Say only the ordinal word once
-        NG_Speech.sayInstruction(getOrdinal(correct));
+        NG_Speech.sayInstruction(`Very good! That is ${getOrdinal(correct)}.`);
         showToast(`✓ ${getOrdinal(correct)}`, 'success');
+        burstConfetti6();
         setTimeout(nextMatchQuestion, 1500);
     } else {
         btn.classList.add('wrong');
@@ -692,7 +693,7 @@ function checkMatchAnswer(selected, btn, correct) {
         document.querySelectorAll('.match-choice').forEach(b => {
             if (b.querySelector('strong').textContent === getOrdinalLabel(correct)) b.classList.add('correct');
         });
-        NG_Speech.sayInstruction(getOrdinal(correct));
+        NG_Speech.sayInstruction(`Sorry, try again. The answer is ${getOrdinal(correct)}.`);
         showToast(`The answer is ${getOrdinal(correct)}`, 'error');
         setTimeout(nextMatchQuestion, 2000);
     }
@@ -743,6 +744,7 @@ function showMatchCompletion() {
         ? `Perfect! You matched all ten! ${getOrdinal(start)} to ${getOrdinal(end)}. Excellent work!`
         : `Well done! You matched ${matchCorrect} out of ten. Keep going!`;
     NG_Speech.sayInstruction(speech);
+    launchConfetti6(perfect);
     saveProgress();
 }
 
@@ -821,8 +823,9 @@ function checkSpellAnswer(selected, btn, correct) {
         learnedSet.add(correct);
         updateLearnedCount();
         saveProgress();
-        NG_Speech.sayInstruction(getOrdinal(correct));
+        NG_Speech.sayInstruction(`Very good! That is ${getOrdinal(correct)}.`);
         showToast(`✓ ${getOrdinal(correct)}`, 'success');
+        burstConfetti6();
         setTimeout(nextSpellQuestion, 1600);
     } else {
         btn.classList.add('wrong');
@@ -831,7 +834,7 @@ function checkSpellAnswer(selected, btn, correct) {
         document.querySelectorAll('.spell-choice').forEach(b => {
             if (b.textContent === getOrdinal(correct)) b.classList.add('correct');
         });
-        NG_Speech.sayInstruction(getOrdinal(correct));
+        NG_Speech.sayInstruction(`Sorry, try again. The answer is ${getOrdinal(correct)}.`);
         showToast(`The answer is ${getOrdinal(correct)}`, 'error');
         setTimeout(nextSpellQuestion, 2200);
     }
@@ -855,6 +858,7 @@ function showSpellCompletion() {
     document.getElementById('spellCompletion').classList.add('show');
 
     NG_Speech.sayInstruction(`Brilliant! You got ${spellCorrect} out of 10!`);
+    launchConfetti6(perfect);
     saveProgress();
 }
 
@@ -912,9 +916,75 @@ document.addEventListener('DOMContentLoaded', function () {
         NG_Speech.sayInstruction('Welcome to Level 6! Learn ordinal numbers — first, second, third — all the way to one hundredth!');
     }, 500);
 });
+/* ================================================================
+   CONFETTI — emoji shower on correct answer and completion
+================================================================ */
+(function() {
+    const EMOJIS_FULL  = ['🌸','🌺','🌼','⭐','✨','🌟','💛','🌷','🎉','🏆','🎀','🌻','💮','🎊','🥳'];
+    const EMOJIS_BURST = ['⭐','✨','🌸','🌺','🌼','💛','🌟','🎉'];
+    let timer = null, fc = 0;
+
+    function makeP(emojis, w, h, delay) {
+        return {
+            x: Math.random() * w, y: -30 - (delay || 0),
+            size: 20 + Math.random() * 20,
+            emoji: emojis[Math.floor(Math.random() * emojis.length)],
+            speed: 2.5 + Math.random() * 3.5,
+            drift: (Math.random() - 0.5) * 2.5,
+            swing: Math.random() * 0.04, swingOff: Math.random() * Math.PI * 2,
+            spin: (Math.random() - 0.5) * 0.1, angle: Math.random() * Math.PI * 2, alpha: 1,
+        };
+    }
+
+    function run(particles, loop) {
+        const cvs = document.getElementById('confettiCanvas6');
+        cvs.style.display = 'block';
+        cvs.width = window.innerWidth; cvs.height = window.innerHeight;
+        const ctx = cvs.getContext('2d');
+        fc = 0;
+        clearInterval(timer);
+        timer = setInterval(() => {
+            ctx.clearRect(0, 0, cvs.width, cvs.height);
+            fc++;
+            let alive = 0;
+            for (const p of particles) {
+                p.y += p.speed; p.x += p.drift + Math.sin(fc * p.swing + p.swingOff) * 0.8; p.angle += p.spin;
+                if (p.y > cvs.height * 0.75) p.alpha = Math.max(0, 1 - (p.y - cvs.height * 0.75) / (cvs.height * 0.28));
+                if (p.y < cvs.height + 50 && p.alpha > 0.02) {
+                    alive++;
+                    ctx.save(); ctx.globalAlpha = p.alpha; ctx.translate(p.x, p.y); ctx.rotate(p.angle);
+                    ctx.font = p.size + 'px serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+                    ctx.fillText(p.emoji, 0, 0); ctx.restore();
+                }
+            }
+            if (loop && fc < 300) {
+                for (const p of particles) if (p.y > cvs.height + 40) Object.assign(p, makeP(EMOJIS_FULL, cvs.width, cvs.height, 0));
+            }
+            if ((!loop || fc > 300) && alive === 0) {
+                clearInterval(timer); ctx.clearRect(0, 0, cvs.width, cvs.height); cvs.style.display = 'none';
+            }
+        }, 16);
+    }
+
+    // Full rain on completion (80 particles, recycling)
+    window.launchConfetti6 = function(great) {
+        const emojis = great ? EMOJIS_FULL : EMOJIS_FULL;
+        const ps = Array.from({length: 80}, (_, i) => { const p = makeP(emojis, window.innerWidth, window.innerHeight, i * 8); return p; });
+        run(ps, true);
+    };
+
+    // Small burst on each correct answer (20 particles, no loop)
+    window.burstConfetti6 = function() {
+        const w = window.innerWidth, h = window.innerHeight;
+        const ps = Array.from({length: 20}, () => {
+            const p = makeP(EMOJIS_BURST, w, h, 0);
+            p.y = h * 0.3 + Math.random() * h * 0.2;   // start mid-screen
+            p.speed = 1.5 + Math.random() * 2;
+            return p;
+        });
+        run(ps, false);
+    };
+})();
 </script>
-<footer class="ng-footer">
-    <span>&copy; <?= date('Y') ?> Number Gear. Developed by <strong>Purretech Solutions</strong>.</span>
-</footer>
 </body>
 </html>

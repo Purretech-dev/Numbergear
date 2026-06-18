@@ -14,7 +14,7 @@ session_start();
     <link rel="stylesheet" href="../../assets/css/style.css">
 </head>
 <body>
-<canvas id="confettiCanvas"></canvas>
+<canvas id="confettiCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;display:none;"></canvas>
 <div class="app-shell">
 
     <!-- Header -->
@@ -96,17 +96,16 @@ session_start();
 
             <!-- Batch completion screen -->
             <div class="completion-screen" id="completionScreen">
-                <div class="completion-emoji" id="completionEmoji">🎉</div>
-                <div class="completion-title" id="completionTitle">Well Done!</div>
-                <div class="completion-sub" id="completionSub">You identified all 10 numbers!</div>
-                <!-- Narrator question -->
-                <div id="narratorQuestion" style="display:none;font-size:16px;font-weight:700;color:var(--purple-dark);background:var(--purple-light);border-radius:12px;padding:12px 16px;margin-bottom:14px;line-height:1.6;"></div>
-                <div class="btn-row" id="completionBtns">
-                    <button class="btn btn-purple" id="nextBatchBtn2" onclick="proceedNextBatch()">Next batch →</button>
-                    <button class="btn btn-outline" id="practiseAgainBtn" onclick="practiseSameBatch()">Practise again 🔁</button>
-                </div>
-                <div class="btn-row" style="margin-top:6px;">
-                    <button class="btn btn-outline btn-sm" onclick="showMode('map')">Back to Map</button>
+                <div class="completion-inner">
+                    <div class="completion-emoji" id="completionEmoji">🎉</div>
+                    <div class="completion-title" id="completionTitle">Well Done!</div>
+                    <div class="completion-sub" id="completionSub">You identified all 10 numbers!</div>
+                    <div id="narratorQuestion" style="display:none;font-size:15px;font-weight:700;color:var(--purple-dark);background:var(--purple-light);border-radius:12px;padding:12px 14px;margin-bottom:14px;line-height:1.6;"></div>
+                    <div class="btn-row" id="completionBtns" style="flex-direction:column;gap:10px;">
+                        <button class="btn btn-purple" id="nextBatchBtn2" onclick="proceedNextBatch()" style="width:100%;padding:14px;font-size:16px;">Next batch →</button>
+                        <button class="btn btn-outline" id="practiseAgainBtn" onclick="practiseSameBatch()" style="width:100%;padding:12px;">Practise again 🔁</button>
+                        <button class="btn btn-outline btn-sm" onclick="showMode('map')" style="width:100%;">Back to Map</button>
+                    </div>
                 </div>
             </div>
 

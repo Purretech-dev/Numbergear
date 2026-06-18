@@ -143,7 +143,7 @@ session_start();
     </style>
 </head>
 <body>
-<canvas id="confettiCanvas2" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:999;display:none;"></canvas>
+<canvas id="confettiCanvas2" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;display:none;"></canvas>
 <div class="app-shell">
 
     <!-- Header -->
@@ -220,13 +220,14 @@ session_start();
         </div>
 
         <!-- Section completion overlay -->
-        <div id="lvl2CompletionOverlay" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.55);z-index:998;display:none;align-items:center;justify-content:center;">
-            <div style="background:white;border-radius:24px;padding:28px 28px 22px;max-width:380px;width:90%;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,0.25);position:relative;z-index:1000;">
-                <div id="lvl2CompEmoji"  style="font-size:52px;margin-bottom:8px;">🎉</div>
-                <div id="lvl2CompTitle"  style="font-size:24px;font-weight:900;color:var(--purple-dark);margin-bottom:6px;">Well Done!</div>
-                <div id="lvl2CompSub"    style="font-size:14px;font-weight:700;color:var(--text-soft);margin-bottom:14px;line-height:1.6;"></div>
-                <div id="lvl2CompPrompt" style="font-size:13px;font-weight:700;color:var(--text);background:var(--purple-light);border-radius:12px;padding:10px 14px;margin-bottom:16px;line-height:1.6;"></div>
-                <div style="display:flex;flex-direction:column;gap:8px;">
+        <div id="lvl2CompletionOverlay" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.6);z-index:9998;align-items:center;justify-content:center;">
+            <div style="background:white;border-radius:24px;padding:30px 26px 22px;max-width:400px;width:92%;text-align:center;box-shadow:0 16px 50px rgba(0,0,0,0.3);position:relative;z-index:9999;">
+                <div id="lvl2CompEmoji"  style="font-size:56px;margin-bottom:10px;">🎉</div>
+                <div id="lvl2CompTitle"  style="font-size:26px;font-weight:900;color:var(--purple-dark);margin-bottom:6px;">Well Done!</div>
+                <div id="lvl2CompSub"    style="font-size:14px;font-weight:700;color:var(--text-soft);margin-bottom:12px;line-height:1.6;"></div>
+                <div id="lvl2CompPrompt" style="font-size:13px;font-weight:700;color:var(--text);background:var(--purple-light);border-radius:12px;padding:10px 14px;margin-bottom:16px;line-height:1.7;"></div>
+                <div style="display:flex;flex-direction:column;gap:9px;">
+                    <button id="lvl2NextLevelBtn"   style="padding:14px;background:var(--purple);color:white;border:none;border-radius:13px;font-size:16px;font-weight:900;font-family:inherit;cursor:pointer;">⭐ Go to Next Level</button>
                     <button id="lvl2NextSectionBtn" style="padding:13px;background:var(--mint);color:white;border:none;border-radius:13px;font-size:15px;font-weight:900;font-family:inherit;cursor:pointer;">Continue →</button>
                     <button id="lvl2TryAgainBtn"    style="padding:11px;background:transparent;color:var(--purple-dark);border:2px solid var(--purple);border-radius:13px;font-size:14px;font-weight:800;font-family:inherit;cursor:pointer;">Try again 🔁</button>
                 </div>
@@ -822,17 +823,32 @@ function showSectionCompletion() {
 
     document.getElementById('lvl2CompEmoji').textContent = '🌟';
     document.getElementById('lvl2CompTitle').textContent = 'Brilliant!';
-    document.getElementById('lvl2CompSub').textContent   =
-        `You got ${SECTION_TARGET} correct in ${actNames[currentActivity]}! Amazing work!`;
-    document.getElementById('lvl2CompPrompt').textContent =
-        `Would you like to move on to ${actLabel[actNext[currentActivity]]}, or practise ${actNames[currentActivity]} again?`;
+    document.getElementById('lvl2CompSub').innerHTML =
+        `You got <strong>${SECTION_TARGET} correct</strong> in <strong>${actNames[currentActivity]}</strong>! Amazing work! 🎉`;
 
-    const nextAct = actNext[currentActivity];
-    document.getElementById('lvl2NextSectionBtn').textContent = `Try ${actLabel[nextAct]} →`;
+    const nextAct   = actNext[currentActivity];
+    const nextLabel = actLabel[nextAct];
+
+    document.getElementById('lvl2CompPrompt').innerHTML =
+        `Would you like to move on to <strong>${nextLabel}</strong>, ` +
+        `or <strong>proceed to Level 3</strong> (Number Gear), ` +
+        `or practise <strong>${actNames[currentActivity]}</strong> again?`;
+
+    // Next level button
+    document.getElementById('lvl2NextLevelBtn').textContent = '⭐ Go to Level 3 — Number Gear';
+    document.getElementById('lvl2NextLevelBtn').onclick = () => {
+        closeSectionCompletion();
+        window.location.href = '../level3/index.php';
+    };
+
+    // Next section button
+    document.getElementById('lvl2NextSectionBtn').textContent = `Try ${nextLabel} →`;
     document.getElementById('lvl2NextSectionBtn').onclick = () => {
         closeSectionCompletion();
         switchActivity(nextAct);
     };
+
+    // Try again button
     document.getElementById('lvl2TryAgainBtn').onclick = () => {
         closeSectionCompletion();
         sectionCorrect = 0;
@@ -840,12 +856,16 @@ function showSectionCompletion() {
     };
 
     launchConfetti2();
-    NG_Speech.sayInstruction(`Brilliant! You got ${SECTION_TARGET} correct! Would you like to move on or practise again?`);
+    NG_Speech.sayInstruction(
+        `Brilliant! You got ${SECTION_TARGET} correct in ${actNames[currentActivity]}! ` +
+        `You can move to Level 3, try ${actNames[nextAct]}, or practise again!`
+    );
 }
 
 function closeSectionCompletion() {
     document.getElementById('lvl2CompletionOverlay').style.display = 'none';
     stopConfetti2();
+    sectionCorrect = 0;
 }
 
 /* ================================================================

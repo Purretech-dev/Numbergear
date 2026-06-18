@@ -90,6 +90,81 @@ session_start();
         .mix-hint       { font-size: 11px; font-weight: 700; color: var(--text-soft); background: rgba(255,255,255,0.65); border-radius: 8px; padding: 6px 10px; min-height: 28px; line-height: 1.5; }
         .mix-hint.aligned { color: var(--mint-dark); }
 
+        /* Tabs */
+        .lvl5-tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+        .lvl5-tab {
+            padding: 9px 20px; border: 2px solid var(--border); border-radius: 20px;
+            background: var(--surface); font-size: 14px; font-weight: 800;
+            cursor: pointer; font-family: inherit; color: var(--text-soft);
+            transition: 0.18s ease;
+        }
+        .lvl5-tab:hover  { border-color: var(--purple); color: var(--purple-dark); }
+        .lvl5-tab.active { background: var(--purple); border-color: var(--purple); color: white; }
+
+        /* Sort quiz */
+        .sort-intro {
+            font-size: 14px; font-weight: 700; color: var(--text);
+            background: var(--purple-light); border-left: 4px solid var(--purple);
+            border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; line-height: 1.6;
+        }
+        .sort-pool-label {
+            font-size: 11px; font-weight: 800; color: var(--text-soft);
+            text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px;
+        }
+        .sort-pool {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            min-height: 52px; padding: 10px;
+            border: 2px dashed var(--border); border-radius: 14px;
+            background: var(--bg); margin-bottom: 14px;
+            transition: border-color 0.2s;
+        }
+        .sort-pool.drag-over { border-color: var(--purple); background: var(--purple-light); }
+        .sort-answer-label {
+            font-size: 11px; font-weight: 800; color: var(--text-soft);
+            text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 8px;
+        }
+        .sort-answer {
+            display: flex; flex-wrap: wrap; gap: 8px;
+            min-height: 52px; padding: 10px;
+            border: 2px dashed var(--mint); border-radius: 14px;
+            background: var(--mint-light); margin-bottom: 16px;
+        }
+        .sort-answer.drag-over { border-color: var(--mint-dark); background: #b8f0da; }
+        .prime-tile {
+            padding: 10px 14px; border-radius: 12px;
+            font-size: 18px; font-weight: 900;
+            cursor: grab; user-select: none;
+            background: var(--surface); border: 2px solid var(--border);
+            color: var(--text); transition: 0.15s ease;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        }
+        .prime-tile:hover  { border-color: var(--purple); color: var(--purple-dark); transform: scale(1.06); }
+        .prime-tile.dragging { opacity: 0.45; transform: scale(0.96); }
+        .prime-tile.correct  { background: var(--mint-light); border-color: var(--mint); color: var(--mint-dark); }
+        .prime-tile.wrong    { background: #fde8e8; border-color: #e05050; color: #c03030; }
+        .prime-tile.selected-prime { background: var(--purple-light); border-color: var(--purple); color: var(--purple-dark); transform: scale(1.05); }
+        .sort-check-btn {
+            width: 100%; padding: 13px; background: var(--purple); color: white;
+            border: none; border-radius: 13px; font-size: 15px; font-weight: 900;
+            font-family: inherit; cursor: pointer; transition: 0.18s ease; margin-bottom: 8px;
+        }
+        .sort-check-btn:hover  { background: var(--purple-dark); }
+        .sort-check-btn:active { transform: scale(0.97); }
+        .sort-new-btn {
+            width: 100%; padding: 11px; background: transparent; color: var(--mint-dark);
+            border: 2px solid var(--mint); border-radius: 13px; font-size: 14px; font-weight: 800;
+            font-family: inherit; cursor: pointer; transition: 0.18s ease;
+        }
+        .sort-new-btn:hover { background: var(--mint-light); }
+        .sort-result {
+            padding: 14px 16px; border-radius: 14px; font-size: 14px; font-weight: 800;
+            text-align: center; line-height: 1.6; margin-top: 8px; display: none;
+        }
+        .sort-result.correct { background: var(--mint-light); border: 2px solid var(--mint); color: var(--mint-dark); }
+        .sort-result.wrong   { background: #fde8e8; border: 2px solid #e05050; color: #c03030; }
+        .sort-score-row { display: flex; gap: 8px; margin-bottom: 12px; }
+
+        /* Prime fact card */
         /* Prime fact card */
         .prime-fact-card {
             background: linear-gradient(135deg, var(--purple-light) 0%, #fde8d8 100%);
@@ -123,6 +198,15 @@ session_start();
     </header>
 
     <main class="level-page">
+
+        <!-- Mode tabs -->
+        <div class="lvl5-tabs">
+            <button class="lvl5-tab active" id="tab-explorer" onclick="lvl5SetMode('explorer')">⚙️ Gear Explorer</button>
+            <button class="lvl5-tab"        id="tab-sort"     onclick="lvl5SetMode('sort')">🔍 Prime Quiz</button>
+        </div>
+
+        <!-- GEAR EXPLORER section -->
+        <div id="lvl5-explorer">
 
         <p class="gear-intro">
             A <strong>prime number</strong> is a number greater than 1 that can only be divided exactly by <strong>1</strong> and <strong>itself</strong> — no other number divides it evenly.
@@ -215,6 +299,44 @@ session_start();
 
             </div>
         </div>
+        </div><!-- /lvl5-explorer -->
+
+        <!-- SORT QUIZ section -->
+        <div id="lvl5-sort" style="display:none;">
+            <p class="sort-intro">
+                🔍 <strong>Which ones are prime?</strong> Each question shows you a mix of numbers.
+                Some are <strong>prime</strong> (only divisible by 1 and themselves) and some are <strong>not prime</strong>.
+                Tap every number you think is prime, then check your answer!
+            </p>
+
+            <!-- Score chips -->
+            <div class="sort-score-row">
+                <div class="stat-chip-sm">✅ Correct: <span id="sortCorrect">0</span></div>
+                <div class="stat-chip-sm">❌ Wrong: <span id="sortWrong">0</span></div>
+                <div class="stat-chip-sm">🔢 Questions: <span id="sortAttempts">0</span></div>
+            </div>
+
+            <!-- Question instruction -->
+            <div class="sort-pool-label" id="sortInstruction">Tap all the PRIME numbers below:</div>
+
+            <!-- Number tiles -->
+            <div class="sort-pool" id="sortPool" style="min-height:70px;border-style:solid;border-color:var(--purple);"></div>
+
+            <!-- Selected primes -->
+            <div class="sort-answer-label">Your selected primes:</div>
+            <div class="sort-answer" id="sortAnswer" style="min-height:52px;"></div>
+
+            <!-- Buttons -->
+            <button class="sort-check-btn" onclick="checkSortAnswer()">✓ Check my answer</button>
+            <button class="sort-new-btn"   onclick="newSortQuestion()">🔄 Next question</button>
+
+            <!-- Result -->
+            <div class="sort-result" id="sortResult"></div>
+
+            <!-- Answer reveal -->
+            <div id="sortReveal" style="display:none;margin-top:10px;padding:12px 14px;background:var(--purple-light);border:2px solid var(--purple);border-radius:12px;font-size:13px;font-weight:700;color:var(--purple-dark);line-height:1.7;"></div>
+        </div><!-- /lvl5-sort -->
+
     </main>
 </div>
 
@@ -735,6 +857,167 @@ document.addEventListener('DOMContentLoaded', function () {
         'Welcome to the Prime Numbers Gear! Explore the first one hundred prime numbers. Spin any ring to discover them!'
     ), 600);
 });
+
+/* ============================================================
+   MODE SWITCHER
+============================================================ */
+function lvl5SetMode(mode) {
+    document.getElementById('tab-explorer').classList.toggle('active', mode === 'explorer');
+    document.getElementById('tab-sort').classList.toggle('active', mode === 'sort');
+    document.getElementById('lvl5-explorer').style.display = mode === 'explorer' ? '' : 'none';
+    document.getElementById('lvl5-sort').style.display     = mode === 'sort'     ? '' : 'none';
+    if (mode === 'sort' && sortPool === null) newSortQuestion();
+}
+
+/* ============================================================
+   PRIME IDENTIFIER QUIZ — mix of primes and non-primes
+============================================================ */
+const PRIME_SET = new Set(PRIMES);   // fast lookup
+
+// Generate non-prime composites for mixing in
+function getNonPrimes(count, min, max) {
+    const pool = [];
+    for (let n = min; n <= max; n++) {
+        if (!PRIME_SET.has(n) && n > 1) pool.push(n);
+    }
+    pool.sort(() => Math.random() - 0.5);
+    return pool.slice(0, count);
+}
+
+let sortPool         = null;   // all numbers shown (primes + non-primes mixed)
+let sortSelected     = new Set(); // indices the learner has tapped as "prime"
+let sortCorrectN     = 0;
+let sortWrongN       = 0;
+let sortAttempts     = 0;
+let sortAnswered     = false;
+
+function newSortQuestion() {
+    sortAnswered = false;
+    document.getElementById('sortResult').style.display  = 'none';
+    document.getElementById('sortReveal').style.display  = 'none';
+    sortSelected.clear();
+
+    // Pick 5 random primes
+    const primes = [...PRIMES].sort(() => Math.random() - 0.5).slice(0, 5);
+    // Pick 4 non-primes from a similar range
+    const minP = Math.min(...primes), maxP = Math.max(...primes);
+    const nonPrimes = getNonPrimes(4, Math.max(2, minP - 10), maxP + 20);
+
+    // Mix and shuffle
+    sortPool = [...primes, ...nonPrimes].sort(() => Math.random() - 0.5);
+
+    renderSortPool();
+    renderSortAnswer();
+
+    NG_Speech.sayInstruction('Tap all the prime numbers in the list!');
+}
+
+function renderSortPool() {
+    const poolEl = document.getElementById('sortPool');
+    poolEl.innerHTML = '';
+    sortPool.forEach((n, idx) => {
+        const tile = document.createElement('div');
+        tile.className = 'prime-tile' + (sortSelected.has(idx) ? ' selected-prime' : '');
+        tile.textContent = n;
+        tile.style.cursor = 'pointer';
+        if (sortAnswered) {
+            // Show correct/wrong after checking
+            const isPrime = PRIME_SET.has(n);
+            const wasSelected = sortSelected.has(idx);
+            if (isPrime && wasSelected)  tile.classList.add('correct');
+            else if (!isPrime && wasSelected) tile.classList.add('wrong');
+            else if (isPrime && !wasSelected) tile.classList.add('wrong'); // missed
+        }
+        tile.addEventListener('click', () => {
+            if (sortAnswered) return;
+            if (sortSelected.has(idx)) sortSelected.delete(idx);
+            else sortSelected.add(idx);
+            document.getElementById('sortResult').style.display = 'none';
+            renderSortPool();
+            renderSortAnswer();
+        });
+        poolEl.appendChild(tile);
+    });
+}
+
+function renderSortAnswer() {
+    const ansEl = document.getElementById('sortAnswer');
+    if (sortSelected.size === 0) {
+        ansEl.innerHTML = '<span style="color:var(--text-soft);font-size:13px;font-weight:700;padding:8px;">Tap numbers above to select them…</span>';
+        return;
+    }
+    ansEl.innerHTML = '';
+    sortPool.forEach((n, idx) => {
+        if (!sortSelected.has(idx)) return;
+        const tile = document.createElement('div');
+        tile.className = 'prime-tile';
+        tile.textContent = n;
+        tile.style.background = 'var(--purple-light)';
+        tile.style.borderColor = 'var(--purple)';
+        tile.style.color = 'var(--purple-dark)';
+        tile.style.cursor = 'pointer';
+        tile.title = 'Click to deselect';
+        tile.addEventListener('click', () => {
+            if (sortAnswered) return;
+            sortSelected.delete(idx);
+            renderSortPool();
+            renderSortAnswer();
+        });
+        ansEl.appendChild(tile);
+    });
+}
+
+function checkSortAnswer() {
+    if (sortSelected.size === 0) {
+        showToast('Tap at least one number you think is prime!', '');
+        return;
+    }
+
+    sortAnswered = true;
+    sortAttempts++;
+    document.getElementById('sortAttempts').textContent = sortAttempts;
+
+    // Evaluate
+    const correctPrimes  = sortPool.filter(n => PRIME_SET.has(n));
+    const selectedNums   = [...sortSelected].map(i => sortPool[i]);
+    const truePositives  = selectedNums.filter(n => PRIME_SET.has(n));
+    const falsePositives = selectedNums.filter(n => !PRIME_SET.has(n));
+    const missedPrimes   = correctPrimes.filter(n => !selectedNums.includes(n));
+    const isRight        = truePositives.length === correctPrimes.length && falsePositives.length === 0;
+
+    // Re-render with colour coding
+    renderSortPool();
+    renderSortAnswer();
+
+    const resultEl = document.getElementById('sortResult');
+    const revealEl = document.getElementById('sortReveal');
+    resultEl.style.display = 'block';
+    revealEl.style.display = 'block';
+
+    if (isRight) {
+        sortCorrectN++;
+        document.getElementById('sortCorrect').textContent = sortCorrectN;
+        resultEl.className = 'sort-result correct';
+        resultEl.innerHTML = `🌟 <strong>Brilliant!</strong> You found all ${correctPrimes.length} prime${correctPrimes.length > 1 ? 's' : ''}!`;
+        revealEl.innerHTML = `✅ The primes were: <strong>${correctPrimes.sort((a,b)=>a-b).join(', ')}</strong><br>` +
+            `🔵 Not prime: ${sortPool.filter(n => !PRIME_SET.has(n)).sort((a,b)=>a-b).join(', ')}`;
+        NG_Speech.sayInstruction('Brilliant! You found all the prime numbers!');
+        NG_Storage.setLvl5Score(Math.min(100, (NG_Storage.getLvl5Score ? NG_Storage.getLvl5Score() : 0) + 8));
+    } else {
+        sortWrongN++;
+        document.getElementById('sortWrong').textContent = sortWrongN;
+        resultEl.className = 'sort-result wrong';
+        let msg = '❌ <strong>Not quite!</strong> ';
+        if (falsePositives.length > 0)
+            msg += `${falsePositives.join(', ')} ${falsePositives.length > 1 ? 'are' : 'is'} <strong>not prime</strong>. `;
+        if (missedPrimes.length > 0)
+            msg += `You missed: <strong>${missedPrimes.join(', ')}</strong>.`;
+        resultEl.innerHTML = msg;
+        revealEl.innerHTML = `✅ The primes were: <strong>${correctPrimes.sort((a,b)=>a-b).join(', ')}</strong><br>` +
+            `🔴 Not prime (these have other factors): ${sortPool.filter(n => !PRIME_SET.has(n)).sort((a,b)=>a-b).join(', ')}`;
+        NG_Speech.sayInstruction('Not quite! Check which numbers are prime and try the next question.');
+    }
+}
 </script>
 </body>
 </html>

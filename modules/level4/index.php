@@ -13,378 +13,516 @@ session_start();
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/style.css">
     <style>
-        .gear-intro {
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text);
-            line-height: 1.7;
-            background: var(--purple-light);
-            border-left: 4px solid var(--purple);
-            border-radius: 10px;
-            padding: 14px 18px;
-            margin-bottom: 22px;
+
+        /* ===== LAYOUT ===== */
+        .l4-wrap {
+            max-width: 860px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
         }
 
-        /* Level 3–style two-column layout */
-        .gear-layout {
+        /* ===== STORY CARD ===== */
+        .story-card {
+            background: linear-gradient(135deg, var(--purple-light) 0%, var(--peach-light) 100%);
+            border: 2px solid var(--purple);
+            border-radius: 20px;
+            padding: 18px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .story-emoji { font-size: 48px; flex-shrink: 0; }
+        .story-text  { flex: 1; }
+        .story-text h3 {
+            font-size: 18px; font-weight: 900;
+            color: var(--purple-dark); margin-bottom: 4px;
+        }
+        .story-text p  { font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.6; }
+
+        /* ===== HOW TO PLAY CARDS ===== */
+        .how-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+        .how-card {
+            border-radius: 18px;
+            padding: 16px 18px;
+            border: 2.5px solid;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .how-card.mult {
+            background: var(--mint-light);
+            border-color: var(--mint);
+        }
+        .how-card.div {
+            background: var(--purple-light);
+            border-color: var(--purple);
+        }
+        .how-icon  { font-size: 32px; }
+        .how-title { font-size: 15px; font-weight: 900; }
+        .how-card.mult .how-title { color: var(--mint-dark); }
+        .how-card.div  .how-title { color: var(--purple-dark); }
+        .how-steps { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+        .how-steps li {
+            font-size: 13px; font-weight: 700;
+            color: var(--text); display: flex; align-items: flex-start; gap: 6px;
+        }
+        .how-steps li .step-num {
+            width: 20px; height: 20px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 11px; font-weight: 900; flex-shrink: 0; margin-top: 1px;
+        }
+        .how-card.mult .step-num { background: var(--mint); color: white; }
+        .how-card.div  .step-num { background: var(--purple); color: white; }
+
+        /* ===== OPERATION SWITCHER ===== */
+        .op-switcher {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .op-btn {
+            padding: 16px 12px;
+            border: 3px solid var(--border);
+            border-radius: 18px;
+            background: var(--surface);
+            font-size: 16px; font-weight: 900;
+            cursor: pointer; font-family: inherit;
+            display: flex; flex-direction: column;
+            align-items: center; gap: 6px;
+            transition: 0.2s ease;
+            color: var(--text-soft);
+        }
+        .op-btn .op-icon { font-size: 34px; }
+        .op-btn.active.mult {
+            border-color: var(--mint);
+            background: var(--mint-light);
+            color: var(--mint-dark);
+        }
+        .op-btn.active.div {
+            border-color: var(--purple);
+            background: var(--purple-light);
+            color: var(--purple-dark);
+        }
+        .op-btn:not(.active):hover { border-color: var(--peach); }
+
+        /* ===== TABLE PICKER ===== */
+        .table-label {
+            font-size: 14px; font-weight: 800;
+            color: var(--text); margin-bottom: 10px;
+        }
+        .table-picker {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 4px;
+        }
+        .tbl-btn {
+            padding: 10px 4px;
+            border: 2.5px solid var(--border);
+            border-radius: 14px;
+            background: var(--surface);
+            font-size: 14px; font-weight: 900;
+            cursor: pointer; font-family: inherit;
+            color: var(--text-soft);
+            transition: 0.18s ease;
+            display: flex; flex-direction: column;
+            align-items: center; gap: 2px;
+            line-height: 1.2;
+        }
+        .tbl-btn .tbl-num  { font-size: 18px; font-weight: 900; }
+        .tbl-btn .tbl-hint { font-size: 9px; font-weight: 700; opacity: 0.7; }
+        .tbl-btn:hover           { border-color: var(--peach); color: var(--peach-dark); }
+        .tbl-btn.active.mult-tbl { background: var(--mint); border-color: var(--mint); color: white; }
+        .tbl-btn.active.div-tbl  { background: var(--purple); border-color: var(--purple); color: white; }
+
+        /* ===== GEAR AREA ===== */
+        .gear-area {
             display: flex;
             flex-direction: row;
-            gap: 32px;
+            gap: 20px;
             align-items: flex-start;
-            width: 100%;
         }
-        .gear-left {
+        .gear-canvas-col {
             flex: 1 1 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 12px;
             min-width: 0;
-            order: 1;
         }
-        .gear-right {
-            flex: 0 0 360px;
-            width: 360px;
+        .gear-controls-col {
+            flex: 0 0 300px;
+            width: 300px;
             display: flex;
             flex-direction: column;
-            gap: 13px;
-            order: 2;
+            gap: 12px;
         }
-        @media (max-width: 900px) {
-            .gear-layout { flex-direction: column; align-items: center; }
-            .gear-right  { width: 100%; max-width: 560px; flex: none; }
+        @media (max-width: 860px) {
+            .gear-area { flex-direction: column; align-items: center; }
+            .gear-controls-col { width: 100%; max-width: 560px; flex: none; }
         }
+
         #gearCanvas4 {
             display: block;
-            width: 100%;
-            max-width: 560px;
-            height: auto;
-            cursor: pointer;
-            touch-action: manipulation;
+            width: 100%; max-width: 520px; height: auto;
+            cursor: pointer; touch-action: manipulation;
             border-radius: 50%;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.16);
         }
 
-        .gear-canvas-wrap {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            width: 100%;
+        /* ===== ANSWER DISPLAY ===== */
+        .answer-display {
+            border-radius: 18px;
+            padding: 16px 18px;
+            display: flex; align-items: center; gap: 14px;
+            transition: background 0.3s, border-color 0.3s;
         }
-
-
-
-        /* Table selector */
-        .table-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 8px;
-            margin-bottom: 16px;
+        .answer-display.mult-mode {
+            background: var(--mint-light);
+            border: 2.5px solid var(--mint);
         }
-
-        .table-btn {
-            padding: 10px 6px;
-            border: 2px solid var(--border);
-            border-radius: 12px;
-            background: var(--surface);
-            font-size: 13px;
-            font-weight: 800;
-            cursor: pointer;
-            color: var(--text-soft);
-            font-family: inherit;
-            text-align: center;
-            transition: 0.18s ease;
+        .answer-display.div-mode {
+            background: var(--purple-light);
+            border: 2.5px solid var(--purple);
         }
-        .table-btn:hover  { border-color: var(--sky); color: var(--sky-dark); }
-        .table-btn.active { background: var(--sky); border-color: var(--sky); color: white; }
-
-        /* Rotate row */
-
-
-        /* ── Shared card styles matching Level 3 ── */
-        .ctrl-card {
-            background: var(--surface);
-            border: 2px solid var(--border);
-            border-radius: 16px;
-            padding: 14px 16px;
-        }
-        .card-title {
-            font-size: 11px;
-            font-weight: 800;
-            color: var(--text-soft);
-            text-transform: uppercase;
-            letter-spacing: 0.7px;
-            margin-bottom: 11px;
-        }
-        .ring-display {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            background: var(--peach-light);
-            border: 2px solid var(--peach);
-            border-radius: 14px;
-            padding: 12px 14px;
-        }
-        .ring-big-num {
-            font-size: 32px;
-            font-weight: 900;
-            color: var(--peach-dark);
-            line-height: 1;
-            min-width: 60px;
-            text-align: center;
+        .answer-big {
+            font-size: 38px; font-weight: 900; line-height: 1;
+            min-width: 60px; text-align: center;
             animation: popIn 0.3s ease;
         }
-        @keyframes popIn { 0%{transform:scale(0.8);opacity:0} 60%{transform:scale(1.12)} 100%{transform:scale(1);opacity:1} }
-        .ring-meta { flex: 1; }
-        .ring-meta .rm-label {
-            font-size: 11px; font-weight: 700; color: var(--text-soft);
-            text-transform: uppercase; letter-spacing: 0.4px;
-        }
-        .ring-meta .rm-detail {
-            font-size: 13px; font-weight: 800; color: var(--peach-dark); margin-top: 2px;
-        }
-        .ring-meta .rm-table {
-            font-size: 11px; color: var(--text-soft); font-weight: 600;
-            margin-top: 3px; line-height: 1.4;
-        }
-        .hear-btn {
-            padding: 10px 12px;
-            background: var(--peach);
-            border: none; border-radius: 11px;
-            color: white; font-size: 18px;
-            cursor: pointer; font-family: inherit;
-            transition: 0.18s ease; flex-shrink: 0;
-        }
-        .hear-btn:hover  { background: var(--peach-dark); }
-        .hear-btn:active { transform: scale(0.94); }
-        .ring-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 6px;
-        }
-        .ring-btn {
-            padding: 7px 3px;
+        .answer-display.mult-mode .answer-big { color: var(--mint-dark); }
+        .answer-display.div-mode  .answer-big { color: var(--purple-dark); }
+        .answer-meta { flex: 1; }
+        .answer-eq   { font-size: 20px; font-weight: 900; color: var(--text); }
+        .answer-sub  { font-size: 13px; font-weight: 700; color: var(--text-soft); margin-top: 3px; }
+        @keyframes popIn { 0%{transform:scale(0.7);opacity:0} 60%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
+
+        /* ===== SPIN CONTROLS ===== */
+        .spin-card {
+            background: var(--surface);
             border: 2px solid var(--border);
-            border-radius: 10px;
-            background: var(--surface);
-            font-size: 11px; font-weight: 800;
-            cursor: pointer; color: var(--text-soft);
-            font-family: inherit; text-align: center;
-            transition: 0.18s ease; line-height: 1.3;
+            border-radius: 18px;
+            padding: 14px 16px;
         }
-        .ring-btn:hover  { border-color: var(--peach); color: var(--peach-dark); }
-        .ring-btn.active { background: var(--peach); border-color: var(--peach); color: white; }
-        .rot-row { display: flex; gap: 8px; }
-        .rot-btn {
-            flex: 1; padding: 13px 6px;
-            border: 2.5px solid; border-radius: 13px;
-            background: var(--surface);
+        .spin-card-title {
             font-size: 12px; font-weight: 800;
+            color: var(--text-soft); text-transform: uppercase;
+            letter-spacing: 0.6px; margin-bottom: 12px;
+        }
+        .big-spin-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .big-spin-btn {
+            padding: 18px 8px;
+            border: 3px solid;
+            border-radius: 18px;
+            font-size: 13px; font-weight: 900;
             cursor: pointer; font-family: inherit;
             display: flex; flex-direction: column;
-            align-items: center; gap: 4px;
-            transition: 0.18s ease; line-height: 1.2;
+            align-items: center; gap: 6px;
+            transition: 0.2s ease;
+            background: var(--surface);
         }
-        .rot-btn .rot-icon { font-size: 24px; line-height: 1; }
-        .rot-btn.ccw { border-color: var(--purple); color: var(--purple-dark); background: var(--purple-light); }
-        .rot-btn.cw  { border-color: var(--mint);   color: var(--mint-dark);   background: var(--mint-light);  }
-        .rot-btn.ccw:hover { background: var(--purple); color: white; }
-        .rot-btn.cw:hover  { background: var(--mint);   color: white; }
-        .rot-btn:active    { transform: scale(0.96); }
-        .sub-row { display: flex; gap: 8px; margin-top: 8px; }
-        .spin-btn {
-            flex: 1; padding: 9px 8px;
-            border: 2px solid var(--sky);
-            border-radius: 10px;
-            background: var(--sky-light); color: var(--sky-dark);
-            font-size: 12px; font-weight: 800;
-            cursor: pointer; font-family: inherit;
-            transition: 0.18s ease; text-align: center;
+        .big-spin-btn .spin-icon { font-size: 30px; }
+        .big-spin-btn.ccw {
+            border-color: var(--purple);
+            color: var(--purple-dark);
+            background: var(--purple-light);
         }
-        .spin-btn.spinning { background: var(--sky); color: white; border-color: var(--sky); }
-        .reset-ring-btn {
-            padding: 9px 13px;
-            border: 2px solid var(--border);
-            border-radius: 10px; background: var(--surface);
-            font-size: 13px; cursor: pointer;
-            font-family: inherit; font-weight: 800;
-            color: var(--text-soft); transition: 0.18s ease; white-space: nowrap;
+        .big-spin-btn.cw  {
+            border-color: var(--mint);
+            color: var(--mint-dark);
+            background: var(--mint-light);
         }
-        .reset-ring-btn:hover { background: var(--peach-light); border-color: var(--peach); color: var(--peach-dark); }
-        .action-row { display: flex; gap: 8px; }
-        .action-btn {
-            flex: 1; padding: 11px 8px;
-            border: 2px solid var(--border); border-radius: 12px;
-            background: var(--surface); font-size: 12px; font-weight: 800;
-            cursor: pointer; font-family: inherit;
-            color: var(--text-soft); transition: 0.18s ease; text-align: center;
-        }
-        .action-btn:hover { background: var(--bg); }
-        .action-btn.reset { border-color: var(--mint); color: var(--mint-dark); }
-        .action-btn.reset:hover { background: var(--mint-light); }
-        .stats-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
-        .stat-chip-sm {
-            background: var(--surface); border: 2px solid var(--border);
-            border-radius: 10px; padding: 6px 12px;
-            font-size: 12px; font-weight: 800; color: var(--text-soft);
-        }
-        .stat-chip-sm span { color: var(--peach-dark); font-size: 15px; }
+        .big-spin-btn.ccw:hover { background: var(--purple); color: white; }
+        .big-spin-btn.cw:hover  { background: var(--mint);   color: white; }
+        .big-spin-btn:active { transform: scale(0.95); }
+        .big-spin-btn .spin-label { font-size: 10px; font-weight: 700; opacity: 0.8; }
 
-        /* Challenge — example item */
-        .ex-item {
+        .auto-spin-btn {
+            width: 100%; padding: 11px;
+            border: 2px solid var(--peach);
+            border-radius: 13px;
+            background: var(--peach-light); color: var(--peach-dark);
+            font-size: 14px; font-weight: 800;
+            cursor: pointer; font-family: inherit;
+            transition: 0.18s ease;
+        }
+        .auto-spin-btn.spinning { background: var(--peach); color: white; }
+        .auto-spin-btn:hover:not(.spinning) { background: var(--peach); color: white; }
+
+        /* ===== WORKED EXAMPLE ===== */
+        .worked-example {
+            background: var(--surface);
+            border: 2.5px solid var(--peach);
+            border-radius: 20px;
+            padding: 18px 20px;
+            display: flex; flex-direction: column; gap: 12px;
+        }
+        .we-header {
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 8px;
+        }
+        .we-badge {
+            font-size: 11px; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 0.6px; color: var(--text-soft);
+            background: var(--bg); border-radius: 20px; padding: 4px 12px;
+        }
+        .we-op {
+            font-size: 13px; font-weight: 900; color: var(--peach-dark);
+        }
+        .we-equation {
+            font-size: 36px; font-weight: 900; color: var(--text);
+            text-align: center; padding: 8px 0;
+        }
+        .we-steps {
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .we-step {
+            display: flex; align-items: flex-start; gap: 10px;
+            background: var(--bg); border-radius: 12px; padding: 10px 14px;
+            font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.5;
+        }
+        .we-step-num {
+            width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 900; color: white; margin-top: 1px;
+        }
+        .we-step-num.mult-n { background: var(--mint); }
+        .we-step-num.div-n  { background: var(--purple); }
+        .we-answer {
+            background: linear-gradient(135deg, var(--mint-light), var(--peach-light));
+            border: 2px solid var(--mint); border-radius: 14px;
+            padding: 14px 18px; text-align: center;
+            animation: popIn 0.4s ease;
+        }
+        .we-answer-big {
+            font-size: 42px; font-weight: 900; color: var(--mint-dark); line-height: 1;
+        }
+        .we-answer-eq {
+            font-size: 16px; font-weight: 800; color: var(--text); margin-top: 4px;
+        }
+        .we-btn-row {
+            display: flex; gap: 10px;
+        }
+        .we-show-btn {
+            flex: 1; padding: 13px;
+            background: var(--peach-light); border: 2px solid var(--peach);
+            border-radius: 14px; font-size: 14px; font-weight: 800;
+            cursor: pointer; font-family: inherit; color: var(--peach-dark);
+            transition: 0.18s ease;
+        }
+        .we-show-btn:hover { background: var(--peach); color: white; }
+        .we-show-btn:disabled { opacity: 0.4; cursor: default; }
+        .we-next-btn {
+            flex: 1; padding: 13px;
+            background: var(--mint); border: none;
+            border-radius: 14px; font-size: 14px; font-weight: 800;
+            cursor: pointer; font-family: inherit; color: white;
+            transition: 0.18s ease;
+        }
+        .we-next-btn:hover { background: var(--mint-dark); }
+
+        @media (max-width: 480px) {
+            .we-equation { font-size: 28px; }
+            .we-btn-row  { flex-direction: column; }
+        }
+
+        /* ===== SINGLE EXPLAINER CARD ===== */
+        .explainer-card {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 18px;
+            padding: 14px 18px;
             display: flex;
+            align-items: flex-start;
+            gap: 14px;
+        }
+        .ex-left { font-size: 32px; flex-shrink: 0; margin-top: 2px; }
+        .ex-body  { flex: 1; display: flex; flex-direction: column; gap: 8px; }
+        .ex-row   { font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.6; display: flex; align-items: flex-start; gap: 8px; flex-wrap: wrap; }
+        .ex-tag   { display: inline-flex; align-items: center; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 900; white-space: nowrap; flex-shrink: 0; }
+        .mult-tag { background: var(--mint-light); color: var(--mint-dark); border: 1.5px solid var(--mint); }
+        .div-tag  { background: var(--purple-light); color: var(--purple-dark); border: 1.5px solid var(--purple); }
+        .ex-divider { height: 1px; background: var(--border); }
+
+        /* ===== QUIZ OPEN BUTTON ===== */
+        .quiz-open-btn {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, var(--peach) 0%, var(--peach-dark) 100%);
+            border: none;
+            border-radius: 18px;
+            font-size: 20px;
+            font-weight: 900;
+            color: white;
+            cursor: pointer;
+            font-family: inherit;
+            transition: 0.2s ease;
+            box-shadow: 0 4px 14px rgba(244,165,113,0.35);
+            letter-spacing: 0.3px;
+        }
+        .quiz-open-btn:hover  { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(244,165,113,0.45); }
+        .quiz-open-btn:active { transform: translateY(0); }
+
+        /* ===== QUIZ MODAL ===== */
+        .quiz-modal-overlay {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
             align-items: center;
-            gap: 10px;
-            padding: 10px 12px;
+            justify-content: center;
+            z-index: 9000;
+            padding: 20px;
+        }
+        .quiz-modal-overlay.open { display: flex; animation: fadeIn 0.2s ease; }
+        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
+
+        .quiz-modal {
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 24px;
+            width: 100%;
+            max-width: 480px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: slideUp 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        @keyframes slideUp { from{transform:translateY(30px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+        .qm-header {
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .qm-title {
+            font-size: 20px; font-weight: 900; color: var(--text);
+        }
+        .qm-close {
+            width: 36px; height: 36px; border-radius: 50%;
+            border: 2px solid var(--border); background: var(--bg);
+            font-size: 16px; font-weight: 900; cursor: pointer;
+            font-family: inherit; color: var(--text-soft);
+            display: flex; align-items: center; justify-content: center;
+            transition: 0.18s ease;
+        }
+        .qm-close:hover { background: var(--error-bg); border-color: var(--error); color: var(--error); }
+
+        .qm-op-row {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+        }
+        .qm-op-btn {
+            padding: 10px;
             border: 2px solid var(--border);
             border-radius: 12px;
             background: var(--surface);
-            cursor: pointer;
-            transition: 0.18s ease;
-            font-family: inherit;
-            text-align: left;
-            width: 100%;
-        }
-        .ex-item:hover { border-color: var(--peach); background: var(--peach-light); }
-        .ex-item.selected { border-color: var(--peach); background: var(--peach-light); }
-        .ex-item-eq {
-            font-size: 20px;
-            font-weight: 900;
-            color: var(--peach-dark);
-            min-width: 90px;
-        }
-        .ex-item-desc {
-            font-size: 12px;
-            font-weight: 600;
-            color: var(--text-soft);
-            line-height: 1.4;
-            flex: 1;
-        }
-        /* Single example card styles */
-        .ex-badge {
-            font-size: 11px; font-weight: 800; color: var(--text-soft);
-            text-transform: uppercase; letter-spacing: 0.6px; margin-bottom: 6px;
-        }
-        .ex-sum4 {
-            font-size: 34px; font-weight: 900; color: var(--peach-dark);
-            line-height: 1; letter-spacing: -1px; margin-bottom: 8px;
-        }
-        .ex-ring-hint {
-            display: inline-block; font-size: 12px; font-weight: 800;
-            color: var(--purple-dark); background: var(--purple-light);
-            border: 1.5px solid var(--purple); border-radius: 20px;
-            padding: 3px 10px; width: fit-content; margin-bottom: 8px;
-        }
-        .ex-desc4 {
-            font-size: 13px; font-weight: 600; color: var(--text); line-height: 1.6;
-        }
-        .ex-next-btn {
-            width: 100%; padding: 12px;
-            background: var(--mint); color: white;
-            border: none; border-radius: 13px;
             font-size: 14px; font-weight: 800;
-            font-family: inherit; cursor: pointer;
-            transition: 0.18s ease;
+            cursor: pointer; font-family: inherit;
+            color: var(--text-soft); transition: 0.18s ease;
         }
-        .ex-next-btn:hover { background: var(--mint-dark); }
+        .qm-op-btn.active {
+            background: var(--peach); border-color: var(--peach); color: white;
+        }
+        .qm-op-btn:not(.active):hover { border-color: var(--peach); color: var(--peach-dark); }
 
-        .ex-go-btn {
-            width: 100%;
-            padding: 14px;
-            background: var(--peach);
-            color: white;
-            border: none;
-            border-radius: 14px;
-            font-size: 16px;
-            font-weight: 900;
-            font-family: inherit;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* ===== QUIZ SECTION ===== */
+        .quiz-card-l4 {
+            background: var(--surface);
+            border: 2px solid var(--border);
+            border-radius: 18px;
+            padding: 18px;
+        }
+        .quiz-title-l4 {
+            font-size: 12px; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 0.6px;
+            color: var(--text-soft); margin-bottom: 12px;
+        }
+        .quiz-question-l4 {
+            font-size: 32px; font-weight: 900;
+            color: var(--text); text-align: center;
+            margin-bottom: 8px;
+        }
+        .quiz-hint-l4 {
+            font-size: 13px; font-weight: 700;
+            color: var(--text-soft); text-align: center;
+            margin-bottom: 14px; line-height: 1.5;
+        }
+        .quiz-hint-l4 strong { color: var(--peach-dark); }
+        .quiz-choices-l4 {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
             gap: 8px;
-            transition: 0.18s ease;
-        }
-        .ex-go-btn:not(:disabled):hover { background: var(--peach-dark); }
-        .ex-go-btn:active { transform: scale(0.97); }
-        .ex-go-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-        .ex-go-icon { font-size: 20px; }
-
-        .challenge-q {
-            font-size: 28px;
-            font-weight: 900;
-            color: var(--text);
-            margin-bottom: 14px;
-            text-align: center;
-        }
-
-        .challenge-choices {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            flex-wrap: wrap;
             margin-bottom: 12px;
         }
-
-        .challenge-choice {
-            min-width: 64px;
-            padding: 12px 10px;
-            border: 2px solid var(--border);
+        .quiz-choice-l4 {
+            padding: 14px 6px;
+            border: 2.5px solid var(--border);
             border-radius: 14px;
             background: var(--surface);
-            font-size: 20px;
-            font-weight: 900;
-            cursor: pointer;
-            transition: 0.18s ease;
-            font-family: inherit;
-            color: var(--text);
+            font-size: 20px; font-weight: 900;
+            cursor: pointer; font-family: inherit;
+            color: var(--text); transition: 0.18s ease;
         }
-        .challenge-choice:hover:not(:disabled) { border-color: var(--sky); background: var(--sky-light); }
-        .challenge-choice.correct { background: var(--success-bg); border-color: var(--success); color: #276749; animation: glow 0.6s ease; }
-        .challenge-choice.wrong   { background: var(--error-bg);   border-color: var(--error);   animation: shake 0.4s ease; }
-        .challenge-choice:disabled { cursor: default; }
-
-        .challenge-score {
-            text-align: center;
-            font-size: 13px;
-            font-weight: 700;
-            color: var(--text-soft);
+        .quiz-choice-l4:hover:not(:disabled) {
+            border-color: var(--peach);
+            background: var(--peach-light);
+            color: var(--peach-dark);
+            transform: translateY(-2px);
         }
+        .quiz-choice-l4.correct { background: var(--success-bg); border-color: var(--success); color: #276749; }
+        .quiz-choice-l4.wrong   { background: var(--error-bg);   border-color: var(--error);   animation: shake 0.4s ease; }
+        .quiz-choice-l4:disabled { cursor: default; }
+        @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
 
-        .challenge-score span { color: var(--sky-dark); font-weight: 900; }
-
-        /* Quiz mode */
-        .ex-next-btn {
-            width: 100%; padding: 12px;
-            background: var(--mint); color: white;
-            border: none; border-radius: 13px;
-            font-size: 14px; font-weight: 800;
-            font-family: inherit; cursor: pointer;
-            transition: 0.18s ease;
+        .quiz-score-row {
+            display: flex; gap: 8px; flex-wrap: wrap; justify-content: center;
         }
-        .ex-next-btn:hover { background: var(--mint-dark); }
-        #gearCanvasQz {
-            display: block; width: 100%; max-width: 560px; height: auto;
-            cursor: pointer; touch-action: manipulation;
-            border-radius: 50%; box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+        .score-chip-l4 {
+            background: var(--bg); border: 2px solid var(--border);
+            border-radius: 12px; padding: 7px 14px;
+            font-size: 13px; font-weight: 800; color: var(--text-soft);
         }
+        .score-chip-l4 span { color: var(--peach-dark); font-size: 15px; font-weight: 900; }
 
-
+        /* ===== CONGRATS BANNER ===== */
+        .congrats-banner {
+            background: linear-gradient(135deg, var(--mint-light), var(--peach-light));
+            border: 2.5px solid var(--mint);
+            border-radius: 18px; padding: 20px;
+            text-align: center; display: none;
+        }
+        .congrats-banner.show { display: block; animation: popIn 0.4s ease; }
+        .congrats-emoji { font-size: 48px; margin-bottom: 8px; }
+        .congrats-title { font-size: 22px; font-weight: 900; color: var(--mint-dark); margin-bottom: 6px; }
+        .congrats-sub   { font-size: 14px; font-weight: 700; color: var(--text-soft); margin-bottom: 14px; }
 
         @media (max-width: 560px) {
-            .table-grid { grid-template-columns: repeat(5, 1fr); gap: 5px; }
-            .table-btn  { font-size: 12px; padding: 8px 3px; }
-            .eq-display { font-size: 20px; }
+            .how-grid         { grid-template-columns: 1fr; }
+            .op-switcher      { grid-template-columns: 1fr 1fr; }
+            .table-picker     { grid-template-columns: repeat(5,1fr); gap: 5px; }
+            .tbl-btn          { padding: 8px 2px; }
+            .tbl-btn .tbl-num { font-size: 15px; }
+            .big-spin-row     { grid-template-columns: 1fr 1fr; }
+            .quiz-choices-l4  { grid-template-columns: repeat(4,1fr); }
         }
     </style>
 </head>
 <body>
 <div class="app-shell">
 
-    <!-- Header -->
     <header class="app-header">
         <div class="brand">
-            <div class="brand-icon">✖️</div>
+            <div class="brand-icon">⚙️</div>
             <div>
                 <h1>Level 4</h1>
                 <p>Multiply &amp; Divide</p>
@@ -394,1323 +532,745 @@ session_start();
     </header>
 
     <main class="level-page">
+    <div class="l4-wrap">
 
-        <!-- Explainer -->
-        <p class="gear-intro">
-            🔵 <strong>Multiply:</strong> spin ↻ clockwise from 0 — count the steps to get your answer.
-            &nbsp;&nbsp;🟠 <strong>Divide:</strong> place the dividend at the arrow, spin ↺ anticlockwise back to 0 — count the steps.
-        </p>
-
-        <!-- Mode tabs -->
-        <div class="tab-bar" style="margin-bottom:16px;">
-            <button class="tab-btn active" id="modeGearBtn"  onclick="setMode('gear')"      >⚙️ Gear Explorer</button>
-            <button class="tab-btn"        id="modeChalBtn"  onclick="setMode('challenge')" >🎯 Illustrated</button>
-            <button class="tab-btn"        id="modeQuizBtn"  onclick="setMode('quiz')"      >🧮 Quiz</button>
+        <!-- ===== SINGLE EXPLAINER CARD ===== -->
+        <div class="explainer-card">
+            <div class="ex-left">⚙️</div>
+            <div class="ex-body">
+                <div class="ex-row">
+                    <span class="ex-tag mult-tag">✖️ Multiply</span>
+                    Pick a <strong>plane</strong> (e.g. 3s) → Spin <strong>↻ forward</strong> → each step lands on the next multiple → the step count is your answer!
+                </div>
+                <div class="ex-divider"></div>
+                <div class="ex-row">
+                    <span class="ex-tag div-tag">➗ Divide</span>
+                    Pick the <strong>plane</strong> matching your divisor → Spin <strong>↻ forward</strong> until your big number appears at the arrow ▼ → the step count is your answer!
+                </div>
+            </div>
         </div>
 
-        <!-- ===== GEAR MODE ===== -->
-        <div id="gearMode" class="gear-layout">
+        <!-- ===== OPERATION SWITCHER ===== -->
+        <div class="op-switcher">
+            <button class="op-btn mult active" id="opBtnMult" onclick="setOp('mult')">
+                <span class="op-icon">✖️</span>
+                Multiply
+                <small style="font-size:12px;font-weight:700;opacity:0.75;">Spin ↻ clockwise</small>
+            </button>
+            <button class="op-btn div" id="opBtnDiv" onclick="setOp('div')">
+                <span class="op-icon">➗</span>
+                Divide
+                <small style="font-size:12px;font-weight:700;opacity:0.75;">Spin ↺ back</small>
+            </button>
+        </div>
 
-            <!-- LEFT — Canvas -->
-            <div class="gear-left">
-                <div class="stats-row">
-                    <div class="stat-chip-sm">Planes explored: <span id="tablesExplored">0</span>/10</div>
-                    <div class="stat-chip-sm">Quiz score: <span id="quizScore">0</span></div>
-                </div>
-                <canvas id="gearCanvas4" width="560" height="560"></canvas>
+        <!-- ===== TABLE PICKER ===== -->
+        <div>
+            <div class="table-label" id="tablePickerLabel">👇 Pick a <strong>plane</strong> — each plane counts in that number's steps:</div>
+            <div class="table-picker" id="tablePicker"></div>
+        </div>
+
+        <!-- ===== GEAR + CONTROLS ===== -->
+        <div class="gear-area">
+
+            <!-- Canvas -->
+            <div class="gear-canvas-col">
+                <canvas id="gearCanvas4" width="520" height="520"></canvas>
             </div>
 
-            <!-- RIGHT — Controls -->
-            <div class="gear-right">
+            <!-- Controls -->
+            <div class="gear-controls-col">
 
-                <!-- Number at pointer -->
-                <div class="ring-display">
-                    <div class="ring-meta">
-                        <div class="rm-label">Number at pointer</div>
-                        <div class="ring-big-num" id="eqDisplay" style="font-size:28px;min-width:auto;">–</div>
-                        <div class="rm-detail"    id="eqSub">Plane 1 · step 0</div>
-                        <div class="rm-table"     id="divDisplay">–</div>
+                <!-- Answer display -->
+                <div class="answer-display mult-mode" id="answerDisplay">
+                    <div class="answer-big" id="answerBig">0</div>
+                    <div class="answer-meta">
+                        <div class="answer-eq"  id="answerEq">– × – = –</div>
+                        <div class="answer-sub" id="answerSub">Pick a table and spin!</div>
                     </div>
-                    <button class="hear-btn" onclick="hearCurrent4()" title="Hear this">🔊</button>
+                    <button style="padding:10px 12px;background:var(--peach);border:none;border-radius:11px;color:white;font-size:18px;cursor:pointer;flex-shrink:0;" onclick="hearCurrent()">🔊</button>
                 </div>
 
-                <!-- Select a plane -->
-                <div class="ctrl-card">
-                    <div class="card-title">Select a plane</div>
-                    <div class="ring-grid" id="tableGrid"></div>
-                </div>
-
-                <!-- Rotate selected plane -->
-                <div class="ctrl-card">
-                    <div class="card-title">Rotate selected plane</div>
-                    <div class="rot-row">
-                        <button class="rot-btn ccw" onclick="rotateTable(-1)">
-                            <span class="rot-icon">↺</span>
-                            <span>Anti-clockwise</span>
+                <!-- Spin controls -->
+                <div class="spin-card">
+                    <div class="spin-card-title" id="spinTitle">Spin to multiply ↻</div>
+                    <div class="big-spin-row">
+                        <button class="big-spin-btn ccw" onclick="spinStep(-1)" id="spinCCW">
+                            <span class="spin-icon">↺</span>
+                            <span>Back</span>
+                            <span class="spin-label">divide / undo</span>
                         </button>
-                        <button class="rot-btn cw" onclick="rotateTable(+1)">
-                            <span class="rot-icon">↻</span>
-                            <span>Clockwise</span>
+                        <button class="big-spin-btn cw" onclick="spinStep(+1)" id="spinCW">
+                            <span class="spin-icon">↻</span>
+                            <span>Forward</span>
+                            <span class="spin-label">multiply</span>
                         </button>
                     </div>
-                    <div class="sub-row">
-                        <button class="spin-btn" id="spinBtn4" onclick="toggleSpin4()">▶ Auto-Spin</button>
-                        <button class="reset-ring-btn" onclick="resetTable()">↺ This plane</button>
-                    </div>
-                </div>
-
-                <!-- Gear actions -->
-                <div class="ctrl-card">
-                    <div class="card-title">Gear actions</div>
-                    <div class="action-row">
-                        <button class="action-btn reset" onclick="resetAllTables()">↺ Reset All</button>
-                    </div>
-                </div>
-
-            </div><!-- /gear-right -->
-        </div>
-
-        <!-- ===== CHALLENGE MODE ===== -->
-        <div id="chalMode" style="display:none;width:100%;">
-            <div class="gear-layout">
-
-                <!-- LEFT — gear canvas (reused) -->
-                <div class="gear-left">
-                    <div class="stats-row">
-                        <div class="stat-chip-sm">Planes explored: <span id="tablesExplored2">0</span>/10</div>
-                        <div class="stat-chip-sm">Score: <span id="quizScore2">0</span></div>
-                    </div>
-                    <canvas id="gearCanvas4b" width="560" height="560"></canvas>
-
-                </div>
-
-                <!-- RIGHT — challenge controls -->
-                <div class="gear-right">
-
-                    <!-- Operation picker -->
-                    <div class="ctrl-card">
-                        <div class="card-title">Choose an operation</div>
-                        <div class="rot-row">
-                            <button class="rot-btn cw" id="opMultBtn" onclick="selectOp('multiply')">
-                                <span class="rot-icon">✖️</span>
-                                <span>Multiply</span>
-                            </button>
-                            <button class="rot-btn ccw" id="opDivBtn" onclick="selectOp('divide')">
-                                <span class="rot-icon">➗</span>
-                                <span>Divide</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Single example card -->
-                    <div class="ctrl-card" id="exampleCard4">
-                        <div class="ex-badge" id="exBadge4">Example 1 of 10</div>
-                        <div class="ex-sum4"  id="exSum4">3 × 4 = ?</div>
-                        <div class="ex-ring-hint" id="exHint4">Use Plane 3</div>
-                        <div class="ex-desc4" id="exDesc4">From 0, spin 4 steps clockwise on Plane 3.</div>
-                    </div>
-
-                    <!-- Show on gear -->
-                    <button class="ex-go-btn" id="showOnGearBtn" onclick="showOnGear()">
-                        <span class="ex-go-icon">⚙️</span> Show on Gear!
+                    <button class="auto-spin-btn" id="autoSpinBtn" onclick="toggleAutoSpin()">
+                        ▶ Auto-Spin
                     </button>
-
-                    <!-- How it works -->
-                    <div id="chalStepCard" style="display:none;" class="ctrl-card">
-                        <div class="card-title">How it works</div>
-                        <div id="chalStepText" style="font-size:14px;font-weight:700;color:var(--text);line-height:1.8;"></div>
-                    </div>
-
-                    <!-- Result -->
-                    <div id="chalIllustResult" style="display:none;" class="ctrl-card">
-                        <div id="chalIllustEq"  style="font-size:28px;font-weight:900;color:var(--mint-dark);text-align:center;"></div>
-                        <div id="chalIllustSub" style="font-size:13px;font-weight:700;color:var(--text-soft);text-align:center;margin-top:4px;"></div>
-                        <button class="ex-next-btn" onclick="nextExample4()" style="margin-top:10px;">Next Example →</button>
-                    </div>
-
                 </div>
+
+                <!-- Step counter -->
+                <div style="background:var(--bg);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;">
+                    <div style="font-size:36px;font-weight:900;color:var(--peach-dark);min-width:44px;text-align:center;" id="stepCounter">0</div>
+                    <div>
+                        <div style="font-size:13px;font-weight:800;color:var(--text);">Steps taken</div>
+                        <div style="font-size:12px;font-weight:700;color:var(--text-soft);" id="stepHint">Spin ↻ forward to count up!</div>
+                    </div>
+                    <button onclick="resetGear()" style="margin-left:auto;padding:8px 12px;border:2px solid var(--border);border-radius:10px;background:var(--surface);font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;color:var(--text-soft);">↺ Reset</button>
+                </div>
+
             </div>
         </div>
 
-        <!-- ===== QUIZ MODE ===== -->
-        <div id="quizMode" style="display:none;width:100%;">
-            <div class="gear-layout">
-
-                <!-- LEFT — quiz gear canvas + rotate controls -->
-                <div class="gear-left">
-                    <div class="stats-row">
-                        <div class="stat-chip-sm">Correct: <span id="qzCorrect">0</span></div>
-                        <div class="stat-chip-sm">Streak: <span id="qzStreak">0</span></div>
-                        <div class="stat-chip-sm">Score: <span id="qzScore">0</span></div>
-                    </div>
-                    <canvas id="gearCanvasQz" width="560" height="560"></canvas>
-                    <div style="width:100%;max-width:560px;">
-                        <div class="ctrl-card" style="margin-top:10px;">
-                            <div class="card-title">Rotate the gear to find your answer</div>
-                            <div class="rot-row">
-                                <button class="rot-btn ccw" onclick="qzRotateCCW()">
-                                    <span class="rot-icon">↺</span><span>Anti-clockwise</span>
-                                </button>
-                                <button class="rot-btn cw" onclick="qzRotateCW()">
-                                    <span class="rot-icon">↻</span><span>Clockwise</span>
-                                </button>
-                            </div>
-                            <div class="sub-row">
-                                <button class="spin-btn" id="qzSpinBtn" onclick="qzToggleSpin()">▶ Auto-Spin</button>
-                                <button class="reset-ring-btn" onclick="qzResetPlane()">↺ Reset plane</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- RIGHT — quiz controls -->
-                <div class="gear-right">
-
-                    <!-- Operation selector -->
-                    <div class="ctrl-card">
-                        <div class="card-title">Choose operation</div>
-                        <div class="rot-row">
-                            <button class="rot-btn cw"  id="qzMultBtn" onclick="qzSelectOp('multiply')">
-                                <span class="rot-icon">✖️</span><span>Multiply</span>
-                            </button>
-                            <button class="rot-btn ccw" id="qzDivBtn"  onclick="qzSelectOp('divide')">
-                                <span class="rot-icon">➗</span><span>Divide</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Current question -->
-                    <div class="ring-display" id="qzQuestionCard">
-                        <div class="ring-meta">
-                            <div class="rm-label"    id="qzOpLabel">Multiplication</div>
-                            <div class="ring-big-num" id="qzQuestion" style="font-size:28px;min-width:auto;">–</div>
-                            <div class="rm-detail"   id="qzHint">Select a plane then spin to find the answer</div>
-                            <div class="rm-table"    id="qzPointerVal">Number at arrow: –</div>
-                        </div>
-                        <button class="hear-btn" onclick="qzHear()">🔊</button>
-                    </div>
-
-                    <!-- Plane selector -->
-                    <div class="ctrl-card">
-                        <div class="card-title">Select a plane</div>
-                        <div class="ring-grid" id="qzPlaneGrid"></div>
-                    </div>
-
-                    <!-- Submit -->
-                    <button class="ex-go-btn" id="qzSubmitBtn" onclick="qzSubmit()">
-                        <span class="ex-go-icon">✓</span> Submit Answer
-                    </button>
-
-                    <!-- Feedback -->
-                    <div id="qzFeedback" style="display:none;" class="ctrl-card">
-                        <div class="card-title" id="qzFeedbackTitle">Result</div>
-                        <div id="qzFeedbackBody" style="font-size:14px;font-weight:700;color:var(--text);line-height:1.8;"></div>
-                        <button class="ex-next-btn" onclick="qzNext()" style="margin-top:10px;">Next Question →</button>
-                    </div>
-
-                </div>
+        <!-- ===== WORKED EXAMPLE ===== -->
+        <div class="worked-example" id="workedExample">
+            <div class="we-header">
+                <div class="we-badge" id="weBadge">Example 1 of 6</div>
+                <div class="we-op" id="weOp">✖️ Multiplication</div>
+            </div>
+            <div class="we-equation" id="weEq">3 × 4 = ?</div>
+            <div class="we-steps" id="weSteps"></div>
+            <div class="we-answer" id="weAnswer" style="display:none;"></div>
+            <div class="we-btn-row">
+                <button class="we-show-btn" id="weShowBtn" onclick="showWorkedAnswer()">👀 Show me the answer!</button>
+                <button class="we-next-btn" onclick="nextExample()">Next Example →</button>
             </div>
         </div>
 
+        <!-- ===== QUIZ BUTTON ===== -->
+        <button class="quiz-open-btn" onclick="openQuiz()">
+            🎯 Take a Quiz!
+        </button>
+
+    </div>
     </main>
 </div>
 
-<!-- Toast -->
+<!-- ===== QUIZ MODAL ===== -->
+<div class="quiz-modal-overlay" id="quizOverlay" onclick="closeQuizIfOutside(event)">
+    <div class="quiz-modal" id="quizModal">
+        <div class="qm-header">
+            <div class="qm-title">🎯 Quiz Time!</div>
+            <button class="qm-close" onclick="closeQuiz()">✕</button>
+        </div>
+        <div class="qm-op-row">
+            <button class="qm-op-btn active" id="qmMult" onclick="setQuizOp('mult')">✖️ Multiply</button>
+            <button class="qm-op-btn"        id="qmDiv"  onclick="setQuizOp('div')">➗ Divide</button>
+        </div>
+        <div class="quiz-question-l4" id="quizQ">– × – = ?</div>
+        <div class="quiz-hint-l4"     id="quizHint">Pick the right plane, then spin to find the answer!</div>
+        <div class="quiz-choices-l4"  id="quizChoices"></div>
+        <div class="quiz-score-row">
+            <div class="score-chip-l4">✅ Correct: <span id="scoreCorrect">0</span></div>
+            <div class="score-chip-l4">🔥 Streak: <span id="scoreStreak">0</span></div>
+        </div>
+        <div class="congrats-banner" id="congratsBanner">
+            <div class="congrats-emoji">🌟</div>
+            <div class="congrats-title" id="congratsTitle">Brilliant!</div>
+            <div class="congrats-sub"   id="congratsSub">You got it right!</div>
+            <button class="btn btn-mint" onclick="nextQuestion()" style="margin-top:4px;">Next Question →</button>
+        </div>
+    </div>
+</div>
+
 <div class="feedback-toast" id="toast"></div>
 
 <script src="../../assets/js/speech.js"></script>
 <script src="../../assets/js/storage.js"></script>
 <script>
 /* ================================================================
-   CONSTANTS
+   CONSTANTS & STATE
 ================================================================ */
-const CS4  = 540;
-const CX4  = CS4 / 2; // 270
-const CY4  = CS4 / 2; // 270
-const HUB4 = 28;
-const RW4  = 24;
-// Ring i: inner = HUB4 + i*RW4, outer = HUB4 + (i+1)*RW4
-// Ring i represents ×(i+1) table: numbers = (i+1)*0, (i+1)*1, ..., (i+1)*9
+const CS = 520, CX = 260, CY = 260;
+const HUB_R = 28, RW = 22;
+const SLOTS = 10;
 
-const SKY_LIGHT   = '#d6eef8';
-const SKY_COLOR   = '#5ba8d4';
-const RING_BG     = ['#f8f9ff','#ffffff','#f8f9ff','#ffffff','#f8f9ff','#ffffff','#f8f9ff','#ffffff','#f8f9ff','#ffffff'];
-const RING_BG_ACT = '#d6eef8';
+// Colors matching Level 3
+const RING_FILLS = [
+    '#fff8f0','#edfaf4','#edf4fb','#fef0f5',
+    '#f5eeff','#e8fcfe','#fffee8','#f0fbe8',
+    '#eeebff','#e6f8f6'
+];
+const RING_ACCENTS = [
+    '#b84800','#1a7a50','#1a5fa0','#a0184a',
+    '#5b1fa0','#0a6e72','#9a7000','#3d7200',
+    '#3d1fa0','#006660'
+];
+
+let currentTable  = 0;   // 0 = ×1
+let currentOffset = 0;   // 0–9 (how many steps spun)
+let currentOp     = 'mult';
+let autoSpinTimer = null;
+
+// Quiz state
+let quizQ        = null;
+let quizAnswered = false;
+let scoreCorrect = 0;
+let scoreStreak  = 0;
 
 /* ================================================================
-   STATE
+   CANVAS
 ================================================================ */
-let tableOffsets   = new Array(10).fill(0); // rotation offset (0-9)
-let activeTable    = 0;  // 0 = ×1 ring
-let exploredTables = new Set([0]);
-let spinInterval4  = null;
+const canvas = document.getElementById('gearCanvas4');
+const ctx    = canvas.getContext('2d');
 
-// Challenge score
-let chalCorrect = 0;
-let chalStreak  = 0;
+function drawGear() {
+    ctx.clearRect(0, 0, CS, CS);
 
-/* ================================================================
-   CANVAS DRAWING
-================================================================ */
-const canvas4 = document.getElementById('gearCanvas4');
-const ctx4    = canvas4.getContext('2d');
+    const OUTER = HUB_R + SLOTS * RW;
 
-function drawGear4() {
-    ctx4.clearRect(0, 0, CS4, CS4);
+    // Background disc
+    ctx.beginPath();
+    ctx.arc(CX, CY, OUTER + 4, 0, Math.PI * 2);
+    ctx.fillStyle = '#dde4ee';
+    ctx.fill();
 
-    // Outer background circle
-    ctx4.beginPath();
-    ctx4.arc(CX4, CY4, HUB4 + 10 * RW4 + 3, 0, Math.PI * 2);
-    ctx4.fillStyle = '#f0f4f8';
-    ctx4.fill();
+    // Draw all rings (outermost first)
+    for (let i = SLOTS - 1; i >= 0; i--) {
+        const rIn  = HUB_R + i * RW;
+        const rOut = HUB_R + (i + 1) * RW;
+        const isActive = (i === currentTable);
 
-    // Rings (outermost first)
-    for (let i = 9; i >= 0; i--) {
-        const rIn  = HUB4 + i * RW4;
-        const rOut = HUB4 + (i + 1) * RW4;
+        // Ring fill
+        ctx.beginPath();
+        ctx.arc(CX, CY, rOut, 0, Math.PI * 2);
+        ctx.arc(CX, CY, rIn,  0, Math.PI * 2, true);
+        ctx.fillStyle = isActive
+            ? (currentOp === 'mult' ? '#d4f5ec' : '#ede9ff')
+            : RING_FILLS[i];
+        ctx.fill();
 
-        ctx4.beginPath();
-        ctx4.arc(CX4, CY4, rOut, 0, Math.PI * 2);
-        ctx4.arc(CX4, CY4, rIn, 0, Math.PI * 2, true);
-        ctx4.fillStyle = (i === activeTable) ? RING_BG_ACT : RING_BG[i];
-        ctx4.fill();
+        // Ring border
+        ctx.beginPath();
+        ctx.arc(CX, CY, rOut, 0, Math.PI * 2);
+        ctx.strokeStyle = isActive
+            ? (currentOp === 'mult' ? '#52c4a0' : '#7c6fcd')
+            : '#c4cedd';
+        ctx.lineWidth = isActive ? 2.5 : 0.8;
+        ctx.stroke();
 
-        ctx4.beginPath();
-        ctx4.arc(CX4, CY4, rOut, 0, Math.PI * 2);
-        ctx4.strokeStyle = '#dde3ea';
-        ctx4.lineWidth = 1;
-        ctx4.stroke();
-    }
-
-    // Top-slot highlight for each ring
-    for (let i = 0; i < 10; i++) {
-        const rIn  = HUB4 + i * RW4;
-        const rOut = HUB4 + (i + 1) * RW4;
-        const half = (Math.PI * 2) / 10 / 2;
+        // Top slot highlight (at arrow)
+        const half = (Math.PI * 2 / SLOTS) / 2;
         const top  = -Math.PI / 2;
-
-        ctx4.beginPath();
-        ctx4.arc(CX4, CY4, rOut - 0.5, top - half, top + half);
-        ctx4.arc(CX4, CY4, rIn  + 0.5, top + half, top - half, true);
-        ctx4.closePath();
-        ctx4.fillStyle = (i === activeTable) ? 'rgba(91,168,212,0.4)' : 'rgba(0,0,0,0.04)';
-        ctx4.fill();
+        ctx.beginPath();
+        ctx.arc(CX, CY, rOut - 0.5, top - half, top + half);
+        ctx.arc(CX, CY, rIn  + 0.5, top + half, top - half, true);
+        ctx.closePath();
+        ctx.fillStyle = isActive
+            ? (currentOp === 'mult' ? 'rgba(82,196,160,0.35)' : 'rgba(124,111,205,0.35)')
+            : 'rgba(0,0,0,0.03)';
+        ctx.fill();
     }
 
-    // Numbers
-    for (let i = 0; i < 10; i++) {
-        const rIn  = HUB4 + i * RW4;
-        const rOut = HUB4 + (i + 1) * RW4;
+    // Numbers on each ring
+    for (let i = 0; i < SLOTS; i++) {
+        const rIn  = HUB_R + i * RW;
+        const rOut = HUB_R + (i + 1) * RW;
         const rMid = (rIn + rOut) / 2;
-        const table = i + 1; // ×1 through ×10
-
-        const arcPerSlot = rMid * (2 * Math.PI / 10);
+        const table     = i + 1;
+        const isActive  = (i === currentTable);
+        const offset    = (i === currentTable) ? currentOffset : 0;
+        const arcPerSlot = rMid * (2 * Math.PI / SLOTS);
         const fontSize   = Math.min(12, Math.max(7, Math.floor(arcPerSlot / 4)));
-        ctx4.font = `${i === activeTable ? '900' : '700'} ${fontSize}px Segoe UI, system-ui`;
-        ctx4.textAlign    = 'center';
-        ctx4.textBaseline = 'middle';
 
-        for (let j = 0; j < 10; j++) {
-            const angleDeg = 270 + (tableOffsets[i] + j) * 36;
+        ctx.font = `${isActive ? '900' : '700'} ${fontSize}px Nunito, Segoe UI, sans-serif`;
+        ctx.textAlign    = 'center';
+        ctx.textBaseline = 'middle';
+
+        for (let j = 0; j < SLOTS; j++) {
+            const value    = table * j;
+            const atArrow  = (j === offset % SLOTS);
+            const angleDeg = 270 + (j - offset) * 36;
             const angleRad = angleDeg * Math.PI / 180;
-            const x = CX4 + rMid * Math.cos(angleRad);
-            const y = CY4 + rMid * Math.sin(angleRad);
-            const num = table * j; // value in this slot
-            const atPointer = (j === (10 - tableOffsets[i]) % 10);
+            const x = CX + rMid * Math.cos(angleRad);
+            const y = CY + rMid * Math.sin(angleRad);
 
-            ctx4.save();
-            ctx4.translate(x, y);
+            ctx.save();
+            ctx.translate(x, y);
 
-            if (atPointer && i === activeTable) {
-                ctx4.beginPath();
-                ctx4.arc(0, 0, fontSize * 1.2 + 1, 0, Math.PI * 2);
-                ctx4.fillStyle = SKY_COLOR;
-                ctx4.fill();
-                ctx4.fillStyle = 'white';
-            } else if (atPointer) {
-                ctx4.fillStyle = '#a0aec0';
+            // Highlight at-arrow number on active ring
+            if (atArrow && isActive) {
+                ctx.beginPath();
+                ctx.arc(0, 0, fontSize + 5, 0, Math.PI * 2);
+                ctx.fillStyle = currentOp === 'mult' ? '#52c4a0' : '#7c6fcd';
+                ctx.fill();
+                ctx.fillStyle = 'white';
             } else {
-                ctx4.fillStyle = (i === activeTable) ? '#3d88b8' : '#b0bec5';
+                ctx.globalAlpha = isActive ? 1 : 0.5;
+                ctx.fillStyle   = isActive ? RING_ACCENTS[i] : '#718096';
             }
 
-            ctx4.fillText(String(num), 0, 0);
-            ctx4.restore();
+            ctx.fillText(String(value), 0, 0);
+            ctx.globalAlpha = 1;
+            ctx.restore();
         }
     }
 
-    // Hub
-    ctx4.beginPath();
-    ctx4.arc(CX4, CY4, HUB4, 0, Math.PI * 2);
-    ctx4.fillStyle = '#5ba8d4';
-    ctx4.fill();
-    ctx4.beginPath();
-    ctx4.arc(CX4, CY4, HUB4 - 4, 0, Math.PI * 2);
-    ctx4.strokeStyle = 'rgba(255,255,255,0.35)';
-    ctx4.lineWidth = 2;
-    ctx4.stroke();
-    ctx4.font = 'bold 14px Segoe UI, system-ui';
-    ctx4.textAlign = 'center';
-    ctx4.textBaseline = 'middle';
-    ctx4.fillStyle = 'white';
-    ctx4.fillText('×', CX4, CY4);
+    // Hub — shows × or ÷
+    ctx.beginPath();
+    ctx.arc(CX, CY, HUB_R, 0, Math.PI * 2);
+    const hubGrad = ctx.createRadialGradient(CX, CY - 4, 2, CX, CY, HUB_R);
+    hubGrad.addColorStop(0, currentOp === 'mult' ? '#6ee7c7' : '#a89ce8');
+    hubGrad.addColorStop(1, currentOp === 'mult' ? '#52c4a0' : '#7c6fcd');
+    ctx.fillStyle = hubGrad;
+    ctx.fill();
+    ctx.font = 'bold 16px Nunito, sans-serif';
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillStyle = 'white';
+    ctx.fillText(currentOp === 'mult' ? '×' : '÷', CX, CY);
 
-    // Pointer arrow
-    const gTop = CY4 - (HUB4 + 10 * RW4);
-    ctx4.beginPath();
-    ctx4.moveTo(CX4, gTop - 1);
-    ctx4.lineTo(CX4 - 9, gTop + 12);
-    ctx4.lineTo(CX4 + 9, gTop + 12);
-    ctx4.closePath();
-    ctx4.fillStyle = SKY_COLOR;
-    ctx4.fill();
-    ctx4.strokeStyle = '#3d88b8';
-    ctx4.lineWidth = 1.5;
-    ctx4.stroke();
+    // Reference arrow ▼ at top
+    const arrowY = CY - (HUB_R + SLOTS * RW);
+    ctx.beginPath();
+    ctx.moveTo(CX, arrowY);
+    ctx.lineTo(CX - 10, arrowY - 14);
+    ctx.lineTo(CX + 10, arrowY - 14);
+    ctx.closePath();
+    ctx.fillStyle = '#f4a571';
+    ctx.fill();
+    ctx.strokeStyle = '#d4824a';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    // Step counter badge near arrow
+    if (currentOffset > 0) {
+        const badgeY = arrowY - 28;
+        ctx.beginPath();
+        ctx.arc(CX, badgeY, 14, 0, Math.PI * 2);
+        ctx.fillStyle = currentOp === 'mult' ? '#52c4a0' : '#7c6fcd';
+        ctx.fill();
+        ctx.font = 'bold 13px Nunito, sans-serif';
+        ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+        ctx.fillStyle = 'white';
+        ctx.fillText(String(currentOffset), CX, badgeY);
+    }
 }
 
 /* ================================================================
-   CANVAS CLICK
+   CANVAS CLICK — tap a ring to select it
 ================================================================ */
-canvas4.addEventListener('click', function(e) {
-    const rect  = canvas4.getBoundingClientRect();
-    const scaleX = CS4 / rect.width;
-    const scaleY = CS4 / rect.height;
-    const mx = (e.clientX - rect.left) * scaleX;
-    const my = (e.clientY - rect.top)  * scaleY;
-    const dx = mx - CX4;
-    const dy = my - CY4;
+canvas.addEventListener('click', function(e) {
+    const rect = canvas.getBoundingClientRect();
+    const mx   = (e.clientX - rect.left) * (CS / rect.width);
+    const my   = (e.clientY - rect.top)  * (CS / rect.height);
+    const dx   = mx - CX, dy = my - CY;
     const dist = Math.sqrt(dx * dx + dy * dy);
 
-    if (dist < HUB4) {
-        NG_Speech.sayInstruction('Times tables hub. Choose a ring to explore!');
-        return;
-    }
-    for (let i = 0; i < 10; i++) {
-        const rIn  = HUB4 + i * RW4;
-        const rOut = HUB4 + (i + 1) * RW4;
+    if (dist < HUB_R) return;
+    for (let i = 0; i < SLOTS; i++) {
+        const rIn  = HUB_R + i * RW;
+        const rOut = HUB_R + (i + 1) * RW;
         if (dist >= rIn && dist < rOut) {
-            setActiveTable(i);
-            hearCurrent4();
+            selectTable(i);
             return;
         }
     }
 });
 
 /* ================================================================
-   TABLE SELECTOR
+   TABLE PICKER
 ================================================================ */
-function buildTableGrid() {
-    const grid = document.getElementById('tableGrid');
-    grid.innerHTML = '';
+function buildTablePicker() {
+    const picker = document.getElementById('tablePicker');
+    picker.innerHTML = '';
     for (let i = 0; i < 10; i++) {
         const btn = document.createElement('button');
-        btn.className = 'ring-btn' + (i === activeTable ? ' active' : '');
-        btn.id = 'table-btn-' + i;
-        btn.innerHTML = `<strong>×${i+1}</strong><br><small>${i+1}–${(i+1)*10}</small>`;
-        btn.onclick = () => setActiveTable(i);
-        grid.appendChild(btn);
+        const cls = currentOp === 'mult' ? 'mult-tbl' : 'div-tbl';
+        btn.className = 'tbl-btn' + (i === currentTable ? ` active ${cls}` : '');
+        btn.innerHTML = `<span class="tbl-num">${i + 1}s</span><span class="tbl-hint">${i+1},${(i+1)*2},${(i+1)*3}…</span>`;
+        btn.onclick   = () => selectTable(i);
+        picker.appendChild(btn);
     }
 }
 
-function setActiveTable(i) {
-    activeTable = i;
-    exploredTables.add(i);
-
-    document.querySelectorAll('#tableGrid .ring-btn').forEach((b, idx) => {
-        b.classList.toggle('active', idx === i);
-    });
-
-    updateWindowDisplay4();
-    updateStats4();
-    drawGear4();
-
-    NG_Speech.sayInstruction(`The ${i + 1} times plane.`);
+function selectTable(i) {
+    currentTable  = i;
+    currentOffset = 0;
+    buildTablePicker();
+    updateDisplay();
+    drawGear();
+    NG_Speech.sayInstruction(`The ${i + 1} times table. Spin to see the multiples!`);
 }
 
 /* ================================================================
-   ROTATE
+   OPERATION SWITCH
 ================================================================ */
-function rotateTable(dir) {
-    tableOffsets[activeTable] = ((tableOffsets[activeTable] + dir) + 10) % 10;
-    updateWindowDisplay4();
-    drawGear4();
+function setOp(op) {
+    currentOp     = op;
+    currentOffset = 0;
 
-    const info = getPointerInfo(activeTable);
-    NG_Speech.sayMultiplication(info.table, info.factor, info.result);
-}
+    document.getElementById('opBtnMult').className = 'op-btn mult' + (op === 'mult' ? ' active' : '');
+    document.getElementById('opBtnDiv').className  = 'op-btn div'  + (op === 'div'  ? ' active' : '');
 
-function resetTable() {
-    tableOffsets[activeTable] = 0;
-    updateWindowDisplay4();
-    drawGear4();
-    showToast4('Plane reset ↺', '');
-}
+    // Update answer display class
+    document.getElementById('answerDisplay').className = 'answer-display ' + (op === 'mult' ? 'mult-mode' : 'div-mode');
 
-function resetAllTables() {
-    if (spinInterval4) stopSpin4();
-    tableOffsets.fill(0);
-    updateWindowDisplay4();
-    drawGear4();
-    showToast4('All planes reset ↺', '');
-}
+    // Update spin title
+    document.getElementById('spinTitle').textContent = op === 'mult'
+        ? 'Each step forward shows the next multiple!'
+        : 'Spin forward — count the steps until your number appears at the arrow!';
 
-function getPointerInfo(i) {
-    const factor = (10 - tableOffsets[i]) % 10;
-    const table  = i + 1;
-    const result = table * factor;
-    return { table, factor, result };
+    // Update table picker label
+    document.getElementById('tablePickerLabel').innerHTML = op === 'mult'
+        ? '👇 Pick a <strong>plane</strong> (the number you are multiplying by):'
+        : '👇 Pick the <strong>plane</strong> that matches your dividing number:';
+
+    weIdx = 0;
+    buildTablePicker();
+    updateDisplay();
+    drawGear();
+    generateQuiz();
+    loadWorkedExample();
+    NG_Speech.sayInstruction(op === 'mult'
+        ? 'Multiplication! Pick a plane and spin to multiply!'
+        : 'Division! Pick the right plane, spin forward and count the steps!'
+    );
 }
 
 /* ================================================================
-   AUTO-SPIN
+   SPIN
 ================================================================ */
-function toggleSpin4() {
-    if (spinInterval4) {
-        stopSpin4();
+function spinStep(dir) {
+    currentOffset = ((currentOffset + dir) + SLOTS) % SLOTS;
+    updateDisplay();
+    drawGear();
+
+    const table  = currentTable + 1;
+    const result = table * currentOffset;
+    if (currentOp === 'mult') {
+        if (currentOffset === 0) {
+            NG_Speech.sayInstruction(`Back to zero. ${table} times 0 is 0.`);
+        } else {
+            NG_Speech.sayMultiplication(table, currentOffset, result);
+        }
     } else {
-        const btn = document.getElementById('spinBtn4');
+        NG_Speech.sayInstruction(`${result} is at the arrow. That is ${currentOffset} steps from zero.`);
+    }
+}
+
+function toggleAutoSpin() {
+    if (autoSpinTimer) {
+        clearInterval(autoSpinTimer);
+        autoSpinTimer = null;
+        const btn = document.getElementById('autoSpinBtn');
+        btn.textContent = '▶ Auto-Spin';
+        btn.classList.remove('spinning');
+    } else {
+        const btn = document.getElementById('autoSpinBtn');
         btn.textContent = '⏸ Stop';
         btn.classList.add('spinning');
-        spinInterval4 = setInterval(() => rotateTable(1), 700);
+        autoSpinTimer = setInterval(() => spinStep(+1), 700);
     }
 }
 
-function stopSpin4() {
-    clearInterval(spinInterval4);
-    spinInterval4 = null;
-    const btn = document.getElementById('spinBtn4');
+function resetGear() {
+    if (autoSpinTimer) { clearInterval(autoSpinTimer); autoSpinTimer = null; }
+    const btn = document.getElementById('autoSpinBtn');
     btn.textContent = '▶ Auto-Spin';
     btn.classList.remove('spinning');
+    currentOffset = 0;
+    updateDisplay();
+    drawGear();
 }
 
 /* ================================================================
-   WINDOW DISPLAY
+   DISPLAY UPDATE
 ================================================================ */
-function updateWindowDisplay4() {
-    const { table, factor, result } = getPointerInfo(activeTable);
-    document.getElementById('eqDisplay').textContent  = `${table} × ${factor} = ${result}`;
-    document.getElementById('eqSub').textContent      = `Plane ${table} · step ${factor}`;
-    if (result > 0) {
-        document.getElementById('divDisplay').textContent = `${result} ÷ ${table} = ${factor}`;
+function updateDisplay() {
+    const table  = currentTable + 1;
+    const steps  = currentOffset;
+    const result = table * steps;
+
+    document.getElementById('stepCounter').textContent = steps;
+
+    if (currentOp === 'mult') {
+        document.getElementById('answerBig').textContent = result;
+        document.getElementById('answerEq').textContent  = `${table} × ${steps} = ${result}`;
+        document.getElementById('answerSub').textContent = steps === 0
+            ? `${table} times 0 is always 0`
+            : `${table} jumped ${steps} step${steps > 1 ? 's' : ''}`;
+        document.getElementById('stepHint').textContent = `Each step adds ${table} more`;
     } else {
-        document.getElementById('divDisplay').textContent = `${table} × 0 = 0`;
+        document.getElementById('answerBig').textContent = result;
+        document.getElementById('answerEq').textContent  = result > 0
+            ? `${result} ÷ ${table} = ${steps}`
+            : `– ÷ ${table} = –`;
+        document.getElementById('answerSub').textContent = steps === 0
+            ? `Spin ↻ forward to find a number to divide`
+            : `${result} shared by ${table} = ${steps} each`;
+        document.getElementById('stepHint').textContent = steps === 0
+            ? `Spin ↻ forward to count up!`
+            : `${steps} step${steps > 1 ? 's' : ''} to reach ${result}`;
+    }
+
+    updateStats();
+}
+
+/* ================================================================
+   HEAR
+================================================================ */
+function hearCurrent() {
+    const table  = currentTable + 1;
+    const steps  = currentOffset;
+    const result = table * steps;
+    if (currentOp === 'mult') {
+        NG_Speech.sayMultiplication(table, steps, result);
+    } else {
+        if (result > 0) NG_Speech.sayDivision(result, table, steps);
+        else NG_Speech.sayInstruction(`Spin the gear to find a number to divide by ${table}.`);
     }
 }
 
 /* ================================================================
-   STATS
+   WORKED EXAMPLES
 ================================================================ */
-function updateStats4() {
-    document.getElementById('tablesExplored').textContent = exploredTables.size;
-    const prog = Math.min(100, exploredTables.size * 10 + Math.floor(chalCorrect * 2));
+const MULT_EXAMPLES = [
+    { a:2, b:3,  answer:6,  steps:['Pick the <strong>2s plane</strong> (it counts: 2, 4, 6, 8…)', 'The gear starts at <strong>0</strong> at the arrow ▼', 'Spin ↻ <strong>3 steps</strong> forward — the gear shows: 2 → 4 → 6', 'After 3 steps the arrow points at <strong>6</strong>'] },
+    { a:3, b:4,  answer:12, steps:['Pick the <strong>3s plane</strong> (it counts: 3, 6, 9, 12…)', 'Start at <strong>0</strong> at the arrow ▼', 'Spin ↻ <strong>4 steps</strong> — the gear shows: 3 → 6 → 9 → 12', 'After 4 steps the arrow points at <strong>12</strong>'] },
+    { a:5, b:4,  answer:20, steps:['Pick the <strong>5s plane</strong> (it counts: 5, 10, 15, 20…)', 'Start at <strong>0</strong> at the arrow ▼', 'Spin ↻ <strong>4 steps</strong> — the gear shows: 5 → 10 → 15 → 20', 'After 4 steps the arrow points at <strong>20</strong>'] },
+    { a:4, b:5,  answer:20, steps:['Pick the <strong>4s plane</strong> (it counts: 4, 8, 12, 16, 20…)', 'Start at <strong>0</strong> at the arrow ▼', 'Spin ↻ <strong>5 steps</strong> — count along: 4 → 8 → 12 → 16 → 20', 'After 5 steps the arrow points at <strong>20</strong>'] },
+    { a:6, b:3,  answer:18, steps:['Pick the <strong>6s plane</strong> (it counts: 6, 12, 18…)', 'Start at <strong>0</strong> at the arrow ▼', 'Spin ↻ <strong>3 steps</strong> — the gear shows: 6 → 12 → 18', 'After 3 steps the arrow points at <strong>18</strong>'] },
+    { a:10, b:7, answer:70, steps:['Pick the <strong>10s plane</strong> (it counts: 10, 20, 30…)', 'Start at <strong>0</strong> at the arrow ▼', 'Spin ↻ <strong>7 steps</strong> — count: 10 → 20 → 30 → 40 → 50 → 60 → 70', 'After 7 steps the arrow points at <strong>70</strong>'] },
+];
+
+const DIV_EXAMPLES = [
+    { dividend:12, divisor:3, answer:4, steps:['We want to share <strong>12</strong> into groups of <strong>3</strong>', 'Pick the <strong>3s plane</strong> — it counts in 3s: 3, 6, 9, 12…', 'Spin ↻ <strong>step by step</strong> until <strong>12</strong> appears at the arrow ▼', 'Count the steps: 3 → 6 → 9 → 12 = <strong>4 steps</strong>', 'So 12 ÷ 3 = <strong>4</strong> ✓'] },
+    { dividend:20, divisor:4, answer:5, steps:['We want to share <strong>20</strong> into groups of <strong>4</strong>', 'Pick the <strong>4s plane</strong> — it counts in 4s: 4, 8, 12, 16, 20…', 'Spin ↻ <strong>step by step</strong> until <strong>20</strong> appears at the arrow ▼', 'Count the steps: 4 → 8 → 12 → 16 → 20 = <strong>5 steps</strong>', 'So 20 ÷ 4 = <strong>5</strong> ✓'] },
+    { dividend:15, divisor:5, answer:3, steps:['We want to share <strong>15</strong> into groups of <strong>5</strong>', 'Pick the <strong>5s plane</strong> — it counts in 5s: 5, 10, 15…', 'Spin ↻ <strong>step by step</strong> until <strong>15</strong> appears at the arrow ▼', 'Count the steps: 5 → 10 → 15 = <strong>3 steps</strong>', 'So 15 ÷ 5 = <strong>3</strong> ✓'] },
+    { dividend:18, divisor:6, answer:3, steps:['We want to share <strong>18</strong> into groups of <strong>6</strong>', 'Pick the <strong>6s plane</strong> — it counts in 6s: 6, 12, 18…', 'Spin ↻ <strong>step by step</strong> until <strong>18</strong> appears at the arrow ▼', 'Count the steps: 6 → 12 → 18 = <strong>3 steps</strong>', 'So 18 ÷ 6 = <strong>3</strong> ✓'] },
+    { dividend:24, divisor:8, answer:3, steps:['We want to share <strong>24</strong> into groups of <strong>8</strong>', 'Pick the <strong>8s plane</strong> — it counts in 8s: 8, 16, 24…', 'Spin ↻ <strong>step by step</strong> until <strong>24</strong> appears at the arrow ▼', 'Count the steps: 8 → 16 → 24 = <strong>3 steps</strong>', 'So 24 ÷ 8 = <strong>3</strong> ✓'] },
+    { dividend:30, divisor:10, answer:3, steps:['We want to share <strong>30</strong> into groups of <strong>10</strong>', 'Pick the <strong>10s plane</strong> — it counts in 10s: 10, 20, 30…', 'Spin ↻ <strong>step by step</strong> until <strong>30</strong> appears at the arrow ▼', 'Count the steps: 10 → 20 → 30 = <strong>3 steps</strong>', 'So 30 ÷ 10 = <strong>3</strong> ✓'] },
+];
+
+let weIdx = 0;
+
+function loadWorkedExample() {
+    const examples = currentOp === 'mult' ? MULT_EXAMPLES : DIV_EXAMPLES;
+    const ex       = examples[weIdx % examples.length];
+    const total    = examples.length;
+    const numClass = currentOp === 'mult' ? 'mult-n' : 'div-n';
+
+    document.getElementById('weBadge').textContent = `Example ${(weIdx % total) + 1} of ${total}`;
+    document.getElementById('weOp').textContent    = currentOp === 'mult' ? '✖️ Multiplication' : '➗ Division';
+
+    if (currentOp === 'mult') {
+        document.getElementById('weEq').textContent = `${ex.a} × ${ex.b} = ?`;
+    } else {
+        document.getElementById('weEq').textContent = `${ex.dividend} ÷ ${ex.divisor} = ?`;
+    }
+
+    // Build steps
+    const stepsEl = document.getElementById('weSteps');
+    stepsEl.innerHTML = '';
+    ex.steps.forEach((step, i) => {
+        const div = document.createElement('div');
+        div.className = 'we-step';
+        div.innerHTML = `<span class="we-step-num ${numClass}">${i + 1}</span><span>${step}</span>`;
+        stepsEl.appendChild(div);
+    });
+
+    // Hide answer
+    const ansEl = document.getElementById('weAnswer');
+    ansEl.style.display = 'none';
+    ansEl.innerHTML = '';
+
+    // Reset show button
+    const showBtn = document.getElementById('weShowBtn');
+    showBtn.disabled    = false;
+    showBtn.textContent = '👀 Show me the answer!';
+
+    // Speak it
+    if (currentOp === 'mult') {
+        NG_Speech.sayInstruction(`Example. What is ${ex.a} times ${ex.b}? Follow the steps on the gear!`);
+    } else {
+        NG_Speech.sayInstruction(`Example. What is ${ex.dividend} divided by ${ex.divisor}? Follow the steps on the gear!`);
+    }
+}
+
+function showWorkedAnswer() {
+    const examples = currentOp === 'mult' ? MULT_EXAMPLES : DIV_EXAMPLES;
+    const ex       = examples[weIdx % examples.length];
+
+    const ansEl = document.getElementById('weAnswer');
+    ansEl.style.display = 'block';
+
+    if (currentOp === 'mult') {
+        ansEl.innerHTML = `<div class="we-answer-big">${ex.answer}</div><div class="we-answer-eq">${ex.a} × ${ex.b} = ${ex.answer} ✓</div>`;
+        NG_Speech.sayMultiplication(ex.a, ex.b, ex.answer);
+    } else {
+        ansEl.innerHTML = `<div class="we-answer-big">${ex.answer}</div><div class="we-answer-eq">${ex.dividend} ÷ ${ex.divisor} = ${ex.answer} ✓</div>`;
+        NG_Speech.sayDivision(ex.dividend, ex.divisor, ex.answer);
+    }
+
+    const showBtn = document.getElementById('weShowBtn');
+    showBtn.disabled    = true;
+    showBtn.textContent = '✓ Shown!';
+
+    // Highlight the correct plane and spin the gear to the answer
+    const planeIdx = currentOp === 'mult' ? ex.a - 1 : ex.divisor - 1;
+    const steps    = currentOp === 'mult' ? ex.b : ex.answer;
+    currentTable   = planeIdx;
+    currentOffset  = steps % SLOTS;
+    buildTablePicker();
+    updateDisplay();
+    drawGear();
+}
+
+function nextExample() {
+    weIdx++;
+    loadWorkedExample();
+}
+
+/* ================================================================
+   QUIZ MODAL
+================================================================ */
+function openQuiz() {
+    document.getElementById('quizOverlay').classList.add('open');
+    document.body.style.overflow = 'hidden';
+    generateQuiz();
+}
+
+function closeQuiz() {
+    document.getElementById('quizOverlay').classList.remove('open');
+    document.body.style.overflow = '';
+}
+
+function closeQuizIfOutside(e) {
+    if (e.target === document.getElementById('quizOverlay')) closeQuiz();
+}
+
+function setQuizOp(op) {
+    currentOp = op;
+    document.getElementById('qmMult').classList.toggle('active', op === 'mult');
+    document.getElementById('qmDiv').classList.toggle('active',  op === 'div');
+    generateQuiz();
+}
+
+
+function generateQuiz() {
+    quizAnswered = false;
+    document.getElementById('congratsBanner').classList.remove('show');
+
+    const table  = currentTable + 1;
+    let a, b, answer, qText, hintText;
+
+    if (currentOp === 'mult') {
+        b      = Math.floor(Math.random() * 9) + 1; // 1–9
+        answer = table * b;
+        qText  = `${table} × ${b} = ?`;
+        hintText = `Use the <strong>${table}s</strong> table — spin ↻ <strong>${b} steps</strong> forward!`;
+    } else {
+        b      = Math.floor(Math.random() * 9) + 1;
+        a      = table * b;
+        answer = b;
+        qText  = `${a} ÷ ${table} = ?`;
+        hintText = `Use the <strong>${table}s</strong> table — spin ↻ until <strong>${a}</strong> is at the arrow ▼, then count the steps!`;
+    }
+
+    quizQ = { answer, table, b };
+    document.getElementById('quizQ').textContent    = qText;
+    document.getElementById('quizHint').innerHTML   = hintText;
+
+    // Generate 4 choices including the correct answer
+    const choices = new Set([answer]);
+    while (choices.size < 4) {
+        const wrong = answer + (Math.floor(Math.random() * 5) + 1) * table * (Math.random() < 0.5 ? 1 : -1);
+        if (wrong > 0 && wrong !== answer) choices.add(wrong);
+    }
+    const shuffled = Array.from(choices).sort(() => Math.random() - 0.5);
+
+    const container = document.getElementById('quizChoices');
+    container.innerHTML = '';
+    shuffled.forEach(val => {
+        const btn = document.createElement('button');
+        btn.className   = 'quiz-choice-l4';
+        btn.textContent = val;
+        btn.onclick     = () => checkAnswer(val, btn);
+        container.appendChild(btn);
+    });
+
+    NG_Speech.sayInstruction(currentOp === 'mult'
+        ? `What is ${table} times ${b}?`
+        : `What is ${table * b} divided by ${table}?`
+    );
+}
+
+function checkAnswer(selected, btn) {
+    if (quizAnswered || !quizQ) return;
+    quizAnswered = true;
+
+    document.querySelectorAll('.quiz-choice-l4').forEach(b => b.disabled = true);
+
+    if (selected === quizQ.answer) {
+        btn.classList.add('correct');
+        scoreCorrect++;
+        scoreStreak++;
+        document.getElementById('scoreCorrect').textContent = scoreCorrect;
+        document.getElementById('scoreStreak').textContent  = scoreStreak;
+
+        const congrats = ['Brilliant! 🌟', 'Amazing! 🎉', 'You got it! ⭐', 'Super! 🏆', 'Fantastic! 🎊'];
+        document.getElementById('congratsTitle').textContent = congrats[Math.floor(Math.random() * congrats.length)];
+        document.getElementById('congratsSub').textContent   = `${quizQ.table} × ${quizQ.b} = ${quizQ.answer} ✓`;
+        document.getElementById('congratsBanner').classList.add('show');
+
+        NG_Speech.sayCorrect(quizQ.answer);
+        updateStats();
+    } else {
+        btn.classList.add('wrong');
+        scoreStreak = 0;
+        document.getElementById('scoreStreak').textContent = 0;
+        // Reveal correct
+        document.querySelectorAll('.quiz-choice-l4').forEach(b => {
+            if (parseInt(b.textContent) === quizQ.answer) b.classList.add('correct');
+        });
+        NG_Speech.sayWrong(quizQ.answer);
+        showToast(`The answer is ${quizQ.answer}`, 'error');
+        setTimeout(nextQuestion, 2000);
+    }
+}
+
+function nextQuestion() {
+    generateQuiz();
+}
+
+/* ================================================================
+   STATS & PROGRESS
+================================================================ */
+function updateStats() {
+    const prog = Math.min(100, scoreCorrect * 10);
     NG_Storage.setLvl4Score(prog);
 }
 
 /* ================================================================
-   HEAR CURRENT
+   TOAST
 ================================================================ */
-function hearCurrent4() {
-    const { table, factor, result } = getPointerInfo(activeTable);
-    NG_Speech.sayMultiplication(table, factor, result);
-}
-
-/* ================================================================
-   MODE SWITCH
-================================================================ */
-function setMode(mode) {
-    document.getElementById('modeGearBtn').classList.toggle('active', mode === 'gear');
-    document.getElementById('modeChalBtn').classList.toggle('active', mode === 'challenge');
-    document.getElementById('modeQuizBtn').classList.toggle('active', mode === 'quiz');
-    document.getElementById('gearMode').style.display  = mode === 'gear'       ? 'flex'  : 'none';
-    document.getElementById('chalMode').style.display  = mode === 'challenge'  ? 'block' : 'none';
-    document.getElementById('quizMode').style.display  = mode === 'quiz'       ? 'block' : 'none';
-    if (spinInterval4) stopSpin4();
-    if (qzSpinInterval) qzStopSpin();
-    if (mode === 'challenge') initChallenge();
-    if (mode === 'quiz')      initQuiz();
-}
-
-/* ================================================================
-   CHALLENGE MODE — one example at a time with pointer animation
-================================================================ */
-const MULT_EXAMPLES = [
-    { plane:1, steps:5,  result:5  },
-    { plane:2, steps:4,  result:8  },
-    { plane:3, steps:4,  result:12 },
-    { plane:4, steps:3,  result:12 },
-    { plane:5, steps:6,  result:30 },
-    { plane:6, steps:5,  result:30 },
-    { plane:7, steps:4,  result:28 },
-    { plane:8, steps:3,  result:24 },
-    { plane:9, steps:3,  result:27 },
-    { plane:10,steps:5,  result:50 },
-];
-// Division: dividend ÷ plane = quotient
-// Start at 'dividend' position on the plane, move 'quotient' steps anticlockwise
-// dividend = plane * quotient  (always a clean multiple on the plane)
-const DIV_EXAMPLES = [
-    { plane:4, dividend:12, quotient:3  },   // 12 ÷ 4 = 3
-    { plane:2, dividend:8,  quotient:4  },   // 8  ÷ 2 = 4
-    { plane:3, dividend:12, quotient:4  },   // 12 ÷ 3 = 4
-    { plane:5, dividend:20, quotient:4  },   // 20 ÷ 5 = 4
-    { plane:6, dividend:30, quotient:5  },   // 30 ÷ 6 = 5
-    { plane:7, dividend:21, quotient:3  },   // 21 ÷ 7 = 3
-    { plane:8, dividend:24, quotient:3  },   // 24 ÷ 8 = 3
-    { plane:9, dividend:27, quotient:3  },   // 27 ÷ 9 = 3
-    { plane:10,dividend:40, quotient:4  },   // 40 ÷ 10= 4
-    { plane:3, dividend:27, quotient:9  },   // 27 ÷ 3 = 9
-];
-
-let chalOp         = 'multiply';
-let chalExIdx      = 0;
-let chalAnimTimer4 = null;
-let chalPointer    = null;  // { plane, stepsTotal, stepsDone, op }
-
-let canvas4b, ctx4b;
-let activeTable4b   = 0;
-let tableOffsets4b  = new Array(10).fill(0);  // rotation offsets for challenge gear
-
-function initChallenge() {
-    if (!canvas4b) {
-        canvas4b = document.getElementById('gearCanvas4b');
-        ctx4b    = canvas4b.getContext('2d');
-    }
-    chalExIdx = 0;
-    chalPointer = null;
-    selectOp('multiply');
-}
-
-function selectOp(op) {
-    chalOp    = op;
-    chalExIdx = 0;
-    clearInterval(chalAnimTimer4);
-    chalPointer = null;
-
-    const mBtn = document.getElementById('opMultBtn');
-    const dBtn = document.getElementById('opDivBtn');
-    if (op === 'multiply') {
-        mBtn.style.opacity = '1';   mBtn.style.fontWeight = '900';
-        dBtn.style.opacity = '0.5'; dBtn.style.fontWeight = '700';
-    } else {
-        dBtn.style.opacity = '1';   dBtn.style.fontWeight = '900';
-        mBtn.style.opacity = '0.5'; mBtn.style.fontWeight = '700';
-    }
-
-    loadExample4();
-}
-
-function loadExample4() {
-    const examples = chalOp === 'multiply' ? MULT_EXAMPLES : DIV_EXAMPLES;
-    const ex       = examples[chalExIdx];
-    const total    = examples.length;
-    const sym  = chalOp === 'multiply' ? '×' : '÷';
-    const a    = chalOp === 'multiply' ? ex.plane    : ex.dividend;
-    const b    = chalOp === 'multiply' ? ex.steps    : ex.plane;
-    const ans  = chalOp === 'multiply' ? ex.result   : ex.quotient;
-
-    document.getElementById('exBadge4').textContent = `Example ${chalExIdx + 1} of ${total}`;
-    document.getElementById('exSum4').textContent   = `${a} ${sym} ${b} = ?`;
-    document.getElementById('exHint4').textContent  = `Use Plane ${ex.plane} (counts in ${ex.plane}s)`;
-
-    if (chalOp === 'multiply') {
-        document.getElementById('exDesc4').textContent =
-            `The plane starts at 0 on the reference arrow. Rotate clockwise ↻ and count ${ex.steps} steps — the number at the arrow is your answer!`;
-        document.getElementById('chalStepText').innerHTML =
-            `<strong>Plane ${ex.plane}</strong> counts in ${ex.plane}s.<br>` +
-            `<strong>0</strong> starts at the reference arrow ▼.<br>` +
-            `Rotate the plane <strong>clockwise ↻</strong> one step at a time.<br>` +
-            `After <strong>${ex.steps} steps</strong>, read the number at the arrow.<br>` +
-            `The answer is <strong>${ex.result}</strong> — so ${ex.plane} × ${ex.steps} = <strong>${ex.result}</strong>!`;
-    } else {
-        document.getElementById('exDesc4').textContent =
-            `${ex.dividend} starts at the arrow. Rotate anticlockwise ↺ step by step — count until 0 reaches the arrow. The steps counted = the answer!`;
-        document.getElementById('chalStepText').innerHTML =
-            `Step 1: <strong>${ex.dividend}</strong> is at the reference arrow ▼.<br>` +
-            `Step 2: Rotate <strong>anticlockwise ↺</strong> — each step brings the next lower multiple to the arrow: ${ex.dividend}, ${ex.dividend - ex.plane}, ${ex.dividend - ex.plane*2}… 0.<br>` +
-            `Step 3: Count the steps taken — <strong>${ex.quotient} steps</strong>.<br>` +
-            `Answer: ${ex.dividend} ÷ ${ex.plane} = <strong>${ex.quotient}</strong>`;
-    }
-
-    document.getElementById('chalStepCard').style.display     = 'none';
-    document.getElementById('chalIllustResult').style.display = 'none';
-
-    // Reset canvas
-    chalPointer    = null;
-    activeTable4b  = ex.plane - 1;
-    drawGear4b();
-}
-
-function nextExample4() {
-    const examples = chalOp === 'multiply' ? MULT_EXAMPLES : DIV_EXAMPLES;
-    chalExIdx = (chalExIdx + 1) % examples.length;
-    clearInterval(chalAnimTimer4);
-    chalPointer = null;
-    loadExample4();
-}
-
-function showOnGear() {
-    const examples = chalOp === 'multiply' ? MULT_EXAMPLES : DIV_EXAMPLES;
-    const ex       = examples[chalExIdx];
-    clearInterval(chalAnimTimer4);
-
-    document.getElementById('chalStepCard').style.display     = 'block';
-    document.getElementById('chalIllustResult').style.display = 'none';
-
-    activeTable4b = ex.plane - 1;
-    tableOffsets4b.fill(0);
-
-    if (chalOp === 'multiply') {
-        // Multiply: gear starts at 0 (offset=0), rotates CLOCKWISE step by step
-        // Each step increases offset → next multiple comes to the reference arrow
-        tableOffsets4b[activeTable4b] = 0;
-        chalPointer = { op: 'multiply', stepsTotal: ex.steps, stepsDone: 0 };
-        drawGear4b();
-
-        let done = 0;
-        chalAnimTimer4 = setInterval(() => {
-            done++;
-            tableOffsets4b[activeTable4b] = done % 10;
-            chalPointer.stepsDone = done;
-            drawGear4b();
-            if (done >= ex.steps) {
-                clearInterval(chalAnimTimer4);
-                document.getElementById('chalIllustEq').textContent  = `${ex.plane} × ${ex.steps} = ${ex.result}`;
-                document.getElementById('chalIllustSub').textContent = `${ex.plane} jumped ${ex.steps} steps clockwise to land on ${ex.result}`;
-                document.getElementById('chalIllustResult').style.display = 'block';
-                NG_Speech.sayInstruction(`${ex.plane} times ${ex.steps} equals ${ex.result}.`);
-            }
-        }, 550);
-
-    } else {
-        // Divide: gear starts with DIVIDEND at the reference arrow (top)
-        // offset = quotient means: slot[quotient] = plane×quotient = dividend is at the top
-        // Then rotate ANTICLOCKWISE step by step (offset decreases)
-        // Each step, the next lower multiple comes to the arrow
-        // After quotient steps, offset=0 and 0 is at the top
-        // The learner counts the steps taken → that count IS the answer
-        tableOffsets4b[activeTable4b] = ex.quotient; // put dividend at arrow
-        chalPointer = { op: 'divide', stepsTotal: ex.quotient, stepsDone: 0 };
-        drawGear4b();
-
-        let done = 0;
-        chalAnimTimer4 = setInterval(() => {
-            done++;
-            tableOffsets4b[activeTable4b] = ex.quotient - done; // rotate anticlockwise
-            chalPointer.stepsDone = done;
-            drawGear4b();
-            if (done >= ex.quotient) {
-                clearInterval(chalAnimTimer4);
-                document.getElementById('chalIllustEq').textContent  = `${ex.dividend} ÷ ${ex.plane} = ${ex.quotient}`;
-                document.getElementById('chalIllustSub').textContent =
-                    `Started at ${ex.dividend}, rotated ${ex.quotient} steps anticlockwise — counted ${ex.quotient} steps!`;
-                document.getElementById('chalIllustResult').style.display = 'block';
-                NG_Speech.sayInstruction(`${ex.dividend} divided by ${ex.plane} equals ${ex.quotient}.`);
-            }
-        }, 550);
-    }
-}
-/* ================================================================
-   SECOND CANVAS — challenge gear (rotates for illustration)
-================================================================ */
-function drawGear4b() {
-    if (!ctx4b) return;
-    const CS = 560, CX = 280, CY = 280;
-    const SLOTS = 10, SLOT_DEG = 36;
-    ctx4b.clearRect(0, 0, CS, CS);
-
-    const GEAR_OUTER = HUB4 + 10 * RW4;
-    const isDivide   = chalPointer && chalPointer.op === 'divide';
-    const isMultiply = chalPointer && chalPointer.op === 'multiply';
-
-    // Background disc
-    ctx4b.beginPath();
-    ctx4b.arc(CX, CY, GEAR_OUTER + 6, 0, Math.PI * 2);
-    ctx4b.fillStyle = '#dde4ee';
-    ctx4b.fill();
-
-    // All rings — dim non-active rings heavily during animation so active ring pops
-    for (let i = 9; i >= 0; i--) {
-        const rIn  = HUB4 + i * RW4;
-        const rOut = HUB4 + (i + 1) * RW4;
-        const isActive = (i === activeTable4b);
-        const dimmed   = chalPointer && !isActive;
-        ctx4b.beginPath();
-        ctx4b.arc(CX, CY, rOut, 0, Math.PI * 2);
-        ctx4b.arc(CX, CY, rIn, 0, Math.PI * 2, true);
-        if (isActive) {
-            ctx4b.fillStyle = isDivide ? '#f3eeff' : '#edf9f4';
-        } else {
-            ctx4b.fillStyle = dimmed ? '#f4f6f8' : (i % 2 === 0 ? '#f8f9ff' : '#ffffff');
-        }
-        ctx4b.fill();
-        ctx4b.beginPath();
-        ctx4b.arc(CX, CY, rOut, 0, Math.PI * 2);
-        ctx4b.strokeStyle = isActive ? (isDivide ? '#8250c8' : '#52c4a0') : '#dde3ea';
-        ctx4b.lineWidth = isActive ? 2.5 : 0.8;
-        ctx4b.stroke();
-    }
-
-    // Numbers — rotate active plane using tableOffsets4b, dim others
-    for (let i = 0; i < 10; i++) {
-        const rIn  = HUB4 + i * RW4;
-        const rOut = HUB4 + (i + 1) * RW4;
-        const rMid = (rIn + rOut) / 2;
-        const mult     = i + 1;
-        const isActive = (i === activeTable4b);
-        const offset   = tableOffsets4b[i] || 0;
-        const dimmed   = chalPointer && !isActive;
-        const fs = isActive ? Math.max(11, Math.floor(RW4 / 1.9)) : Math.max(8, Math.floor(RW4 / 2.5));
-        ctx4b.font = `${isActive ? 900 : 600} ${fs}px Nunito, Segoe UI, sans-serif`;
-        ctx4b.textAlign    = 'center';
-        ctx4b.textBaseline = 'middle';
-
-        // For divide: track which values have already passed the arrow (been counted)
-        const stepsDone = chalPointer ? chalPointer.stepsDone : 0;
-
-        for (let j = 0; j < SLOTS; j++) {
-            const value    = mult * j;
-            const atArrow  = (j === offset);
-            const angleDeg = 270 + (j - offset) * SLOT_DEG;
-            const angleRad = angleDeg * Math.PI / 180;
-            const x = CX + rMid * Math.cos(angleRad);
-            const y = CY + rMid * Math.sin(angleRad);
-
-            ctx4b.save();
-            ctx4b.translate(x, y);
-            const label   = String(value);
-            const metrics = ctx4b.measureText(label);
-            const pw = metrics.width + 5, ph = fs + 5, pr = ph / 2;
-
-            // For divide: slots that have already passed the arrow get a purple trail
-            // A slot "passed" means its original slot index > current offset (already gone anticlockwise)
-            const alreadyPassed = isDivide && isActive && stepsDone > 0 && j > offset && j <= (offset + stepsDone);
-
-            ctx4b.beginPath();
-            ctx4b.roundRect(-pw/2, -ph/2, pw, ph, pr);
-            if (atArrow && isActive)      ctx4b.fillStyle = isDivide ? '#8250c8' : '#f4a571';
-            else if (alreadyPassed)       ctx4b.fillStyle = 'rgba(130,80,200,0.22)';
-            else if (dimmed)              ctx4b.fillStyle = 'rgba(255,255,255,0.5)';
-            else                          ctx4b.fillStyle = 'rgba(255,255,255,0.95)';
-            ctx4b.fill();
-
-            ctx4b.globalAlpha = dimmed ? 0.35 : 1;
-            ctx4b.fillStyle   = (atArrow && isActive) ? 'white'
-                              : alreadyPassed         ? '#8250c8'
-                              : isActive              ? '#3d88b8'
-                              :                         '#4a5568';
-            ctx4b.fillText(label, 0, 0);
-            ctx4b.globalAlpha = 1;
-            ctx4b.restore();
-        }
-    }
-
-    // ── Large step counter — centred, clear, prominent ────────────────────────
-    if (chalPointer && chalPointer.stepsDone > 0) {
-        const stepsDone = chalPointer.stepsDone;
-        const op        = chalPointer.op;
-        const color     = op === 'multiply' ? '#2eaa86' : '#8250c8';
-        const label     = op === 'multiply' ? `↻ ${stepsDone}` : `↺ ${stepsDone}`;
-
-        // Large badge at the hub
-        ctx4b.beginPath();
-        ctx4b.arc(CX, CY, HUB4 + 4, 0, Math.PI * 2);
-        ctx4b.fillStyle = color;
-        ctx4b.fill();
-        ctx4b.font = 'bold 16px Nunito, sans-serif';
-        ctx4b.textAlign = 'center';
-        ctx4b.textBaseline = 'middle';
-        ctx4b.fillStyle = 'white';
-        ctx4b.fillText(String(stepsDone), CX, CY);
-
-        // Direction label above the gear
-        ctx4b.font = 'bold 13px Nunito, sans-serif';
-        ctx4b.fillStyle = color;
-        ctx4b.textAlign = 'center';
-        ctx4b.fillText(label + ' step' + (stepsDone > 1 ? 's' : ''), CX, CY - GEAR_OUTER - 22);
-
-        // Current value at arrow — large label just inside the outer edge
-        const atArrowVal = (activeTable4b + 1) * (tableOffsets4b[activeTable4b] || 0);
-        ctx4b.font = 'bold 11px Nunito, sans-serif';
-        ctx4b.fillStyle = color;
-        ctx4b.textAlign = 'center';
-        ctx4b.fillText('▼ ' + atArrowVal, CX, CY - GEAR_OUTER + 18);
-    } else {
-        // Hub label when idle
-        ctx4b.beginPath();
-        ctx4b.arc(CX, CY, HUB4, 0, Math.PI * 2);
-        const g4b = ctx4b.createRadialGradient(CX, CY - 4, 2, CX, CY, HUB4);
-        g4b.addColorStop(0, '#9d8fe0');
-        g4b.addColorStop(1, '#5a4fb5');
-        ctx4b.fillStyle = g4b;
-        ctx4b.fill();
-        ctx4b.font = 'bold 14px Nunito, sans-serif';
-        ctx4b.textAlign = 'center';
-        ctx4b.textBaseline = 'middle';
-        ctx4b.fillStyle = 'white';
-        ctx4b.fillText('÷', CX, CY);
-    }
-
-    // Reference arrow at top
-    const arrowTipY  = CY - GEAR_OUTER - 1;
-    ctx4b.beginPath();
-    ctx4b.moveTo(CX, arrowTipY);
-    ctx4b.lineTo(CX - 9, arrowTipY - 14);
-    ctx4b.lineTo(CX + 9, arrowTipY - 14);
-    ctx4b.closePath();
-    ctx4b.fillStyle = '#f4a571';
-    ctx4b.fill();
-}
-
-/* ================================================================
-   UTILS
-================================================================ */
-function randInt(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
-
-let _toast4Timer = null;
-function showToast4(msg, type) {
+let toastTimer = null;
+function showToast(msg, type) {
     const t = document.getElementById('toast');
     t.textContent = msg;
     t.className   = 'feedback-toast show' + (type ? ' ' + type : '');
-    clearTimeout(_toast4Timer);
-    _toast4Timer = setTimeout(() => t.classList.remove('show'), 2200);
-}
-
-/* ================================================================
-   QUIZ MODE — use the gear to answer multiply & divide questions
-================================================================ */
-let qzCanvas, qzCtx;
-let qzOp          = 'multiply';
-let qzActivePlane = 0;
-let qzOffset      = 0;        // current rotation of active plane
-let qzQuestion    = null;     // { op, a, b, answer }
-let qzDivPointerRad = null;   // fixed angle where dividend sat at question start
-let qzSpinInterval = null;
-let qzCorrectCount = 0;
-let qzStreakCount  = 0;
-let qzScoreCount  = 0;
-let qzAnswered    = false;
-
-function initQuiz() {
-    if (!qzCanvas) {
-        qzCanvas = document.getElementById('gearCanvasQz');
-        qzCtx    = qzCanvas.getContext('2d');
-    }
-    qzOffset = 0;
-    qzActivePlane = 0;
-    qzAnswered = false;
-    qzSelectOp('multiply');
-}
-
-/* ── Operation select ──────────────────────────────────────────────────── */
-function qzSelectOp(op) {
-    qzOp = op;
-    const mBtn = document.getElementById('qzMultBtn');
-    const dBtn = document.getElementById('qzDivBtn');
-    if (op === 'multiply') {
-        mBtn.style.opacity = '1'; mBtn.style.fontWeight = '900';
-        dBtn.style.opacity = '0.5'; dBtn.style.fontWeight = '700';
-    } else {
-        dBtn.style.opacity = '1'; dBtn.style.fontWeight = '900';
-        mBtn.style.opacity = '0.5'; mBtn.style.fontWeight = '700';
-    }
-    document.getElementById('qzOpLabel').textContent =
-        op === 'multiply' ? 'Multiplication' : 'Division';
-    qzGenerateQuestion();
-}
-
-/* ── Generate question ─────────────────────────────────────────────────── */
-function qzGenerateQuestion() {
-    qzOffset         = 0;
-    qzDivPointerRad = null;
-    qzAnswered      = false;
-    document.getElementById('qzFeedback').style.display = 'none';
-    document.getElementById('qzSubmitBtn').disabled     = false;
-    document.getElementById('qzSubmitBtn').style.opacity = '1';
-
-    let a, b, answer;
-    if (qzOp === 'multiply') {
-        a      = randInt4(1, 10);   // plane
-        b      = randInt4(1, 10);   // steps
-        answer = a * b;
-        qzQuestion = { op:'multiply', a, b, answer };
-        document.getElementById('qzQuestion').textContent = `${a} × ${b} = ?`;
-        document.getElementById('qzHint').textContent =
-            `Select Plane ${a}, then spin ${b} steps clockwise ↻ to find the answer`;
-        // Pre-select the right plane
-        qzActivePlane = a - 1;
-    } else {
-        // Pick clean division: dividend = plane × quotient
-        a      = randInt4(1, 10);         // divisor (plane)
-        b      = randInt4(1, 10);         // quotient (answer)
-        answer = a * b;                   // dividend
-        qzQuestion = { op:'divide', a, b, answer };
-        // Record the fixed canvas angle where the dividend lives at start (offset=0)
-        // Dividend is at slot b on the plane. Slot j at offset 0 → angle 270 + j*36
-        qzDivPointerRad = (270 + b * 36) * Math.PI / 180;
-        document.getElementById('qzQuestion').textContent = `${answer} ÷ ${a} = ?`;
-        document.getElementById('qzHint').innerHTML =
-            `Use <strong>Plane ${a}</strong>. Press <strong>↻ Clockwise</strong> to rotate — ` +
-            `count every step until ${answer} reaches the reference arrow ▼. The number of steps = your answer!`;
-        qzActivePlane = a - 1;
-    }
-
-    buildQzPlaneGrid();
-    qzDrawGear();
-    updateQzPointer();
-    NG_Speech.sayInstruction(
-        qzOp === 'multiply'
-            ? `What is ${a} times ${b}?`
-            : `What is ${answer} divided by ${a}?`
-    );
-}
-
-/* ── Plane grid ────────────────────────────────────────────────────────── */
-function buildQzPlaneGrid() {
-    const grid = document.getElementById('qzPlaneGrid');
-    grid.innerHTML = '';
-    for (let i = 0; i < 10; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'ring-btn' + (i === qzActivePlane ? ' active' : '');
-        btn.innerHTML = `<strong>×${i+1}</strong><br><small>${i+1}–${(i+1)*10}</small>`;
-        btn.onclick = () => {
-            qzActivePlane = i;
-            qzOffset = 0;
-            buildQzPlaneGrid();
-            qzDrawGear();
-            updateQzPointer();
-        };
-        grid.appendChild(btn);
-    }
-}
-
-/* ── Rotate controls ───────────────────────────────────────────────────── */
-function qzRotateCW() {
-    qzOffset = (qzOffset + 1) % 10;
-    qzDrawGear();
-    updateQzPointer();
-}
-function qzRotateCCW() {
-    qzOffset = (qzOffset + 9) % 10;
-    qzDrawGear();
-    updateQzPointer();
-}
-function qzResetPlane() {
-    if (qzSpinInterval) qzStopSpin();
-    qzOffset = 0;
-    qzDrawGear();
-    updateQzPointer();
-}
-function qzToggleSpin() {
-    if (qzSpinInterval) qzStopSpin(); else qzStartSpin();
-}
-function qzStartSpin() {
-    document.getElementById('qzSpinBtn').textContent = '⏸ Stop';
-    document.getElementById('qzSpinBtn').classList.add('spinning');
-    qzSpinInterval = setInterval(qzRotateCW, 600);
-}
-function qzStopSpin() {
-    clearInterval(qzSpinInterval);
-    qzSpinInterval = null;
-    document.getElementById('qzSpinBtn').textContent = '▶ Auto-Spin';
-    document.getElementById('qzSpinBtn').classList.remove('spinning');
-}
-
-function updateQzPointer() {
-    const val = (qzActivePlane + 1) * qzOffset;
-    document.getElementById('qzPointerVal').textContent = `Number at arrow: ${val}`;
-}
-
-function qzHear() {
-    if (qzQuestion) {
-        const q = qzQuestion;
-        NG_Speech.sayInstruction(
-            q.op === 'multiply' ? `What is ${q.a} times ${q.b}?` : `What is ${q.answer} divided by ${q.a}?`
-        );
-    }
-}
-
-/* ── Submit answer ─────────────────────────────────────────────────────── */
-function qzSubmit() {
-    if (qzAnswered || !qzQuestion) return;
-    if (qzSpinInterval) qzStopSpin();
-    qzAnswered = true;
-
-    const q          = qzQuestion;
-    const pointerVal = (qzActivePlane + 1) * qzOffset;
-    const planeMatch = (qzActivePlane === q.a - 1);
-
-    let correct = false;
-
-    if (q.op === 'multiply') {
-        // Correct if: right plane selected AND pointer shows the right answer
-        correct = planeMatch && (pointerVal === q.answer);
-    } else {
-        // Divide: correct if right plane AND they rotated to show the dividend,
-        // then counted back — we check: pointer currently shows the dividend
-        // OR offset equals the quotient (they've counted correctly)
-        correct = planeMatch && (qzOffset === q.b || pointerVal === q.answer);
-    }
-
-    document.getElementById('qzSubmitBtn').disabled    = true;
-    document.getElementById('qzSubmitBtn').style.opacity = '0.5';
-    document.getElementById('qzFeedback').style.display = 'block';
-
-    if (correct) {
-        qzCorrectCount++;
-        qzStreakCount++;
-        qzScoreCount += 10 + (qzStreakCount > 2 ? 5 : 0);
-        document.getElementById('qzFeedbackTitle').textContent = '✅ Correct!';
-        document.getElementById('qzFeedbackTitle').style.color  = 'var(--mint-dark)';
-        document.getElementById('qzFeedbackBody').innerHTML =
-            q.op === 'multiply'
-                ? `Well done! <strong>${q.a} × ${q.b} = ${q.answer}</strong>.<br>` +
-                  `You selected Plane ${q.a} and spun ${q.b} steps clockwise to land on ${q.answer}. ✓`
-                : `Well done! <strong>${q.answer} ÷ ${q.a} = ${q.b}</strong>.<br>` +
-                  `You found ${q.answer} on Plane ${q.a} — it is ${q.b} steps from 0. ✓`;
-        NG_Speech.sayInstruction(
-            q.op === 'multiply'
-                ? `Correct! ${q.a} times ${q.b} equals ${q.answer}.`
-                : `Correct! ${q.answer} divided by ${q.a} equals ${q.b}.`
-        );
-    } else {
-        qzStreakCount = 0;
-        document.getElementById('qzFeedbackTitle').textContent = '❌ Not quite!';
-        document.getElementById('qzFeedbackTitle').style.color  = 'var(--peach-dark)';
-        const expected = q.op === 'multiply'
-            ? `Select Plane ${q.a}, spin clockwise ${q.b} steps — the arrow shows <strong>${q.answer}</strong>.`
-            : `Select Plane ${q.a}, rotate until <strong>${q.answer}</strong> is at the arrow — that is ${q.b} steps from 0.`;
-        document.getElementById('qzFeedbackBody').innerHTML =
-            `The answer is <strong>${q.op === 'multiply' ? q.answer : q.b}</strong>.<br>${expected}`;
-        NG_Speech.sayInstruction(
-            q.op === 'multiply'
-                ? `Not quite. ${q.a} times ${q.b} equals ${q.answer}.`
-                : `Not quite. ${q.answer} divided by ${q.a} equals ${q.b}.`
-        );
-    }
-
-    document.getElementById('qzCorrect').textContent = qzCorrectCount;
-    document.getElementById('qzStreak').textContent  = qzStreakCount;
-    document.getElementById('qzScore').textContent   = qzScoreCount;
-    NG_Storage.setLvl4Score(Math.min(100, qzScoreCount));
-
-    // Highlight the gear to show the correct answer
-    qzActivePlane = q.a - 1;
-    qzOffset      = q.op === 'multiply' ? q.b % 10 : q.b % 10;
-    buildQzPlaneGrid();
-    qzDrawGear();
-    updateQzPointer();
-}
-
-function qzNext() {
-    qzGenerateQuestion();
-}
-
-function randInt4(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-/* ── Quiz gear canvas drawing ──────────────────────────────────────────── */
-function qzDrawGear() {
-    if (!qzCtx) return;
-    const CS = 560, CX = 280, CY = 280;
-    const SLOTS = 10, SLOT_DEG = 36;
-    qzCtx.clearRect(0, 0, CS, CS);
-
-    const GEAR_OUT = HUB4 + 10 * RW4;
-
-    // Background disc
-    qzCtx.beginPath();
-    qzCtx.arc(CX, CY, GEAR_OUT + 6, 0, Math.PI * 2);
-    qzCtx.fillStyle = '#dde4ee';
-    qzCtx.fill();
-
-    // Rings — active plane uses question colour
-    const qIsDiv = qzQuestion && qzQuestion.op === 'divide';
-    for (let i = 9; i >= 0; i--) {
-        const rIn  = HUB4 + i * RW4;
-        const rOut = HUB4 + (i + 1) * RW4;
-        const isAct = (i === qzActivePlane);
-        qzCtx.beginPath();
-        qzCtx.arc(CX, CY, rOut, 0, Math.PI * 2);
-        qzCtx.arc(CX, CY, rIn,  0, Math.PI * 2, true);
-        qzCtx.fillStyle = isAct
-            ? (qIsDiv ? '#f3eeff' : '#edf9f4')
-            : (i % 2 === 0 ? '#f8f9ff' : '#ffffff');
-        qzCtx.fill();
-        qzCtx.beginPath();
-        qzCtx.arc(CX, CY, rOut, 0, Math.PI * 2);
-        qzCtx.strokeStyle = isAct ? (qIsDiv ? '#8250c8' : '#2eaa86') : '#c4cedd';
-        qzCtx.lineWidth   = isAct ? 2.5 : 1;
-        qzCtx.stroke();
-    }
-
-    // Numbers
-    // For division: dividend sits at slot = quotient (b) on plane = divisor-1 (a-1)
-    const divDividendSlot = (qIsDiv && qzQuestion) ? qzQuestion.b : -1;
-
-    for (let i = 0; i < 10; i++) {
-        const rIn    = HUB4 + i * RW4;
-        const rOut   = HUB4 + (i + 1) * RW4;
-        const rMid   = (rIn + rOut) / 2;
-        const mult   = i + 1;
-        const isAct  = (i === qzActivePlane);
-        const offset = (i === qzActivePlane) ? qzOffset : 0;
-        const fs     = isAct ? Math.max(11, Math.floor(RW4 / 1.9)) : Math.max(9, Math.floor(RW4 / 2.5));
-        qzCtx.font = `${isAct ? 900 : 600} ${fs}px Nunito, Segoe UI, sans-serif`;
-        qzCtx.textAlign    = 'center';
-        qzCtx.textBaseline = 'middle';
-
-        for (let j = 0; j < SLOTS; j++) {
-            const value      = mult * j;
-            const atArrow    = (j === offset);
-            // Is this slot the dividend slot on the active division plane?
-            const isDividend = qIsDiv && isAct && (j === divDividendSlot);
-            const angleDeg   = 270 + (j - offset) * SLOT_DEG;
-            const angleRad   = angleDeg * Math.PI / 180;
-            const x = CX + rMid * Math.cos(angleRad);
-            const y = CY + rMid * Math.sin(angleRad);
-
-            qzCtx.save();
-            qzCtx.translate(x, y);
-            const label   = String(value);
-            const metrics = qzCtx.measureText(label);
-            const pw = metrics.width + 5, ph = fs + 5, pr = ph / 2;
-
-            // If this is the dividend slot, draw a larger glowing ring behind
-            if (isDividend && !atArrow) {
-                qzCtx.beginPath();
-                qzCtx.arc(0, 0, Math.max(pw, ph) / 2 + 7, 0, Math.PI * 2);
-                qzCtx.fillStyle = 'rgba(130,80,200,0.18)';
-                qzCtx.fill();
-                qzCtx.beginPath();
-                qzCtx.arc(0, 0, Math.max(pw, ph) / 2 + 7, 0, Math.PI * 2);
-                qzCtx.strokeStyle = '#8250c8';
-                qzCtx.lineWidth = 2;
-                qzCtx.setLineDash([3, 2]);
-                qzCtx.stroke();
-                qzCtx.setLineDash([]);
-            }
-
-            qzCtx.beginPath();
-            qzCtx.roundRect(-pw/2, -ph/2, pw, ph, pr);
-            if (atArrow && isAct)
-                qzCtx.fillStyle = qIsDiv ? '#8250c8' : '#f4a571';
-            else if (isDividend)
-                qzCtx.fillStyle = '#e8d4ff';   // light purple pill for dividend
-            else if (!isAct)
-                qzCtx.fillStyle = 'rgba(255,255,255,0.6)';
-            else
-                qzCtx.fillStyle = 'rgba(255,255,255,0.95)';
-            qzCtx.fill();
-
-            qzCtx.globalAlpha = isAct ? 1 : 0.4;
-            qzCtx.fillStyle   = (atArrow && isAct) ? 'white'
-                              : isDividend          ? '#5b10a0'
-                              : isAct               ? '#3d88b8'
-                              :                       '#4a5568';
-            qzCtx.font = isDividend
-                ? `900 ${fs}px Nunito, Segoe UI, sans-serif`
-                : `${isAct ? 900 : 600} ${fs}px Nunito, Segoe UI, sans-serif`;
-            qzCtx.fillText(label, 0, 0);
-            qzCtx.globalAlpha = 1;
-            ctx4b && (qzCtx.font = `${isAct ? 900 : 600} ${fs}px Nunito, Segoe UI, sans-serif`);
-            qzCtx.restore();
-        }
-    }
-
-    // ── Division: fixed needle pointing at where the dividend was at start ──────
-    // This pointer is planted at the dividend's original angle and NEVER moves.
-    // As the learner rotates the gear the dividend moves away; they count the
-    // steps from the pointer to the reference arrow (▼) to get the answer.
-    if (qIsDiv && qzDivPointerRad !== null) {
-        const rIn  = HUB4 + qzActivePlane * RW4;
-        const rOut = HUB4 + (qzActivePlane + 1) * RW4;
-        const pr   = qzDivPointerRad;   // fixed — never changes
-
-        // Full-height radial needle across the ring
-        const nInX  = CX + rIn  * Math.cos(pr);
-        const nInY  = CY + rIn  * Math.sin(pr);
-        const nOutX = CX + rOut * Math.cos(pr);
-        const nOutY = CY + rOut * Math.sin(pr);
-
-        qzCtx.beginPath();
-        qzCtx.moveTo(nInX, nInY);
-        qzCtx.lineTo(nOutX, nOutY);
-        qzCtx.strokeStyle = '#8250c8';
-        qzCtx.lineWidth   = 3;
-        qzCtx.lineCap     = 'round';
-        qzCtx.stroke();
-
-        // Arrowhead outside the ring, pointing inward along the needle
-        const arrowTipX  = CX + (rOut + 2)  * Math.cos(pr);
-        const arrowTipY  = CY + (rOut + 2)  * Math.sin(pr);
-        const arrowMidX  = CX + (rOut + 14) * Math.cos(pr);
-        const arrowMidY  = CY + (rOut + 14) * Math.sin(pr);
-        const perpR = pr + Math.PI / 2;
-        const wing  = 7;
-
-        qzCtx.beginPath();
-        qzCtx.moveTo(arrowTipX, arrowTipY);
-        qzCtx.lineTo(arrowMidX + wing * Math.cos(perpR), arrowMidY + wing * Math.sin(perpR));
-        qzCtx.lineTo(arrowMidX - wing * Math.cos(perpR), arrowMidY - wing * Math.sin(perpR));
-        qzCtx.closePath();
-        qzCtx.fillStyle   = '#8250c8';
-        qzCtx.fill();
-        qzCtx.strokeStyle = '#5b10a0';
-        qzCtx.lineWidth   = 1;
-        qzCtx.stroke();
-
-        // Small label "÷ START" beside the pointer
-        const lblR = rOut + 28;
-        const lblX = CX + lblR * Math.cos(pr);
-        const lblY = CY + lblR * Math.sin(pr);
-        qzCtx.font = 'bold 9px Nunito, sans-serif';
-        qzCtx.fillStyle = '#5b10a0';
-        qzCtx.textAlign = 'center';
-        qzCtx.textBaseline = 'middle';
-        qzCtx.fillText('÷ START', lblX, lblY);
-    }
-
-    // Hub
-    qzCtx.beginPath();
-    qzCtx.arc(CX, CY, HUB4, 0, Math.PI * 2);
-    const gQz = qzCtx.createRadialGradient(CX, CY - 4, 2, CX, CY, HUB4);
-    gQz.addColorStop(0, '#9d8fe0');
-    gQz.addColorStop(1, '#5a4fb5');
-    qzCtx.fillStyle = gQz;
-    qzCtx.fill();
-    qzCtx.font = 'bold 14px Nunito, sans-serif';
-    qzCtx.textAlign = 'center';
-    qzCtx.textBaseline = 'middle';
-    qzCtx.fillStyle = 'white';
-    qzCtx.fillText('0', CX, CY);
-
-    // Reference arrow
-    const arrowTipY = CY - GEAR_OUT - 1;
-    qzCtx.beginPath();
-    qzCtx.moveTo(CX, arrowTipY);
-    qzCtx.lineTo(CX - 9, arrowTipY - 14);
-    qzCtx.lineTo(CX + 9, arrowTipY - 14);
-    qzCtx.closePath();
-    qzCtx.fillStyle   = '#f4a571';
-    qzCtx.fill();
-    qzCtx.strokeStyle = '#d4824a';
-    qzCtx.lineWidth   = 1.5;
-    qzCtx.stroke();
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove('show'), 2200);
 }
 
 /* ================================================================
    INIT
 ================================================================ */
 document.addEventListener('DOMContentLoaded', function () {
-    buildTableGrid();
-    updateWindowDisplay4();
-    drawGear4();
-
+    buildTablePicker();
+    updateDisplay();
+    drawGear();
+    generateQuiz();
+    loadWorkedExample();
     setTimeout(() => {
-        NG_Speech.sayInstruction('Welcome to Level 4! Explore the times planes with the number gear!');
-    }, 500);
+        NG_Speech.sayInstruction('Welcome to Level 4! Pick a plane and spin the gear to multiply!');
+    }, 600);
 });
 </script>
+<footer class="ng-footer">
+    <span>&copy; <?= date('Y') ?> Number Gear. Developed by <strong>Purretech Solutions</strong>.</span>
+</footer>
 </body>
 </html>
