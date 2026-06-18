@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Skill(run)",
+      "Skill(run:*)",
+      "PowerShell(Start-Process -FilePath \"php\" -ArgumentList \"-S\", \"localhost:8080\", \"-t\", \"C:\\\\projects\\\\number-gear\" -WindowStyle Hidden; Start-Sleep -Seconds 2; try { $r = Invoke-WebRequest -Uri \"http://localhost:8080\" -UseBasicParsing -TimeoutSec 5; \"HTTP $\\($r.StatusCode\\) - OK\" } catch { \"Error: $_\" })",
+      "PowerShell(Invoke-WebRequest -Uri \"http://localhost:8080\" -UseBasicParsing -TimeoutSec 5)",
+      "mcp__Claude_in_Chrome__tabs_context_mcp"
+    ]
+  }
+}
