@@ -1,1 +1,20 @@
-[]
+[
+    {
+        "id": "u6a3441e3ed1148.55592112",
+        "name": "Gear Admin",
+        "email": "gear.admin@gmail.com",
+        "password": "$2y$10$BtgJhPYmTDH6eBDcLjfEc.XJtUCTmEPsx76mclvzt\/NROhfIpZ17i",
+        "role": "admin",
+        "created_at": "2026-06-18 21:07:16",
+        "progress": []
+    },
+    {
+        "id": "u6a34e5589618e6.27163067",
+        "name": "Paul Kitonyi",
+        "email": "paul@gmail.com",
+        "password": "$2y$10$yfXFGBVSFLzmpzhgpiluNu5sXStwtIh\/EnDUuyA9ICgd8ZCohbRNe",
+        "role": "admin",
+        "created_at": "2026-06-19 08:44:40",
+        "progress": []
+    }
+]

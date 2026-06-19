@@ -396,82 +396,20 @@ session_start();
     <main class="level-page">
 
         <div class="instruction-banner">
-            ✖️ Spin the gear to multiply or divide — then answer the challenge!
+            ✖️ Watch how multiplying and dividing work on the gear — then try the quiz yourself!
         </div>
 
         <!-- Explainer -->
         <p class="gear-intro">
-            🔵 <strong>Multiply:</strong> spin ↻ clockwise from 0 — count the steps to get your answer.
-            &nbsp;&nbsp;🟠 <strong>Divide:</strong> place the dividend at the arrow, spin ↺ anticlockwise back to 0 — count the steps.
+            Both multiplication and division work the <strong>same way</strong> on this gear: start at <strong>0</strong> on the reference arrow ▼ and spin <strong>clockwise ↻</strong>, counting each spin.
+            🟢 <strong>Multiply:</strong> count a fixed number of spins — the number at the arrow is your answer.
+            🟣 <strong>Divide:</strong> keep spinning until your number appears at the arrow — the spins you counted is your answer.
         </p>
 
         <!-- Mode tabs -->
         <div class="tab-bar" style="margin-bottom:16px;">
-            <button class="tab-btn active" id="modeGearBtn"  onclick="setMode('gear')"      >⚙️ Gear Explorer</button>
-            <button class="tab-btn"        id="modeChalBtn"  onclick="setMode('challenge')" >🎯 Illustrated</button>
+            <button class="tab-btn active" id="modeChalBtn"  onclick="setMode('challenge')" >🎯 Illustrated</button>
             <button class="tab-btn"        id="modeQuizBtn"  onclick="setMode('quiz')"      >🧮 Quiz</button>
-        </div>
-
-        <!-- ===== GEAR MODE ===== -->
-        <div id="gearMode" class="gear-layout">
-
-            <!-- LEFT — Canvas -->
-            <div class="gear-left">
-                <div class="stats-row">
-                    <div class="stat-chip-sm">Planes explored: <span id="tablesExplored">0</span>/10</div>
-                    <div class="stat-chip-sm">Quiz score: <span id="quizScore">0</span></div>
-                </div>
-                <canvas id="gearCanvas4" width="560" height="560"></canvas>
-            </div>
-
-            <!-- RIGHT — Controls -->
-            <div class="gear-right">
-
-                <!-- Number at pointer -->
-                <div class="ring-display">
-                    <div class="ring-meta">
-                        <div class="rm-label">Number at pointer</div>
-                        <div class="ring-big-num" id="eqDisplay" style="font-size:28px;min-width:auto;">–</div>
-                        <div class="rm-detail"    id="eqSub">Plane 1 · step 0</div>
-                        <div class="rm-table"     id="divDisplay">–</div>
-                    </div>
-                    <button class="hear-btn" onclick="hearCurrent4()" title="Hear this">🔊</button>
-                </div>
-
-                <!-- Select a plane -->
-                <div class="ctrl-card">
-                    <div class="card-title">Select a plane</div>
-                    <div class="ring-grid" id="tableGrid"></div>
-                </div>
-
-                <!-- Rotate selected plane -->
-                <div class="ctrl-card">
-                    <div class="card-title">Rotate selected plane</div>
-                    <div class="rot-row">
-                        <button class="rot-btn ccw" onclick="rotateTable(-1)">
-                            <span class="rot-icon">↺</span>
-                            <span>Anti-clockwise</span>
-                        </button>
-                        <button class="rot-btn cw" onclick="rotateTable(+1)">
-                            <span class="rot-icon">↻</span>
-                            <span>Clockwise</span>
-                        </button>
-                    </div>
-                    <div class="sub-row">
-                        <button class="spin-btn" id="spinBtn4" onclick="toggleSpin4()">▶ Auto-Spin</button>
-                        <button class="reset-ring-btn" onclick="resetTable()">↺ This plane</button>
-                    </div>
-                </div>
-
-                <!-- Gear actions -->
-                <div class="ctrl-card">
-                    <div class="card-title">Gear actions</div>
-                    <div class="action-row">
-                        <button class="action-btn reset" onclick="resetAllTables()">↺ Reset All</button>
-                    </div>
-                </div>
-
-            </div><!-- /gear-right -->
         </div>
 
         <!-- ===== CHALLENGE MODE ===== -->
@@ -499,7 +437,7 @@ session_start();
                                 <span class="rot-icon">✖️</span>
                                 <span>Multiply</span>
                             </button>
-                            <button class="rot-btn ccw" id="opDivBtn" onclick="selectOp('divide')">
+                            <button class="rot-btn cw" id="opDivBtn" onclick="selectOp('divide')" style="border-color:var(--purple);color:var(--purple-dark);background:var(--purple-light);">
                                 <span class="rot-icon">➗</span>
                                 <span>Divide</span>
                             </button>
@@ -511,7 +449,7 @@ session_start();
                         <div class="ex-badge" id="exBadge4">Example 1 of 10</div>
                         <div class="ex-sum4"  id="exSum4">3 × 4 = ?</div>
                         <div class="ex-ring-hint" id="exHint4">Use Plane 3</div>
-                        <div class="ex-desc4" id="exDesc4">From 0, spin 4 steps clockwise on Plane 3.</div>
+                        <div class="ex-desc4" id="exDesc4">Start at 0 on the reference arrow. Rotate clockwise ↻ and count 4 spins — the number at the arrow is your answer!</div>
                     </div>
 
                     <!-- Show on gear -->
@@ -577,7 +515,7 @@ session_start();
                             <button class="rot-btn cw"  id="qzMultBtn" onclick="qzSelectOp('multiply')">
                                 <span class="rot-icon">✖️</span><span>Multiply</span>
                             </button>
-                            <button class="rot-btn ccw" id="qzDivBtn"  onclick="qzSelectOp('divide')">
+                            <button class="rot-btn cw" id="qzDivBtn"  onclick="qzSelectOp('divide')" style="border-color:var(--purple);color:var(--purple-dark);background:var(--purple-light);">
                                 <span class="rot-icon">➗</span><span>Divide</span>
                             </button>
                         </div>
@@ -588,7 +526,7 @@ session_start();
                         <div class="ring-meta">
                             <div class="rm-label"    id="qzOpLabel">Multiplication</div>
                             <div class="ring-big-num" id="qzQuestion" style="font-size:28px;min-width:auto;">–</div>
-                            <div class="rm-detail"   id="qzHint">Select a plane then spin to find the answer</div>
+                            <div class="rm-detail"   id="qzHint">Start at 0 on the reference arrow. Select a plane, then rotate clockwise to find the answer.</div>
                             <div class="rm-table"    id="qzPointerVal">Number at arrow: –</div>
                         </div>
                         <button class="hear-btn" onclick="qzHear()">🔊</button>
@@ -644,291 +582,20 @@ const RING_BG_ACT = '#fde8d8';
 /* ================================================================
    STATE
 ================================================================ */
-let tableOffsets   = new Array(10).fill(0); // rotation offset (0-9)
-let activeTable    = 0;  // 0 = ×1 ring
-let exploredTables = new Set([0]);
-let spinInterval4  = null;
-
-// Challenge score
+// Progress tracking (based on Illustrated + Quiz activity, not free exploration)
+let illustratedExplored = new Set();
 let chalCorrect = 0;
 let chalStreak  = 0;
 
 /* ================================================================
-   CANVAS DRAWING
-================================================================ */
-const canvas4 = document.getElementById('gearCanvas4');
-const ctx4    = canvas4.getContext('2d');
-
-function drawGear4() {
-    ctx4.clearRect(0, 0, CS4, CS4);
-
-    // Outer background circle
-    ctx4.beginPath();
-    ctx4.arc(CX4, CY4, HUB4 + 10 * RW4 + 3, 0, Math.PI * 2);
-    ctx4.fillStyle = '#f0f4f8';
-    ctx4.fill();
-
-    // Rings (outermost first)
-    for (let i = 9; i >= 0; i--) {
-        const rIn  = HUB4 + i * RW4;
-        const rOut = HUB4 + (i + 1) * RW4;
-
-        ctx4.beginPath();
-        ctx4.arc(CX4, CY4, rOut, 0, Math.PI * 2);
-        ctx4.arc(CX4, CY4, rIn, 0, Math.PI * 2, true);
-        ctx4.fillStyle = (i === activeTable) ? RING_BG_ACT : RING_BG[i];
-        ctx4.fill();
-
-        ctx4.beginPath();
-        ctx4.arc(CX4, CY4, rOut, 0, Math.PI * 2);
-        ctx4.strokeStyle = '#dde3ea';
-        ctx4.lineWidth = 1;
-        ctx4.stroke();
-    }
-
-    // Top-slot highlight for each ring
-    for (let i = 0; i < 10; i++) {
-        const rIn  = HUB4 + i * RW4;
-        const rOut = HUB4 + (i + 1) * RW4;
-        const half = (Math.PI * 2) / 10 / 2;
-        const top  = -Math.PI / 2;
-
-        ctx4.beginPath();
-        ctx4.arc(CX4, CY4, rOut - 0.5, top - half, top + half);
-        ctx4.arc(CX4, CY4, rIn  + 0.5, top + half, top - half, true);
-        ctx4.closePath();
-        ctx4.fillStyle = (i === activeTable) ? 'rgba(244,165,113,0.4)' : 'rgba(0,0,0,0.04)';
-        ctx4.fill();
-    }
-
-    // Numbers
-    for (let i = 0; i < 10; i++) {
-        const rIn  = HUB4 + i * RW4;
-        const rOut = HUB4 + (i + 1) * RW4;
-        const rMid = (rIn + rOut) / 2;
-        const table = i + 1; // ×1 through ×10
-
-        const arcPerSlot = rMid * (2 * Math.PI / 10);
-        const fontSize   = Math.min(12, Math.max(7, Math.floor(arcPerSlot / 4)));
-        ctx4.font = `${i === activeTable ? '900' : '700'} ${fontSize}px Segoe UI, system-ui`;
-        ctx4.textAlign    = 'center';
-        ctx4.textBaseline = 'middle';
-
-        for (let j = 0; j < 10; j++) {
-            const angleDeg = 270 + (tableOffsets[i] + j) * 36;
-            const angleRad = angleDeg * Math.PI / 180;
-            const x = CX4 + rMid * Math.cos(angleRad);
-            const y = CY4 + rMid * Math.sin(angleRad);
-            const num = table * j; // value in this slot
-            const atPointer = (j === (10 - tableOffsets[i]) % 10);
-
-            ctx4.save();
-            ctx4.translate(x, y);
-
-            if (atPointer && i === activeTable) {
-                ctx4.beginPath();
-                ctx4.arc(0, 0, fontSize * 1.2 + 1, 0, Math.PI * 2);
-                ctx4.fillStyle = SKY_COLOR;
-                ctx4.fill();
-                ctx4.fillStyle = 'white';
-            } else if (atPointer) {
-                ctx4.fillStyle = '#a0aec0';
-            } else {
-                ctx4.fillStyle = (i === activeTable) ? '#b84800' : '#b0bec5';
-            }
-
-            ctx4.fillText(String(num), 0, 0);
-            ctx4.restore();
-        }
-    }
-
-    // Hub
-    ctx4.beginPath();
-    ctx4.arc(CX4, CY4, HUB4, 0, Math.PI * 2);
-    ctx4.fillStyle = '#f4a571';
-    ctx4.fill();
-    ctx4.beginPath();
-    ctx4.arc(CX4, CY4, HUB4 - 4, 0, Math.PI * 2);
-    ctx4.strokeStyle = 'rgba(255,255,255,0.35)';
-    ctx4.lineWidth = 2;
-    ctx4.stroke();
-    ctx4.font = 'bold 14px Segoe UI, system-ui';
-    ctx4.textAlign = 'center';
-    ctx4.textBaseline = 'middle';
-    ctx4.fillStyle = 'white';
-    ctx4.fillText('×', CX4, CY4);
-
-    // Pointer arrow
-    const gTop = CY4 - (HUB4 + 10 * RW4);
-    ctx4.beginPath();
-    ctx4.moveTo(CX4, gTop - 1);
-    ctx4.lineTo(CX4 - 9, gTop + 12);
-    ctx4.lineTo(CX4 + 9, gTop + 12);
-    ctx4.closePath();
-    ctx4.fillStyle = SKY_COLOR;
-    ctx4.fill();
-    ctx4.strokeStyle = '#d4824a';
-    ctx4.lineWidth = 1.5;
-    ctx4.stroke();
-}
-
-/* ================================================================
-   CANVAS CLICK
-================================================================ */
-canvas4.addEventListener('click', function(e) {
-    const rect  = canvas4.getBoundingClientRect();
-    const scaleX = CS4 / rect.width;
-    const scaleY = CS4 / rect.height;
-    const mx = (e.clientX - rect.left) * scaleX;
-    const my = (e.clientY - rect.top)  * scaleY;
-    const dx = mx - CX4;
-    const dy = my - CY4;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-
-    if (dist < HUB4) {
-        NG_Speech.sayInstruction('Times tables hub. Choose a ring to explore!');
-        return;
-    }
-    for (let i = 0; i < 10; i++) {
-        const rIn  = HUB4 + i * RW4;
-        const rOut = HUB4 + (i + 1) * RW4;
-        if (dist >= rIn && dist < rOut) {
-            setActiveTable(i);
-            hearCurrent4();
-            return;
-        }
-    }
-});
-
-/* ================================================================
-   TABLE SELECTOR
-================================================================ */
-function buildTableGrid() {
-    const grid = document.getElementById('tableGrid');
-    grid.innerHTML = '';
-    for (let i = 0; i < 10; i++) {
-        const btn = document.createElement('button');
-        btn.className = 'ring-btn' + (i === activeTable ? ' active' : '');
-        btn.id = 'table-btn-' + i;
-        btn.innerHTML = `<strong>×${i+1}</strong><br><small>${i+1}–${(i+1)*10}</small>`;
-        btn.onclick = () => setActiveTable(i);
-        grid.appendChild(btn);
-    }
-}
-
-function setActiveTable(i) {
-    activeTable = i;
-    exploredTables.add(i);
-
-    document.querySelectorAll('#tableGrid .ring-btn').forEach((b, idx) => {
-        b.classList.toggle('active', idx === i);
-    });
-
-    updateWindowDisplay4();
-    updateStats4();
-    drawGear4();
-
-    NG_Speech.sayInstruction(`The ${i + 1} times plane.`);
-}
-
-/* ================================================================
-   ROTATE
-================================================================ */
-function rotateTable(dir) {
-    tableOffsets[activeTable] = ((tableOffsets[activeTable] + dir) + 10) % 10;
-    updateWindowDisplay4();
-    drawGear4();
-
-    const info = getPointerInfo(activeTable);
-    NG_Speech.sayMultiplication(info.table, info.factor, info.result);
-}
-
-function resetTable() {
-    tableOffsets[activeTable] = 0;
-    updateWindowDisplay4();
-    drawGear4();
-    showToast4('Plane reset ↺', '');
-}
-
-function resetAllTables() {
-    if (spinInterval4) stopSpin4();
-    tableOffsets.fill(0);
-    updateWindowDisplay4();
-    drawGear4();
-    showToast4('All planes reset ↺', '');
-}
-
-function getPointerInfo(i) {
-    const factor = (10 - tableOffsets[i]) % 10;
-    const table  = i + 1;
-    const result = table * factor;
-    return { table, factor, result };
-}
-
-/* ================================================================
-   AUTO-SPIN
-================================================================ */
-function toggleSpin4() {
-    if (spinInterval4) {
-        stopSpin4();
-    } else {
-        const btn = document.getElementById('spinBtn4');
-        btn.textContent = '⏸ Stop';
-        btn.classList.add('spinning');
-        spinInterval4 = setInterval(() => rotateTable(1), 700);
-    }
-}
-
-function stopSpin4() {
-    clearInterval(spinInterval4);
-    spinInterval4 = null;
-    const btn = document.getElementById('spinBtn4');
-    btn.textContent = '▶ Auto-Spin';
-    btn.classList.remove('spinning');
-}
-
-/* ================================================================
-   WINDOW DISPLAY
-================================================================ */
-function updateWindowDisplay4() {
-    const { table, factor, result } = getPointerInfo(activeTable);
-    document.getElementById('eqDisplay').textContent  = `${table} × ${factor} = ${result}`;
-    document.getElementById('eqSub').textContent      = `Plane ${table} · step ${factor}`;
-    if (result > 0) {
-        document.getElementById('divDisplay').textContent = `${result} ÷ ${table} = ${factor}`;
-    } else {
-        document.getElementById('divDisplay').textContent = `${table} × 0 = 0`;
-    }
-}
-
-/* ================================================================
-   STATS
-================================================================ */
-function updateStats4() {
-    document.getElementById('tablesExplored').textContent = exploredTables.size;
-    const prog = Math.min(100, exploredTables.size * 10 + Math.floor(chalCorrect * 2));
-    NG_Storage.setLvl4Score(prog);
-}
-
-/* ================================================================
-   HEAR CURRENT
-================================================================ */
-function hearCurrent4() {
-    const { table, factor, result } = getPointerInfo(activeTable);
-    NG_Speech.sayMultiplication(table, factor, result);
-}
-
 /* ================================================================
    MODE SWITCH
 ================================================================ */
 function setMode(mode) {
-    document.getElementById('modeGearBtn').classList.toggle('active', mode === 'gear');
     document.getElementById('modeChalBtn').classList.toggle('active', mode === 'challenge');
     document.getElementById('modeQuizBtn').classList.toggle('active', mode === 'quiz');
-    document.getElementById('gearMode').style.display  = mode === 'gear'       ? 'flex'  : 'none';
     document.getElementById('chalMode').style.display  = mode === 'challenge'  ? 'block' : 'none';
     document.getElementById('quizMode').style.display  = mode === 'quiz'       ? 'block' : 'none';
-    if (spinInterval4) stopSpin4();
     if (qzSpinInterval) qzStopSpin();
     if (mode === 'challenge') initChallenge();
     if (mode === 'quiz')      initQuiz();
@@ -950,7 +617,8 @@ const MULT_EXAMPLES = [
     { plane:10,steps:5,  result:50 },
 ];
 // Division: dividend ÷ plane = quotient
-// Start at 'dividend' position on the plane, move 'quotient' steps anticlockwise
+// Start at 0 on the plane and move clockwise — the dividend appears
+// at the arrow after exactly 'quotient' steps (same direction as multiply)
 // dividend = plane * quotient  (always a clean multiple on the plane)
 const DIV_EXAMPLES = [
     { plane:4, dividend:12, quotient:3  },   // 12 ÷ 4 = 3
@@ -1016,23 +684,24 @@ function loadExample4() {
     document.getElementById('exSum4').textContent   = `${a} ${sym} ${b} = ?`;
     document.getElementById('exHint4').textContent  = `Use Plane ${ex.plane} (counts in ${ex.plane}s)`;
 
+    // Uniform explainer structure for both operations:
+    // 1) Where we start  2) Direction + what to count  3) How to read the answer
     if (chalOp === 'multiply') {
         document.getElementById('exDesc4').textContent =
-            `The plane starts at 0 on the reference arrow. Rotate clockwise ↻ and count ${ex.steps} steps — the number at the arrow is your answer!`;
+            `Start at 0 on the reference arrow. Rotate clockwise ↻ and count ${ex.steps} spins — the number at the arrow is your answer!`;
         document.getElementById('chalStepText').innerHTML =
-            `<strong>Plane ${ex.plane}</strong> counts in ${ex.plane}s.<br>` +
-            `<strong>0</strong> starts at the reference arrow ▼.<br>` +
-            `Rotate the plane <strong>clockwise ↻</strong> one step at a time.<br>` +
-            `After <strong>${ex.steps} steps</strong>, read the number at the arrow.<br>` +
-            `The answer is <strong>${ex.result}</strong> — so ${ex.plane} × ${ex.steps} = <strong>${ex.result}</strong>!`;
+            `Step 1: <strong>Plane ${ex.plane}</strong> counts in ${ex.plane}s. Start with <strong>0</strong> at the reference arrow ▼.<br>` +
+            `Step 2: Rotate <strong>clockwise ↻</strong>, one spin at a time, counting as you go: 1, 2, 3… up to <strong>${ex.steps} spins</strong>.<br>` +
+            `Step 3: Read the number now sitting at the arrow — that's your answer.<br>` +
+            `${ex.plane} × ${ex.steps} = <strong>${ex.result}</strong>`;
     } else {
         document.getElementById('exDesc4').textContent =
-            `${ex.dividend} starts at the arrow. Rotate anticlockwise ↺ step by step — count until 0 reaches the arrow. The steps counted = the answer!`;
+            `Start at 0 on the reference arrow. Rotate clockwise ↻ and count the spins until ${ex.dividend} reaches the arrow — the spins counted is your answer!`;
         document.getElementById('chalStepText').innerHTML =
-            `Step 1: <strong>${ex.dividend}</strong> is at the reference arrow ▼.<br>` +
-            `Step 2: Rotate <strong>anticlockwise ↺</strong> — each step brings the next lower multiple to the arrow: ${ex.dividend}, ${ex.dividend - ex.plane}, ${ex.dividend - ex.plane*2}… 0.<br>` +
-            `Step 3: Count the steps taken — <strong>${ex.quotient} steps</strong>.<br>` +
-            `Answer: ${ex.dividend} ÷ ${ex.plane} = <strong>${ex.quotient}</strong>`;
+            `Step 1: <strong>Plane ${ex.plane}</strong> counts in ${ex.plane}s. Start with <strong>0</strong> at the reference arrow ▼.<br>` +
+            `Step 2: Rotate <strong>clockwise ↻</strong>, one spin at a time, counting as you go, until <strong>${ex.dividend}</strong> lands on the arrow.<br>` +
+            `Step 3: Count how many spins you took to get there — that's your answer.<br>` +
+            `${ex.dividend} ÷ ${ex.plane} = <strong>${ex.quotient}</strong>`;
     }
 
     document.getElementById('chalStepCard').style.display     = 'none';
@@ -1063,55 +732,39 @@ function showOnGear() {
     activeTable4b = ex.plane - 1;
     tableOffsets4b.fill(0);
 
-    if (chalOp === 'multiply') {
-        // Multiply: gear starts at 0 (offset=0), rotates CLOCKWISE step by step
-        // Each step increases offset → next multiple comes to the reference arrow
-        tableOffsets4b[activeTable4b] = 0;
-        chalPointer = { op: 'multiply', stepsTotal: ex.steps, stepsDone: 0 };
-        drawGear4b();
+    illustratedExplored.add(ex.plane);
+    document.getElementById('tablesExplored2').textContent = illustratedExplored.size;
+    document.getElementById('quizScore2').textContent      = Math.min(100, illustratedExplored.size * 10);
 
-        let done = 0;
-        chalAnimTimer4 = setInterval(() => {
-            done++;
-            tableOffsets4b[activeTable4b] = done % 10;
-            chalPointer.stepsDone = done;
-            drawGear4b();
-            if (done >= ex.steps) {
-                clearInterval(chalAnimTimer4);
+    // Both operations now rotate the SAME way: start at 0, go CLOCKWISE,
+    // counting steps as the gear turns — only what we count for differs.
+    const totalSteps = chalOp === 'multiply' ? ex.steps : ex.quotient;
+
+    tableOffsets4b[activeTable4b] = 0;
+    chalPointer = { op: chalOp, stepsTotal: totalSteps, stepsDone: 0, startOffset: 0 };
+    drawGear4b();
+
+    let done = 0;
+    chalAnimTimer4 = setInterval(() => {
+        done++;
+        tableOffsets4b[activeTable4b] = done % 10;
+        chalPointer.stepsDone = done;
+        drawGear4b();
+        if (done >= totalSteps) {
+            clearInterval(chalAnimTimer4);
+            if (chalOp === 'multiply') {
                 document.getElementById('chalIllustEq').textContent  = `${ex.plane} × ${ex.steps} = ${ex.result}`;
-                document.getElementById('chalIllustSub').textContent = `${ex.plane} jumped ${ex.steps} steps clockwise to land on ${ex.result}`;
-                document.getElementById('chalIllustResult').style.display = 'block';
+                document.getElementById('chalIllustSub').textContent = `${ex.plane} jumped ${ex.steps} spins clockwise to land on ${ex.result}`;
                 NG_Speech.sayInstruction(`${ex.plane} times ${ex.steps} equals ${ex.result}.`);
-            }
-        }, 550);
-
-    } else {
-        // Divide: gear starts with DIVIDEND at the reference arrow (top)
-        // offset = quotient means: slot[quotient] = plane×quotient = dividend is at the top
-        // Then rotate ANTICLOCKWISE step by step (offset decreases)
-        // Each step, the next lower multiple comes to the arrow
-        // After quotient steps, offset=0 and 0 is at the top
-        // The learner counts the steps taken → that count IS the answer
-        tableOffsets4b[activeTable4b] = ex.quotient; // put dividend at arrow
-        chalPointer = { op: 'divide', stepsTotal: ex.quotient, stepsDone: 0 };
-        drawGear4b();
-
-        let done = 0;
-        chalAnimTimer4 = setInterval(() => {
-            done++;
-            tableOffsets4b[activeTable4b] = ex.quotient - done; // rotate anticlockwise
-            chalPointer.stepsDone = done;
-            drawGear4b();
-            if (done >= ex.quotient) {
-                clearInterval(chalAnimTimer4);
+            } else {
                 document.getElementById('chalIllustEq').textContent  = `${ex.dividend} ÷ ${ex.plane} = ${ex.quotient}`;
-                document.getElementById('chalIllustSub').textContent =
-                    `Started at ${ex.dividend}, rotated ${ex.quotient} steps anticlockwise — counted ${ex.quotient} steps!`;
-                document.getElementById('chalIllustResult').style.display = 'block';
+                document.getElementById('chalIllustSub').textContent = `Rotated clockwise ${ex.quotient} spins until ${ex.dividend} reached the arrow — counted ${ex.quotient} spins!`;
                 NG_Speech.sayInstruction(`${ex.dividend} divided by ${ex.plane} equals ${ex.quotient}.`);
             }
-        }, 550);
-    }
+            document.getElementById('chalIllustResult').style.display = 'block';
+        }
+    }, 550);
+
 }
 /* ================================================================
    SECOND CANVAS — challenge gear (rotates for illustration)
@@ -1154,6 +807,44 @@ function drawGear4b() {
         ctx4b.stroke();
     }
 
+    // ── ARC HIGHLIGHT — sweeps from the start (0) to the current step,
+    //    showing the exact path traced on the active ring ──────────────────
+    if (chalPointer && chalPointer.stepsDone > 0) {
+        const i      = activeTable4b;
+        const rIn    = HUB4 + i * RW4;
+        const rOut   = HUB4 + (i + 1) * RW4;
+        const rMid   = (rIn + rOut) / 2;
+        const arcColor = isDivide ? '#8250c8' : '#52c4a0';
+
+        // The reference arrow sits at angle -90° (270°) on screen.
+        // The gear rotates clockwise, so as offset increases, slot 0's
+        // position angle moves further clockwise from the arrow.
+        // The swept path covers from the arrow position backwards to
+        // where slot 0 currently sits — i.e. stepsDone slots' worth of arc.
+        const arrowAngle   = -90; // degrees, pointing up
+        const sweepDeg     = chalPointer.stepsDone * SLOT_DEG;
+        const startAngle   = (arrowAngle - sweepDeg) * Math.PI / 180;
+        const endAngle     = arrowAngle * Math.PI / 180;
+
+        ctx4b.save();
+        ctx4b.beginPath();
+        ctx4b.arc(CX, CY, rOut + 3, startAngle, endAngle);
+        ctx4b.arc(CX, CY, rIn  - 3, endAngle, startAngle, true);
+        ctx4b.closePath();
+        ctx4b.fillStyle = isDivide ? 'rgba(130,80,200,0.20)' : 'rgba(82,196,160,0.20)';
+        ctx4b.fill();
+
+        // Outline the swept arc edges for a clear "highlighted path" look
+        ctx4b.beginPath();
+        ctx4b.arc(CX, CY, rOut + 3, startAngle, endAngle);
+        ctx4b.strokeStyle = arcColor;
+        ctx4b.lineWidth = 3;
+        ctx4b.setLineDash([5, 4]);
+        ctx4b.stroke();
+        ctx4b.setLineDash([]);
+        ctx4b.restore();
+    }
+
     // Numbers — rotate active plane using tableOffsets4b, dim others
     for (let i = 0; i < 10; i++) {
         const rIn  = HUB4 + i * RW4;
@@ -1168,7 +859,7 @@ function drawGear4b() {
         ctx4b.textAlign    = 'center';
         ctx4b.textBaseline = 'middle';
 
-        // For divide: track which values have already passed the arrow (been counted)
+        // Track which slots have already swept past the arrow (counted so far)
         const stepsDone = chalPointer ? chalPointer.stepsDone : 0;
 
         for (let j = 0; j < SLOTS; j++) {
@@ -1185,21 +876,21 @@ function drawGear4b() {
             const metrics = ctx4b.measureText(label);
             const pw = metrics.width + 5, ph = fs + 5, pr = ph / 2;
 
-            // For divide: slots that have already passed the arrow get a purple trail
-            // A slot "passed" means its original slot index > current offset (already gone anticlockwise)
-            const alreadyPassed = isDivide && isActive && stepsDone > 0 && j > offset && j <= (offset + stepsDone);
+            // Slots already swept past the arrow on the way from 0 to the
+            // current offset (both ops now start at 0 and move clockwise)
+            const alreadyPassed = isActive && stepsDone > 0 && j >= 0 && j < offset;
 
             ctx4b.beginPath();
             ctx4b.roundRect(-pw/2, -ph/2, pw, ph, pr);
             if (atArrow && isActive)      ctx4b.fillStyle = isDivide ? '#8250c8' : '#f4a571';
-            else if (alreadyPassed)       ctx4b.fillStyle = 'rgba(130,80,200,0.22)';
+            else if (alreadyPassed)       ctx4b.fillStyle = isDivide ? 'rgba(130,80,200,0.22)' : 'rgba(82,196,160,0.22)';
             else if (dimmed)              ctx4b.fillStyle = 'rgba(255,255,255,0.5)';
             else                          ctx4b.fillStyle = 'rgba(255,255,255,0.95)';
             ctx4b.fill();
 
             ctx4b.globalAlpha = dimmed ? 0.35 : 1;
             ctx4b.fillStyle   = (atArrow && isActive) ? 'white'
-                              : alreadyPassed         ? '#8250c8'
+                              : alreadyPassed         ? (isDivide ? '#8250c8' : '#1a7a50')
                               : isActive              ? '#d4824a'
                               :                         '#4a5568';
             ctx4b.fillText(label, 0, 0);
@@ -1213,7 +904,7 @@ function drawGear4b() {
         const stepsDone = chalPointer.stepsDone;
         const op        = chalPointer.op;
         const color     = op === 'multiply' ? '#2eaa86' : '#8250c8';
-        const label     = op === 'multiply' ? `↻ ${stepsDone}` : `↺ ${stepsDone}`;
+        const label     = `↻ ${stepsDone}`;
 
         // Large badge at the hub
         ctx4b.beginPath();
@@ -1230,7 +921,7 @@ function drawGear4b() {
         ctx4b.font = 'bold 13px Nunito, sans-serif';
         ctx4b.fillStyle = color;
         ctx4b.textAlign = 'center';
-        ctx4b.fillText(label + ' step' + (stepsDone > 1 ? 's' : ''), CX, CY - GEAR_OUTER - 22);
+        ctx4b.fillText(label + ' spin' + (stepsDone > 1 ? 's' : ''), CX, CY - GEAR_OUTER - 22);
 
         // Current value at arrow — large label just inside the outer edge
         const atArrowVal = (activeTable4b + 1) * (tableOffsets4b[activeTable4b] || 0);
@@ -1251,7 +942,7 @@ function drawGear4b() {
         ctx4b.textAlign = 'center';
         ctx4b.textBaseline = 'middle';
         ctx4b.fillStyle = 'white';
-        ctx4b.fillText('÷', CX, CY);
+        ctx4b.fillText(chalOp === 'multiply' ? '×' : '÷', CX, CY);
     }
 
     // Reference arrow at top
@@ -1338,8 +1029,8 @@ function qzGenerateQuestion() {
         answer = a * b;
         qzQuestion = { op:'multiply', a, b, answer };
         document.getElementById('qzQuestion').textContent = `${a} × ${b} = ?`;
-        document.getElementById('qzHint').textContent =
-            `Select Plane ${a}, then spin ${b} steps clockwise ↻ to find the answer`;
+        document.getElementById('qzHint').innerHTML =
+            `Start at <strong>0</strong> on the reference arrow ▼. Use <strong>Plane ${a}</strong> and rotate <strong>clockwise ↻</strong>, counting ${b} spins — then read the number at the arrow.`;
         // Pre-select the right plane
         qzActivePlane = a - 1;
     } else {
@@ -1353,8 +1044,7 @@ function qzGenerateQuestion() {
         qzDivPointerRad = (270 + b * 36) * Math.PI / 180;
         document.getElementById('qzQuestion').textContent = `${answer} ÷ ${a} = ?`;
         document.getElementById('qzHint').innerHTML =
-            `Use <strong>Plane ${a}</strong>. Press <strong>↻ Clockwise</strong> to rotate — ` +
-            `count every step until ${answer} reaches the reference arrow ▼. The number of steps = your answer!`;
+            `Start at <strong>0</strong> on the reference arrow ▼. Use <strong>Plane ${a}</strong> and rotate <strong>clockwise ↻</strong>, counting your spins, until <strong>${answer}</strong> reaches the arrow — the spins you counted is your answer.`;
         qzActivePlane = a - 1;
     }
 
@@ -1468,9 +1158,9 @@ function qzSubmit() {
         document.getElementById('qzFeedbackBody').innerHTML =
             q.op === 'multiply'
                 ? `Well done! <strong>${q.a} × ${q.b} = ${q.answer}</strong>.<br>` +
-                  `You selected Plane ${q.a} and spun ${q.b} steps clockwise to land on ${q.answer}. ✓`
+                  `You selected Plane ${q.a} and spun ${q.b} spins clockwise to land on ${q.answer}. ✓`
                 : `Well done! <strong>${q.answer} ÷ ${q.a} = ${q.b}</strong>.<br>` +
-                  `You found ${q.answer} on Plane ${q.a} — it is ${q.b} steps from 0. ✓`;
+                  `You found ${q.answer} on Plane ${q.a} — it is ${q.b} spins from 0. ✓`;
         NG_Speech.sayInstruction(
             q.op === 'multiply'
                 ? `Correct! ${q.a} times ${q.b} equals ${q.answer}.`
@@ -1481,8 +1171,8 @@ function qzSubmit() {
         document.getElementById('qzFeedbackTitle').textContent = '❌ Not quite!';
         document.getElementById('qzFeedbackTitle').style.color  = 'var(--peach-dark)';
         const expected = q.op === 'multiply'
-            ? `Select Plane ${q.a}, spin clockwise ${q.b} steps — the arrow shows <strong>${q.answer}</strong>.`
-            : `Select Plane ${q.a}, rotate until <strong>${q.answer}</strong> is at the arrow — that is ${q.b} steps from 0.`;
+            ? `Select Plane ${q.a}, spin clockwise ${q.b} spins — the arrow shows <strong>${q.answer}</strong>.`
+            : `Select Plane ${q.a}, rotate until <strong>${q.answer}</strong> is at the arrow — that is ${q.b} spins from 0.`;
         document.getElementById('qzFeedbackBody').innerHTML =
             `The answer is <strong>${q.op === 'multiply' ? q.answer : q.b}</strong>.<br>${expected}`;
         NG_Speech.sayInstruction(
@@ -1707,12 +1397,10 @@ function qzDrawGear() {
    INIT
 ================================================================ */
 document.addEventListener('DOMContentLoaded', function () {
-    buildTableGrid();
-    updateWindowDisplay4();
-    drawGear4();
+    initChallenge();
 
     setTimeout(() => {
-        NG_Speech.sayInstruction('Welcome to Level 4! Explore the times planes with the number gear!');
+        NG_Speech.sayInstruction('Welcome to Level 4! See how multiplication and division work on the gear, then try the quiz!');
     }, 500);
 });
 </script>

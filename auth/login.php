@@ -206,8 +206,5 @@ function togglePw(id, btn) {
     }
 }
 </script>
-<footer class="ng-footer">
-    <span>&copy; 2026 Number Gear. Developed by <strong>Purretech Solutions</strong>.</span>
-</footer>
 </body>
 </html>
