@@ -263,7 +263,7 @@ $levelNames = [
                         <th>Mode</th>
                         <th>Institution</th>
                         <?php if ($isAdmin): ?><th>Instructor</th><?php endif; ?>
-                        <th>Levels 1–6 progress</th>
+                        <th>Levels 1–7 progress</th>
                         <th>Overall</th>
                         <th>Last active</th>
                     </tr>
@@ -299,7 +299,7 @@ $levelNames = [
                         <?php endif; ?>
                         <td>
                             <div class="mini-bars" title="Level 1 → 6">
-                                <?php for ($lvl = 1; $lvl <= 6; $lvl++): ?>
+                                <?php for ($lvl = 1; $lvl <= 7; $lvl++): ?>
                                     <?php $score = isset($l['levels'][$lvl]) ? (int) $l['levels'][$lvl]['score'] : 0; ?>
                                     <div class="mini-bar" title="<?= $levelNames[$lvl] ?>: <?= $score ?>%">
                                         <div class="mini-bar-fill" style="height: <?= max(4, $score) ?>%;"></div>

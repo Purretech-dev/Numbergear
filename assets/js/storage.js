@@ -23,6 +23,7 @@ const NG_Storage = (function () {
         lvl4Score:     'ng_lvl4_score',
         lvl5Score:     'ng_lvl5_score',
         lvl6Score:     'ng_lvl6_score',
+        lvl7Score:     'ng_lvl7_score',
         lvl2Activity:  'ng_lvl2_activity',
     };
 
@@ -116,10 +117,18 @@ const NG_Storage = (function () {
         _syncProgress(6, v);
     }
 
+    /* ---- Level 7 ---- */
+    function getLvl7Score()        { return _get(K.lvl7Score, 0); }
+    function setLvl7Score(v) {
+        v = Math.min(100, Math.max(0, v));
+        _set(K.lvl7Score, v);
+        _syncProgress(7, v);
+    }
+
     /* ---- reset ---- */
     function resetAll() {
         Object.values(K).forEach(k => { try { localStorage.removeItem(k); } catch(e){} });
-        for (let lvl = 1; lvl <= 6; lvl++) _syncProgress(lvl, 0);
+        for (let lvl = 1; lvl <= 7; lvl++) _syncProgress(lvl, 0);
     }
 
     return {
@@ -130,6 +139,7 @@ const NG_Storage = (function () {
         getLvl4Score, setLvl4Score,
         getLvl5Score, setLvl5Score,
         getLvl6Score, setLvl6Score,
+        getLvl7Score, setLvl7Score,
         resetAll
     };
 

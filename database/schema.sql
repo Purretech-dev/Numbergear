@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS users (
 CREATE TABLE IF NOT EXISTS progress (
     id          INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     user_id     INT UNSIGNED  NOT NULL,
-    level       TINYINT UNSIGNED NOT NULL,     -- 1 .. 6
+    level       TINYINT UNSIGNED NOT NULL,     -- 1 .. 7
     score       TINYINT UNSIGNED NOT NULL DEFAULT 0, -- 0 .. 100 (% complete)
     details     TEXT NULL,                      -- optional JSON (e.g. learned numbers list)
     updated_at  DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP

@@ -38,11 +38,15 @@
 
 html, body {
     min-height: 100vh;
-    font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
-    font-size: 17px;
+    font-family: var(--ng-user-font-family, 'Nunito', 'Segoe UI', system-ui, sans-serif);
+    font-size: calc(17px * var(--ng-user-font-scale, 1));
     background: var(--bg);
     color: var(--text);
     -webkit-tap-highlight-color: transparent;
+}
+
+button, input, select, textarea {
+    font-family: var(--ng-user-font-family, 'Nunito', 'Segoe UI', system-ui, sans-serif);
 }
 
 /* ===================== APP SHELL ===================== */
@@ -163,6 +167,8 @@ html, body {
 .level-3 { border-top-color: var(--peach); }
 .level-4 { border-top-color: var(--sky); }
 .level-5 { border-top-color: var(--purple); }
+.level-6 { border-top-color: var(--mint); }
+.level-7 { border-top-color: var(--peach); }
 
 .level-icon { font-size: 38px; margin-bottom: 4px; }
 
@@ -177,6 +183,8 @@ html, body {
 .level-3 .level-badge { color: var(--peach-dark); }
 .level-4 .level-badge { color: var(--sky-dark); }
 .level-5 .level-badge { color: var(--purple-dark); }
+.level-6 .level-badge { color: var(--mint-dark); }
+.level-7 .level-badge { color: var(--peach-dark); }
 
 .level-name {
     font-size: 19px;
@@ -210,6 +218,8 @@ html, body {
 .level-3 .level-progress-bar { background: var(--peach); }
 .level-4 .level-progress-bar { background: var(--sky); }
 .level-5 .level-progress-bar { background: var(--purple); }
+.level-6 .level-progress-bar { background: var(--mint); }
+.level-7 .level-progress-bar { background: var(--peach); }
 
 .level-play {
     margin-top: 14px;

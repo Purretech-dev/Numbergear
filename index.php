@@ -14,6 +14,7 @@ if (!$user) { header('Location: auth/login.php'); exit; }
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="assets/js/accessibility.js"></script>
     <style>
         /* ── Full-viewport layout ── */
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -22,7 +23,7 @@ if (!$user) { header('Location: auth/login.php'); exit; }
             height: 100%;
             overflow: hidden;   /* no body scroll — inner area scrolls */
             background: var(--bg);
-            font-family: 'Nunito', 'Segoe UI', system-ui, sans-serif;
+            font-family: var(--ng-user-font-family, 'Nunito', 'Segoe UI', system-ui, sans-serif);
         }
 
         /* Gear background canvas */
@@ -189,9 +190,73 @@ if (!$user) { header('Location: auth/login.php'); exit; }
         .level-5 .level-badge { color: #5b10a0; }
         .level-5 .level-progress-bar { background: #9b59e8; }
 
-        .level-6 { border-top-color: #e8a020; }
-        .level-6 .level-badge { color: #8a5000; }
-        .level-6 .level-progress-bar { background: #e8a020; }
+        .level-6 { border-top-color: var(--mint); }
+        .level-6 .level-badge { color: var(--mint-dark); }
+        .level-6 .level-progress-bar { background: var(--mint); }
+
+        .level-7 { border-top-color: var(--peach); }
+        .level-7 .level-badge { color: var(--peach-dark); }
+        .level-7 .level-progress-bar { background: var(--peach); }
+
+
+
+        .accessibility-panel {
+            width: 100%;
+            max-width: 960px;
+            margin-bottom: 14px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+        .accessibility-title {
+            font-size: 14px;
+            font-weight: 900;
+            color: var(--purple-dark);
+        }
+        .accessibility-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .accessibility-field {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+            font-weight: 800;
+            color: var(--text-soft);
+        }
+        .accessibility-select {
+            min-width: 130px;
+            padding: 7px 10px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--bg);
+            color: var(--text);
+            font-weight: 800;
+            outline: none;
+            font-family: var(--ng-user-font-family, 'Nunito', 'Segoe UI', system-ui, sans-serif);
+        }
+        .accessibility-select:focus { border-color: var(--purple); }
+        .accessibility-reset {
+            padding: 7px 10px;
+            border: 2px solid var(--border);
+            border-radius: 12px;
+            background: var(--surface);
+            color: var(--text-soft);
+            font-weight: 800;
+            cursor: pointer;
+            font-family: var(--ng-user-font-family, 'Nunito', 'Segoe UI', system-ui, sans-serif);
+        }
+        .accessibility-reset:hover { border-color: var(--purple); color: var(--purple); }
 
         .reset-row {
             text-align: center;
@@ -271,6 +336,32 @@ if (!$user) { header('Location: auth/login.php'); exit; }
     <!-- ── SCROLLABLE CONTENT ── -->
     <div class="scroll-area">
 
+
+        <section class="accessibility-panel" aria-label="Reading preferences">
+            <div class="accessibility-title">🔤 Reading Preferences</div>
+            <div class="accessibility-controls">
+                <label class="accessibility-field" for="fontPicker">Font
+                    <select id="fontPicker" class="accessibility-select" onchange="setDashboardFont(this.value)">
+                        <option value="'Nunito', 'Segoe UI', system-ui, sans-serif">Nunito</option>
+                        <option value="'Segoe UI', Arial, sans-serif">Segoe UI</option>
+                        <option value="Arial, sans-serif">Arial</option>
+                        <option value="Verdana, Geneva, sans-serif">Verdana</option>
+                        <option value="'Trebuchet MS', Arial, sans-serif">Trebuchet MS</option>
+                        <option value="'Comic Sans MS', 'Comic Sans', cursive">Comic Sans</option>
+                    </select>
+                </label>
+                <label class="accessibility-field" for="fontSizePicker">Size
+                    <select id="fontSizePicker" class="accessibility-select" onchange="setDashboardFontSize(this.value)">
+                        <option value="0.9">Small</option>
+                        <option value="1">Normal</option>
+                        <option value="1.12">Large</option>
+                        <option value="1.25">Extra Large</option>
+                    </select>
+                </label>
+                <button type="button" class="accessibility-reset" onclick="resetReadingPrefs()">Reset</button>
+            </div>
+        </section>
+
         <div class="level-grid">
 
             <!-- Level 1 -->
@@ -311,7 +402,7 @@ if (!$user) { header('Location: auth/login.php'); exit; }
                 <div class="level-icon">✖️</div>
                 <div class="level-badge" data-i18n="level4Badge">Level 4</div>
                 <div class="level-name"  data-i18n="level4Name">Multiply &amp; Divide</div>
-                <div class="level-desc"  data-i18n="level4Desc">Use the number gear to explore multiplication tables and division patterns!</div>
+                <div class="level-desc"  data-i18n="level4Desc">Learn grouping, sharing, multiplication and division using the number gear.</div>
                 <div class="level-progress-wrap"><div class="level-progress-bar" id="prog-4"></div></div>
                 <div class="progress-label" id="prog-label-4">Not started yet</div>
                 <div class="level-play" data-i18n="play">Play →</div>
@@ -319,10 +410,10 @@ if (!$user) { header('Location: auth/login.php'); exit; }
 
             <!-- Level 5 -->
             <a href="modules/level5/index.php" class="level-card level-5">
-                <div class="level-icon">🔵</div>
+                <div class="level-icon">🔢</div>
                 <div class="level-badge" data-i18n="level5Badge">Level 5</div>
-                <div class="level-name"  data-i18n="level5Name">Prime Numbers</div>
-                <div class="level-desc"  data-i18n="level5Desc">Explore the first 100 prime numbers on a spinning gear — discover what makes primes special!</div>
+                <div class="level-name"  data-i18n="level5Name">Even &amp; Odd Numbers</div>
+                <div class="level-desc"  data-i18n="level5Desc">Learn numbers that make equal pairs and numbers that have one left over.</div>
                 <div class="level-progress-wrap"><div class="level-progress-bar" id="prog-5"></div></div>
                 <div class="progress-label" id="prog-label-5">Not started yet</div>
                 <div class="level-play" data-i18n="play">Play →</div>
@@ -330,12 +421,23 @@ if (!$user) { header('Location: auth/login.php'); exit; }
 
             <!-- Level 6 -->
             <a href="modules/level6/index.php" class="level-card level-6">
-                <div class="level-icon">🥇</div>
+                <div class="level-icon">🔵</div>
                 <div class="level-badge" data-i18n="level6Badge">Level 6</div>
-                <div class="level-name"  data-i18n="level6Name">Ordinal Numbers</div>
-                <div class="level-desc"  data-i18n="level6Desc">Learn 1st, 2nd, 3rd… all the way to 100th — match numbers to their ordinal words!</div>
+                <div class="level-name"  data-i18n="level6Name">Prime Numbers</div>
+                <div class="level-desc"  data-i18n="level6Desc">Explore prime numbers on a spinning gear and learn what makes primes special.</div>
                 <div class="level-progress-wrap"><div class="level-progress-bar" id="prog-6"></div></div>
                 <div class="progress-label" id="prog-label-6">Not started yet</div>
+                <div class="level-play" data-i18n="play">Play →</div>
+            </a>
+
+            <!-- Level 7 -->
+            <a href="modules/level7/index.php" class="level-card level-7">
+                <div class="level-icon">🥇</div>
+                <div class="level-badge" data-i18n="level7Badge">Level 7</div>
+                <div class="level-name"  data-i18n="level7Name">Ordinal Numbers</div>
+                <div class="level-desc"  data-i18n="level7Desc">Learn positions like 1st, 2nd, 3rd and match numbers to ordinal words.</div>
+                <div class="level-progress-wrap"><div class="level-progress-bar" id="prog-7"></div></div>
+                <div class="progress-label" id="prog-label-7">Not started yet</div>
                 <div class="level-play" data-i18n="play">Play →</div>
             </a>
 
@@ -376,11 +478,13 @@ const I18N = {
         level3Badge:'Level 3', level3Name:'Number Gear',
         level3Desc:'Spin the circular number gear and discover amazing number patterns!',
         level4Badge:'Level 4', level4Name:'Multiply & Divide',
-        level4Desc:'Use the number gear to explore multiplication tables and division patterns!',
-        level5Badge:'Level 5', level5Name:'Prime Numbers',
-        level5Desc:'Explore the first 100 prime numbers on a spinning gear!',
-        level6Badge:'Level 6', level6Name:'Ordinal Numbers',
-        level6Desc:'Learn 1st, 2nd, 3rd… all the way to 100th — match numbers to their ordinal words!',
+        level4Desc:'Learn grouping, sharing, multiplication and division using the number gear.',
+        level5Badge:'Level 5', level5Name:'Even & Odd Numbers',
+        level5Desc:'Learn numbers that make equal pairs and numbers that have one left over.',
+        level6Badge:'Level 6', level6Name:'Prime Numbers',
+        level6Desc:'Explore prime numbers on a spinning gear and learn what makes primes special.',
+        level7Badge:'Level 7', level7Name:'Ordinal Numbers',
+        level7Desc:'Learn positions like 1st, 2nd and 3rd, then match numbers to ordinal words.',
         play:'Play →', notStarted:'Not started yet', complete:'% complete',
         reset:'Reset all progress', dir:'ltr'
     },
@@ -394,11 +498,13 @@ const I18N = {
         level3Badge:'Stufe 3', level3Name:'Zahlenrad',
         level3Desc:'Drehe das Zahlenrad und entdecke Zahlenmuster!',
         level4Badge:'Stufe 4', level4Name:'Multiplizieren & Dividieren',
-        level4Desc:'Nutze das Zahlenrad für Einmaleins und Division!',
-        level5Badge:'Stufe 5', level5Name:'Primzahlen',
-        level5Desc:'Entdecke die ersten 100 Primzahlen auf dem Zahlenrad!',
-        level6Badge:'Stufe 6', level6Name:'Ordinalzahlen',
-        level6Desc:'Lerne erste, zweite, dritte… bis zum hundertsten!',
+        level4Desc:'Lerne Gruppen, Teilen, Multiplikation und Division.',
+        level5Badge:'Stufe 5', level5Name:'Gerade & ungerade Zahlen',
+        level5Desc:'Lerne Zahlen mit Paaren und Zahlen mit einem Rest.',
+        level6Badge:'Stufe 6', level6Name:'Primzahlen',
+        level6Desc:'Entdecke Primzahlen auf dem Zahlenrad.',
+        level7Badge:'Stufe 7', level7Name:'Ordinalzahlen',
+        level7Desc:'Lerne Positionen wie erste, zweite und dritte.',
         play:'Spielen →', notStarted:'Noch nicht begonnen', complete:'% abgeschlossen',
         reset:'Fortschritte zurücksetzen', dir:'ltr'
     },
@@ -412,11 +518,13 @@ const I18N = {
         level3Badge:'Niveau 3', level3Name:'Engrenage numérique',
         level3Desc:'Fais tourner l\'engrenage et découvre des motifs numériques!',
         level4Badge:'Niveau 4', level4Name:'Multiplier et diviser',
-        level4Desc:'Utilise l\'engrenage pour les tables de multiplication!',
-        level5Badge:'Niveau 5', level5Name:'Nombres premiers',
-        level5Desc:'Explore les 100 premiers nombres premiers!',
-        level6Badge:'Niveau 6', level6Name:'Nombres ordinaux',
-        level6Desc:'Apprends 1er, 2e, 3e… jusqu\'au 100e!',
+        level4Desc:'Apprends les groupes, le partage, la multiplication et la division.',
+        level5Badge:'Niveau 5', level5Name:'Nombres pairs et impairs',
+        level5Desc:'Apprends les nombres qui font des paires et ceux qui ont un reste.',
+        level6Badge:'Niveau 6', level6Name:'Nombres premiers',
+        level6Desc:'Explore les nombres premiers sur l\'engrenage.',
+        level7Badge:'Niveau 7', level7Name:'Nombres ordinaux',
+        level7Desc:'Apprends les positions comme 1er, 2e et 3e.',
         play:'Jouer →', notStarted:'Pas encore commencé', complete:'% terminé',
         reset:'Réinitialiser la progression', dir:'ltr'
     },
@@ -430,11 +538,13 @@ const I18N = {
         level3Badge:'المستوى ٣', level3Name:'تروس الأرقام',
         level3Desc:'أدر التروس واكتشف أنماط الأرقام!',
         level4Badge:'المستوى ٤', level4Name:'الضرب والقسمة',
-        level4Desc:'استخدم التروس لجداول الضرب والقسمة!',
-        level5Badge:'المستوى ٥', level5Name:'الأعداد الأولية',
-        level5Desc:'استكشف أول ١٠٠ عدد أولي!',
-        level6Badge:'المستوى ٦', level6Name:'الأعداد الترتيبية',
-        level6Desc:'تعلم الأول والثاني والثالث… حتى المئة!',
+        level4Desc:'تعلم المجموعات والمشاركة والضرب والقسمة.',
+        level5Badge:'المستوى ٥', level5Name:'الأعداد الزوجية والفردية',
+        level5Desc:'تعلم الأعداد التي تكوّن أزواجاً والأعداد التي يتبقى منها واحد.',
+        level6Badge:'المستوى ٦', level6Name:'الأعداد الأولية',
+        level6Desc:'استكشف الأعداد الأولية على التروس.',
+        level7Badge:'المستوى ٧', level7Name:'الأعداد الترتيبية',
+        level7Desc:'تعلم المراكز مثل الأول والثاني والثالث.',
         play:'العب ←', notStarted:'لم يبدأ بعد', complete:'٪ مكتمل',
         reset:'إعادة تعيين التقدم', dir:'rtl'
     },
@@ -448,11 +558,13 @@ const I18N = {
         level3Badge:'第3关', level3Name:'数字齿轮',
         level3Desc:'转动圆形数字齿轮，发现神奇的数字规律！',
         level4Badge:'第4关', level4Name:'乘法与除法',
-        level4Desc:'使用数字齿轮探索乘法表和除法规律！',
-        level5Badge:'第5关', level5Name:'质数',
-        level5Desc:'在旋转齿轮上探索前100个质数！',
-        level6Badge:'第6关', level6Name:'序数词',
-        level6Desc:'学习第一、第二、第三…一直到第一百！',
+        level4Desc:'学习分组、分享、乘法和除法。',
+        level5Badge:'第5关', level5Name:'偶数和奇数',
+        level5Desc:'学习能配对的数字和会剩下一个的数字。',
+        level6Badge:'第6关', level6Name:'质数',
+        level6Desc:'在数字齿轮上探索质数。',
+        level7Badge:'第7关', level7Name:'序数词',
+        level7Desc:'学习第一、第二、第三等位置。',
         play:'开始 →', notStarted:'尚未开始', complete:'% 已完成',
         reset:'重置所有进度', dir:'ltr'
     }
@@ -486,10 +598,36 @@ function updateProgressLabels(t) {
         { id:'prog-label-4', val: NG_Storage.getLvl4Score() },
         { id:'prog-label-5', val: NG_Storage.getLvl5Score() },
         { id:'prog-label-6', val: NG_Storage.getLvl6Score() },
+        { id:'prog-label-7', val: NG_Storage.getLvl7Score() },
     ].forEach(s => {
         const el = document.getElementById(s.id);
         if (el) el.textContent = s.val > 0 ? s.val + t.complete : t.notStarted;
     });
+}
+
+
+function setDashboardFont(font) {
+    if (window.NG_Accessibility) window.NG_Accessibility.setFont(font);
+}
+
+function setDashboardFontSize(scale) {
+    if (window.NG_Accessibility) window.NG_Accessibility.setSize(scale);
+}
+
+function resetReadingPrefs() {
+    if (window.NG_Accessibility) window.NG_Accessibility.reset();
+    const fontPicker = document.getElementById('fontPicker');
+    const fontSizePicker = document.getElementById('fontSizePicker');
+    if (fontPicker) fontPicker.value = window.NG_Accessibility.getFont();
+    if (fontSizePicker) fontSizePicker.value = window.NG_Accessibility.getSize();
+}
+
+function hydrateReadingPrefs() {
+    if (!window.NG_Accessibility) return;
+    const fontPicker = document.getElementById('fontPicker');
+    const fontSizePicker = document.getElementById('fontSizePicker');
+    if (fontPicker) fontPicker.value = window.NG_Accessibility.getFont();
+    if (fontSizePicker) fontSizePicker.value = window.NG_Accessibility.getSize();
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -499,7 +637,9 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('prog-4').style.width = NG_Storage.getLvl4Score() + '%';
     document.getElementById('prog-5').style.width = NG_Storage.getLvl5Score() + '%';
     document.getElementById('prog-6').style.width = NG_Storage.getLvl6Score() + '%';
+    document.getElementById('prog-7').style.width = NG_Storage.getLvl7Score() + '%';
     setLang(currentLang);
+    hydrateReadingPrefs();
 });
 
 function resetProgress() {

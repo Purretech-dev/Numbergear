@@ -163,9 +163,9 @@ function ng_login(string $email, string $password): array {
    PROGRESS TRACKING
 ================================================================ */
 
-// Save / update a learner's progress for one level (1-6).
+// Save / update a learner's progress for one level (1-7).
 function ng_save_progress(int $userId, int $level, int $score, ?array $details = null): bool {
-    if ($level < 1 || $level > 6)   return false;
+    if ($level < 1 || $level > 7)   return false;
     $score = max(0, min(100, $score));
 
     $stmt = ng_db()->prepare(
@@ -184,7 +184,7 @@ function ng_save_progress(int $userId, int $level, int $score, ?array $details =
     ]);
 }
 
-// Get one user's progress, keyed by level (1-6).
+// Get one user's progress, keyed by level (1-7).
 function ng_get_user_progress(int $userId): array {
     $stmt = ng_db()->prepare('SELECT level, score, details, updated_at FROM progress WHERE user_id = ?');
     $stmt->execute([$userId]);
@@ -197,7 +197,7 @@ function ng_get_user_progress(int $userId): array {
     return $byLevel;
 }
 
-// Instructor/admin dashboard: every learner with their progress on all 6 levels.
+// Instructor/admin dashboard: every learner with their progress on all 7 levels.
 // $institutionFilter: pass an institution name to narrow the list, or null for everyone.
 // $instructorFilter:  pass an instructor's user id to see only THEIR assigned learners.
 function ng_get_all_learners_with_progress(?string $institutionFilter = null, ?int $instructorFilter = null): array {
@@ -239,7 +239,7 @@ function ng_get_all_learners_with_progress(?string $institutionFilter = null, ?i
         $learner['levels'] = $levels;
 
         $scores = [];
-        for ($lvl = 1; $lvl <= 6; $lvl++) {
+        for ($lvl = 1; $lvl <= 7; $lvl++) {
             $scores[] = isset($levels[$lvl]) ? (int)$levels[$lvl]['score'] : 0;
         }
         $learner['overall'] = (int) round(array_sum($scores) / count($scores));
