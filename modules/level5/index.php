@@ -1,5 +1,9 @@
 <?php
-session_start();
+// Number Gear — Level 5: Prime Numbers
+require_once __DIR__ . '/../../auth/auth.php';
+ng_session_start();
+$ng_current_user = ng_current_user();
+if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -343,6 +347,10 @@ session_start();
 <div class="feedback-toast" id="toast"></div>
 
 <script src="../../assets/js/speech.js"></script>
+<script>
+    window.NG_USER_ID  = <?= json_encode($ng_current_user['id']) ?>;
+    window.NG_API_BASE = '../../api/';
+</script>
 <script src="../../assets/js/storage.js"></script>
 <script>
 /* ============================================================

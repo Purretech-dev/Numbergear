@@ -1,5 +1,16 @@
 /* ============================================================
-   NUMBER GEAR — LOCAL STORAGE UTILITY
+   NUMBER GEAR — STORAGE UTILITY
+   Keeps a fast local copy in localStorage (works instantly,
+   even offline) AND syncs every score change up to the server
+   (api/save_progress.php) so instructors can see progress on
+   the dashboard.
+
+   Pages that include this file should set, BEFORE this script,
+   two globals so syncing knows where to send data:
+       window.NG_USER_ID  = <the logged-in user's id, or omit if none>
+       window.NG_API_BASE = '<relative path to the /api folder>'
+   e.g. on index.php:               NG_API_BASE = 'api/'
+        on modules/levelX/index.php: NG_API_BASE = '../../api/'
 ============================================================ */
 
 const NG_Storage = (function () {
@@ -10,10 +21,12 @@ const NG_Storage = (function () {
         lvl2Score:     'ng_lvl2_score',
         lvl3Score:     'ng_lvl3_score',
         lvl4Score:     'ng_lvl4_score',
+        lvl5Score:     'ng_lvl5_score',
+        lvl6Score:     'ng_lvl6_score',
         lvl2Activity:  'ng_lvl2_activity',
     };
 
-    /* ---- helpers ---- */
+    /* ---- local storage helpers ---- */
     function _get(key, def) {
         try {
             const v = localStorage.getItem(key);
@@ -25,42 +38,88 @@ const NG_Storage = (function () {
         try { localStorage.setItem(key, JSON.stringify(value)); } catch(e) {}
     }
 
+    /* ---- server sync ---- */
+    function _syncProgress(level, score, details) {
+        if (!window.NG_USER_ID) return; // page didn't set a logged-in user, skip
+        try {
+            fetch((window.NG_API_BASE || '') + 'save_progress.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                credentials: 'same-origin',
+                body: JSON.stringify({ level: level, score: score, details: details || null })
+            }).catch(function () { /* offline / server unreachable — local copy still saved */ });
+        } catch (e) { /* ignore */ }
+    }
+
     /* ---- Level 1: number map ---- */
     function getLearnedNums()      { return _get(K.learnedNums, []); }
     function isLearned(n)          { return getLearnedNums().includes(n); }
     function markLearned(n) {
         const arr = getLearnedNums();
-        if (!arr.includes(n)) { arr.push(n); _set(K.learnedNums, arr); }
+        if (!arr.includes(n)) {
+            arr.push(n);
+            _set(K.learnedNums, arr);
+            _syncProgress(1, Math.min(100, arr.length), { learned: arr, identified: getIdentifiedNums() });
+        }
     }
 
     /* ---- Level 1: quiz ---- */
     function getIdentifiedNums()   { return _get(K.identifiedNums, []); }
     function markIdentified(n) {
         const arr = getIdentifiedNums();
-        if (!arr.includes(n)) { arr.push(n); _set(K.identifiedNums, arr); }
+        if (!arr.includes(n)) {
+            arr.push(n);
+            _set(K.identifiedNums, arr);
+            _syncProgress(1, Math.min(100, getLearnedNums().length), { learned: getLearnedNums(), identified: arr });
+        }
     }
 
     /* ---- Level 2 ---- */
     function getLvl2Score()        { return _get(K.lvl2Score, 0); }
-    function setLvl2Score(v)       { _set(K.lvl2Score, Math.min(100, Math.max(0, v))); }
+    function setLvl2Score(v) {
+        v = Math.min(100, Math.max(0, v));
+        _set(K.lvl2Score, v);
+        _syncProgress(2, v, { activity: getLvl2Activity() });
+    }
     function getLvl2Activity()     { return _get(K.lvl2Activity, 'addition'); }
     function setLvl2Activity(v)    { _set(K.lvl2Activity, v); }
 
     /* ---- Level 3 ---- */
     function getLvl3Score()        { return _get(K.lvl3Score, 0); }
-    function setLvl3Score(v)       { _set(K.lvl3Score, Math.min(100, Math.max(0, v))); }
+    function setLvl3Score(v) {
+        v = Math.min(100, Math.max(0, v));
+        _set(K.lvl3Score, v);
+        _syncProgress(3, v);
+    }
 
     /* ---- Level 4 ---- */
     function getLvl4Score()        { return _get(K.lvl4Score, 0); }
-    function setLvl4Score(v)       { _set(K.lvl4Score, Math.min(100, Math.max(0, v))); }
+    function setLvl4Score(v) {
+        v = Math.min(100, Math.max(0, v));
+        _set(K.lvl4Score, v);
+        _syncProgress(4, v);
+    }
+
+    /* ---- Level 5 ---- */
     function getLvl5Score()        { return _get(K.lvl5Score, 0); }
-    function setLvl5Score(v)       { _set(K.lvl5Score, Math.min(100, Math.max(0, v))); }
-    function getLvl6Score()        { return _get('ng_lvl6_score', 0); }
-    function setLvl6Score(v)       { _set('ng_lvl6_score', Math.min(100, Math.max(0, v))); }
+    function setLvl5Score(v) {
+        v = Math.min(100, Math.max(0, v));
+        _set(K.lvl5Score, v);
+        _syncProgress(5, v);
+    }
+
+    /* ---- Level 6 ---- */
+    function getLvl6Score()        { return _get(K.lvl6Score, 0); }
+    function setLvl6Score(v) {
+        v = Math.min(100, Math.max(0, v));
+        _set(K.lvl6Score, v);
+        _syncProgress(6, v);
+    }
 
     /* ---- reset ---- */
     function resetAll() {
         Object.values(K).forEach(k => { try { localStorage.removeItem(k); } catch(e){} });
+        for (let lvl = 1; lvl <= 6; lvl++) _syncProgress(lvl, 0);
     }
 
     return {

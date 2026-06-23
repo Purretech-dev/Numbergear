@@ -244,6 +244,9 @@ if (!$user) { header('Location: auth/login.php'); exit; }
                 <span class="user-avatar"><?= strtoupper(mb_substr($user['name'], 0, 1)) ?></span>
                 <span class="user-name"><?= htmlspecialchars($user['name']) ?></span>
                 <span class="user-role-badge" style="background:<?= ng_role_color($user['role']) ?>;"><?= ng_role_label($user['role']) ?></span>
+                <?php if (in_array($user['role'], ['instructor', 'admin'], true)): ?>
+                <a href="instructor/dashboard.php" class="user-logout" style="border-color:var(--sky); color:var(--sky-dark);">📊 Dashboard</a>
+                <?php endif; ?>
                 <a href="auth/logout.php" class="user-logout">Log out</a>
             </div>
             <?php endif; ?>
@@ -353,6 +356,10 @@ if (!$user) { header('Location: auth/login.php'); exit; }
 
 <canvas id="gearBg" style="position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
 
+<script>
+    window.NG_USER_ID  = <?= json_encode($user['id']) ?>;
+    window.NG_API_BASE = 'api/';
+</script>
 <script src="assets/js/storage.js"></script>
 <script>
 /* ================================================================
