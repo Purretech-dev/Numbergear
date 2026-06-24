@@ -16,6 +16,8 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/style.css">
     <script src="../../assets/js/accessibility.js"></script>
+    <script src="../../assets/js/i18n-common.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', function () { if (window.NG_I18nCommon) NG_I18nCommon.apply(1); });</script>
 </head>
 <body>
 <canvas id="confettiCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:9999;display:none;"></canvas>
@@ -26,11 +28,11 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
         <div class="brand">
             <div class="brand-icon">🔢</div>
             <div>
-                <h1>Level 1</h1>
+                <h1 id="lvlHeading">Level 1</h1>
                 <p>Number Recognition</p>
             </div>
         </div>
-        <a href="../../index.php" class="back-btn">← Home</a>
+        <a href="../../index.php" class="back-btn" id="lvlBackLink">← Home</a>
     </header>
 
     <main class="level-page">

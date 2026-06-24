@@ -39,7 +39,8 @@
 html, body {
     min-height: 100vh;
     font-family: var(--ng-user-font-family, 'Nunito', 'Segoe UI', system-ui, sans-serif);
-    font-size: calc(17px * var(--ng-user-font-scale, 1));
+    font-size: 17px;
+    zoom: var(--ng-user-font-scale, 1);
     background: var(--bg);
     color: var(--text);
     -webkit-tap-highlight-color: transparent;

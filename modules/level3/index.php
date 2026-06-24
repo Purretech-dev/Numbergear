@@ -16,6 +16,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/style.css">
     <script src="../../assets/js/accessibility.js"></script>
+    <script src="../../assets/js/i18n-common.js"></script>
     <style>
         .gear-layout {
             display: flex;
@@ -603,6 +604,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
         }
         .ex-next-btn.outline:hover { background: var(--mint-light); }
     </style>
+    <script>document.addEventListener('DOMContentLoaded', function () { if (window.NG_I18nCommon) NG_I18nCommon.apply(3); });</script>
 </head>
 <body>
 <div class="app-shell">
@@ -612,11 +614,11 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
         <div class="brand">
             <div class="brand-icon">⚙️</div>
             <div>
-                <h1>Level 3</h1>
+                <h1 id="lvlHeading">Level 3</h1>
                 <p>Number Gear</p>
             </div>
         </div>
-        <a href="../../index.php" class="back-btn">← Home</a>
+        <a href="../../index.php" class="back-btn" id="lvlBackLink">← Home</a>
     </header>
 
     <main class="level-page">

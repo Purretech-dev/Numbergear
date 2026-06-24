@@ -16,6 +16,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/style.css">
     <script src="../../assets/js/accessibility.js"></script>
+    <script src="../../assets/js/i18n-common.js"></script>
     <style>
         .level-main { max-width: 1100px; margin: 0 auto; padding: 26px 20px 50px; width: 100%; }
         .lesson-hero { background: linear-gradient(135deg, var(--sky-light), var(--purple-light)); border: 2px solid var(--border); border-radius: 24px; padding: 22px; box-shadow: var(--shadow); margin-bottom: 20px; }
@@ -56,15 +57,16 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
         .score-box span { font-size: 12px; font-weight: 800; color: var(--text-soft); text-transform: uppercase; }
         .mini-note { margin-top: 10px; font-size: 14px; font-weight: 700; color: var(--text-soft); line-height: 1.6; }
     </style>
+    <script>document.addEventListener('DOMContentLoaded', function () { if (window.NG_I18nCommon) NG_I18nCommon.apply(5); });</script>
 </head>
 <body>
 <div class="app-shell">
     <header class="app-header">
         <a href="../../index.php" class="brand">
             <div class="brand-icon">⚙️</div>
-            <div><h1>Number Gear</h1><p>Level 5: Even & Odd Numbers</p></div>
+            <div><h1>Number Gear</h1><p id="lvlHeading">Level 5: Even & Odd Numbers</p></div>
         </a>
-        <a href="../../index.php" class="back-btn">← Back Home</a>
+        <a href="../../index.php" class="back-btn" id="lvlBackLink">← Back Home</a>
     </header>
 
     <main class="level-main">

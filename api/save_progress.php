@@ -30,7 +30,7 @@ $details = isset($body['details']) && is_array($body['details']) ? $body['detail
 
 if ($level < 1 || $level > 7) {
     http_response_code(422);
-    echo json_encode(['ok' => false, 'error' => 'Level must be between 1 and 6.']);
+    echo json_encode(['ok' => false, 'error' => 'Level must be between 1 and 7.']);
     exit;
 }
 

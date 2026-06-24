@@ -16,6 +16,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../../assets/css/style.css">
     <script src="../../assets/js/accessibility.js"></script>
+    <script src="../../assets/js/i18n-common.js"></script>
     <style>
         .gear-intro {
             font-size: 14px; font-weight: 600; color: var(--text); line-height: 1.7;
@@ -187,6 +188,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
         .batch-btn:hover  { border-color: var(--purple); color: var(--purple-dark); }
         .batch-btn.active { background: var(--purple); border-color: var(--purple); color: white; }
     </style>
+    <script>document.addEventListener('DOMContentLoaded', function () { if (window.NG_I18nCommon) NG_I18nCommon.apply(6); });</script>
 </head>
 <body>
 <div class="app-shell">
@@ -195,11 +197,11 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
         <div class="brand">
             <div class="brand-icon">🔵</div>
             <div>
-                <h1>Level 6</h1>
+                <h1 id="lvlHeading">Level 6</h1>
                 <p>Prime Numbers Gear</p>
             </div>
         </div>
-        <a href="../../index.php" class="back-btn">← Home</a>
+        <a href="../../index.php" class="back-btn" id="lvlBackLink">← Home</a>
     </header>
 
     <main class="level-page">
