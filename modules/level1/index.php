@@ -17,6 +17,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
     <link rel="stylesheet" href="../../assets/css/style.css">
     <script src="../../assets/js/accessibility.js"></script>
     <script src="../../assets/js/i18n-common.js"></script>
+    <script src="../../assets/js/i18n-level.js"></script>
     <script>document.addEventListener('DOMContentLoaded', function () { if (window.NG_I18nCommon) NG_I18nCommon.apply(1); });</script>
 </head>
 <body>
@@ -29,7 +30,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
             <div class="brand-icon">🔢</div>
             <div>
                 <h1 id="lvlHeading">Level 1</h1>
-                <p>Number Recognition</p>
+                <p data-i18n="subHeading">Number Recognition</p>
             </div>
         </div>
         <a href="../../index.php" class="back-btn" id="lvlBackLink">← Home</a>
@@ -39,8 +40,8 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
         <!-- Mode tabs -->
         <div class="tab-bar" id="modeTabs">
-            <button class="tab-btn active" onclick="showMode('map')">📖 Number Map</button>
-            <button class="tab-btn" onclick="showMode('quiz')">🎯 Identification Quiz</button>
+            <button class="tab-btn active" onclick="showMode('map')" data-i18n="tabMap">📖 Number Map</button>
+            <button class="tab-btn" onclick="showMode('quiz')" data-i18n="tabQuiz">🎯 Identification Quiz</button>
         </div>
 
         <!-- ============================================================
@@ -49,7 +50,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
         <div id="modeMap">
             <div class="section-card">
 
-                <div class="section-title">Tap a number to hear it!</div>
+                <div class="section-title" data-i18n="mapInstruction">Tap a number to hear it!</div>
 
                 <!-- Batch tabs -->
                 <div class="tab-bar" id="batchTabs" style="margin-bottom:16px;">
@@ -65,15 +66,15 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
                 <!-- Learned count -->
                 <div class="learned-banner">
-                    <strong id="learnedCount">0</strong> of 100 numbers learned ✓
+                    <strong id="learnedCount">0</strong> <span data-i18n="learnedSuffix">of 100 numbers learned ✓</span>
                 </div>
 
             </div>
 
             <!-- Nav buttons -->
             <div style="display:flex;gap:10px;justify-content:center;">
-                <button class="btn btn-outline btn-sm" id="prevBatchBtn" onclick="prevBatch()" disabled>← Previous</button>
-                <button class="btn btn-purple btn-sm" id="nextBatchBtn" onclick="nextBatch()">Next batch →</button>
+                <button class="btn btn-outline btn-sm" id="prevBatchBtn" onclick="prevBatch()" disabled data-i18n="prevBatch">← Previous</button>
+                <button class="btn btn-purple btn-sm" id="nextBatchBtn" onclick="nextBatch()" data-i18n="nextBatch">Next batch →</button>
             </div>
         </div>
 
@@ -95,7 +96,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
             <!-- Question card -->
             <div class="quiz-card" id="quizCard">
-                <div class="quiz-prompt">What number is this?</div>
+                <div class="quiz-prompt" data-i18n="quizPrompt">What number is this?</div>
                 <div class="quiz-big-number" id="quizNum">–</div>
                 <div class="quiz-options" id="quizOpts"></div>
             </div>
@@ -109,8 +110,8 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
                     <div id="narratorQuestion" style="display:none;font-size:15px;font-weight:700;color:var(--purple-dark);background:var(--purple-light);border-radius:12px;padding:12px 14px;margin-bottom:14px;line-height:1.6;"></div>
                     <div class="btn-row" id="completionBtns" style="flex-direction:column;gap:10px;">
                         <button class="btn btn-purple" id="nextBatchBtn2" onclick="proceedNextBatch()" style="width:100%;padding:14px;font-size:16px;">Next batch →</button>
-                        <button class="btn btn-outline" id="practiseAgainBtn" onclick="practiseSameBatch()" style="width:100%;padding:12px;">Practise again 🔁</button>
-                        <button class="btn btn-outline btn-sm" onclick="showMode('map')" style="width:100%;">Back to Map</button>
+                        <button class="btn btn-outline" id="practiseAgainBtn" onclick="practiseSameBatch()" style="width:100%;padding:12px;" data-i18n="practiseAgain">Practise again 🔁</button>
+                        <button class="btn btn-outline btn-sm" onclick="showMode('map')" style="width:100%;" data-i18n="backToMap">Back to Map</button>
                     </div>
                 </div>
             </div>
@@ -131,8 +132,82 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 <script src="../../assets/js/storage.js"></script>
 <script>
 /* ================================================================
-   NUMBER MAP
+   LEVEL 1 — translations (visible text only; narration stays
+   English — see speech.js)
 ================================================================ */
+const L1 = {
+    en: {
+        subHeading:'Number Recognition', tabMap:'📖 Number Map', tabQuiz:'🎯 Identification Quiz',
+        mapInstruction:'Tap a number to hear it!', learnedSuffix:'of 100 numbers learned ✓',
+        prevBatch:'← Previous', nextBatch:'Next batch →', quizPrompt:'What number is this?',
+        backToMap:'Back to Map', practiseAgain:'Practise again 🔁',
+        wellDone:'Well Done!', perfect:'Perfect!',
+        completionSub:'You identified all numbers {start} to {end}!',
+        allDone:'🏆 All done!', nextBatchRange:'Next batch ({start}–{end}) →',
+        toastCorrect:'✓ Correct! That is {n}', toastWrong:'The answer is {n}',
+        msgAllComplete:'🏆 Amazing! You have identified all 100 numbers! You are a number star!',
+        msgGreatJob:'⭐ Excellent! You got every number right! Would you like to move on to numbers {next1} to {next2}, or practise {start} to {end} again to make sure you know them really well?',
+        msgGoodEffort:'👍 Good effort! You made {errors} mistake{plural}. Would you like to try numbers {start} to {end} again to get even better, or move on to {next1} to {next2}?',
+        quizLabelTemplate:'{done} / {total}  (Batch {batch}: {start}–{end})'
+    },
+    de: {
+        subHeading:'Zahlenerkennung', tabMap:'📖 Zahlenkarte', tabQuiz:'🎯 Erkennungs-Quiz',
+        mapInstruction:'Tippe auf eine Zahl, um sie zu hören!', learnedSuffix:'von 100 Zahlen gelernt ✓',
+        prevBatch:'← Zurück', nextBatch:'Nächste Gruppe →', quizPrompt:'Welche Zahl ist das?',
+        backToMap:'Zurück zur Karte', practiseAgain:'Noch einmal üben 🔁',
+        wellDone:'Gut gemacht!', perfect:'Perfekt!',
+        completionSub:'Du hast alle Zahlen von {start} bis {end} erkannt!',
+        allDone:'🏆 Alles geschafft!', nextBatchRange:'Nächste Gruppe ({start}–{end}) →',
+        toastCorrect:'✓ Richtig! Das ist {n}', toastWrong:'Die richtige Antwort ist {n}',
+        msgAllComplete:'🏆 Toll! Du hast alle 100 Zahlen erkannt! Du bist ein Zahlenstar!',
+        msgGreatJob:'⭐ Ausgezeichnet! Du hast alles richtig! Möchtest du zu den Zahlen {next1} bis {next2} weitergehen, oder {start} bis {end} noch einmal üben?',
+        msgGoodEffort:'👍 Gut gemacht! Du hattest {errors} Fehler. Möchtest du {start} bis {end} noch einmal üben, oder zu {next1} bis {next2} weitergehen?',
+        quizLabelTemplate:'{done} / {total}  (Gruppe {batch}: {start}–{end})'
+    },
+    fr: {
+        subHeading:'Reconnaissance des chiffres', tabMap:'📖 Carte des nombres', tabQuiz:"🎯 Quiz d'identification",
+        mapInstruction:"Touche un nombre pour l'entendre !", learnedSuffix:'sur 100 nombres appris ✓',
+        prevBatch:'← Précédent', nextBatch:'Groupe suivant →', quizPrompt:'Quel est ce nombre ?',
+        backToMap:'Retour à la carte', practiseAgain:'Réessayer 🔁',
+        wellDone:'Bien joué !', perfect:'Parfait !',
+        completionSub:'Tu as identifié tous les nombres de {start} à {end} !',
+        allDone:'🏆 Tout est fini !', nextBatchRange:'Groupe suivant ({start}–{end}) →',
+        toastCorrect:"✓ Correct ! C'est {n}", toastWrong:'La bonne réponse est {n}',
+        msgAllComplete:'🏆 Incroyable ! Tu as identifié les 100 nombres ! Tu es une star des nombres !',
+        msgGreatJob:"⭐ Excellent ! Tu as tout bon ! Veux-tu continuer avec les nombres {next1} à {next2}, ou refaire {start} à {end} pour bien les maîtriser ?",
+        msgGoodEffort:"👍 Bel effort ! Tu as fait {errors} erreur(s). Veux-tu refaire {start} à {end}, ou continuer avec {next1} à {next2} ?",
+        quizLabelTemplate:'{done} / {total}  (Groupe {batch} : {start}–{end})'
+    },
+    ar: {
+        subHeading:'التعرف على الأرقام', tabMap:'📖 خريطة الأرقام', tabQuiz:'🎯 اختبار التعرف',
+        mapInstruction:'اضغط على رقم لسماعه!', learnedSuffix:'من ١٠٠ رقم تم تعلمها ✓',
+        prevBatch:'← السابق', nextBatch:'المجموعة التالية ←', quizPrompt:'ما هو هذا الرقم؟',
+        backToMap:'الرجوع إلى الخريطة', practiseAgain:'تدرب مرة أخرى 🔁',
+        wellDone:'أحسنت!', perfect:'ممتاز!',
+        completionSub:'لقد تعرفت على جميع الأرقام من {start} إلى {end}!',
+        allDone:'🏆 اكتمل الكل!', nextBatchRange:'المجموعة التالية ({start}–{end}) ←',
+        toastCorrect:'✓ صحيح! هذا هو {n}', toastWrong:'الإجابة الصحيحة هي {n}',
+        msgAllComplete:'🏆 رائع! لقد تعرفت على جميع الأرقام المئة! أنت نجم الأرقام!',
+        msgGreatJob:'⭐ ممتاز! كل إجاباتك صحيحة! هل تريد الانتقال إلى الأرقام من {next1} إلى {next2}، أو التدرب على {start} إلى {end} مرة أخرى؟',
+        msgGoodEffort:'👍 محاولة جيدة! أخطأت {errors} مرة. هل تريد إعادة المحاولة من {start} إلى {end}، أو الانتقال إلى {next1} إلى {next2}؟',
+        quizLabelTemplate:'{done} / {total}  (المجموعة {batch}: {start}–{end})'
+    },
+    zh: {
+        subHeading:'数字认知', tabMap:'📖 数字地图', tabQuiz:'🎯 识别测验',
+        mapInstruction:'点击数字即可听发音！', learnedSuffix:'/ 100 个数字已学会 ✓',
+        prevBatch:'← 上一组', nextBatch:'下一组 →', quizPrompt:'这是哪个数字？',
+        backToMap:'返回地图', practiseAgain:'再练习一次 🔁',
+        wellDone:'做得好！', perfect:'完美！',
+        completionSub:'你认出了从 {start} 到 {end} 的所有数字！',
+        allDone:'🏆 全部完成！', nextBatchRange:'下一组（{start}–{end}）→',
+        toastCorrect:'✓ 正确！这是 {n}', toastWrong:'正确答案是 {n}',
+        msgAllComplete:'🏆 太棒了！你认出了全部100个数字！你是数字小达人！',
+        msgGreatJob:'⭐ 太棒了！你全部都答对了！你想继续学习 {next1} 到 {next2}，还是再练习一次 {start} 到 {end}？',
+        msgGoodEffort:'👍 很努力！你有 {errors} 个错误。你想再练习一次 {start} 到 {end}，还是继续学习 {next1} 到 {next2}？',
+        quizLabelTemplate:'{done} / {total}（第 {batch} 组：{start}–{end}）'
+    }
+};
+
 
 let currentBatch = 1;
 
@@ -337,7 +412,7 @@ function checkAnswer(selected, btn, correct) {
         btn.classList.add('correct');
         NG_Speech.sayInstruction(`Very good! That is number ${correct}.`);
         NG_Storage.markIdentified(correct);
-        showToast('✓ Correct! That is ' + correct, 'success');
+        showToast(NG_LevelI18n.t(L1, 'toastCorrect', { n: correct }), 'success');
         setTimeout(nextQuestion, 1400);
     } else {
         batchErrors++;
@@ -346,7 +421,7 @@ function checkAnswer(selected, btn, correct) {
             if (parseInt(b.textContent) === correct) b.classList.add('correct');
         });
         NG_Speech.sayInstruction(`Sorry, try again. That is number ${correct}.`);
-        showToast('The answer is ' + correct, 'error');
+        showToast(NG_LevelI18n.t(L1, 'toastWrong', { n: correct }), 'error');
 
         setTimeout(() => {
             document.querySelectorAll('.option-btn').forEach(b => {
@@ -364,7 +439,7 @@ function updateQuizProgress() {
     const { start, end } = batchRange(quizBatch);
     document.getElementById('quizFill').style.width  = pct + '%';
     document.getElementById('quizLabel').textContent =
-        done + ' / ' + BATCH_SIZE + '  (Batch ' + quizBatch + ': ' + start + '–' + end + ')';
+        NG_LevelI18n.t(L1, 'quizLabelTemplate', { done, total: BATCH_SIZE, batch: quizBatch, start, end });
 }
 
 function showBatchCompletion() {
@@ -377,17 +452,17 @@ function showBatchCompletion() {
 
     // Title & emoji
     document.getElementById('completionEmoji').textContent = didWell ? '🌟' : '🎉';
-    document.getElementById('completionTitle').textContent = didWell ? 'Perfect!' : 'Well Done!';
+    document.getElementById('completionTitle').textContent = didWell ? NG_LevelI18n.t(L1, 'perfect') : NG_LevelI18n.t(L1, 'wellDone');
     document.getElementById('completionSub').textContent   =
-        'You identified all numbers ' + start + ' to ' + end + '!';
+        NG_LevelI18n.t(L1, 'completionSub', { start, end });
 
     // Next batch button visibility
     const nextBtn = document.getElementById('nextBatchBtn2');
     if (isLastBatch) {
-        nextBtn.textContent = '🏆 All done!';
+        nextBtn.textContent = NG_LevelI18n.t(L1, 'allDone');
         nextBtn.onclick     = () => showMode('map');
     } else {
-        nextBtn.textContent = 'Next batch (' + (end + 1) + '–' + (end + BATCH_SIZE) + ') →';
+        nextBtn.textContent = NG_LevelI18n.t(L1, 'nextBatchRange', { start: end + 1, end: end + BATCH_SIZE });
         nextBtn.onclick     = proceedNextBatch;
     }
 
@@ -397,17 +472,14 @@ function showBatchCompletion() {
 
     let msg, speech;
     if (isLastBatch) {
-        msg    = '🏆 Amazing! You have identified all 100 numbers! You are a number star!';
+        msg    = NG_LevelI18n.t(L1, 'msgAllComplete');
         speech = 'Amazing! You have identified all one hundred numbers! You are a number star!';
-        document.getElementById('practiseAgainBtn').textContent = 'Practise again 🔁';
+        document.getElementById('practiseAgainBtn').textContent = NG_LevelI18n.t(L1, 'practiseAgain');
     } else if (didWell) {
-        msg    = '⭐ Excellent! You got every number right! Would you like to move on to numbers ' +
-                 (end + 1) + ' to ' + (end + BATCH_SIZE) + ', or practise ' + start + ' to ' + end + ' again to make sure you know them really well?';
+        msg    = NG_LevelI18n.t(L1, 'msgGreatJob', { next1: end + 1, next2: end + BATCH_SIZE, start, end });
         speech = 'Excellent! You got every number right! Would you like to move on to the next batch, or practise this batch again?';
     } else {
-        msg    = '👍 Good effort! You made ' + batchErrors + ' mistake' + (batchErrors > 1 ? 's' : '') +
-                 '. Would you like to try numbers ' + start + ' to ' + end + ' again to get even better, or move on to ' +
-                 (end + 1) + ' to ' + (end + BATCH_SIZE) + '?';
+        msg    = NG_LevelI18n.t(L1, 'msgGoodEffort', { errors: batchErrors, plural: batchErrors > 1 ? 's' : '', start, end, next1: end + 1, next2: end + BATCH_SIZE });
         speech = 'Good effort! Would you like to practise this batch again to get even better, or move on to the next batch?';
     }
 
@@ -577,6 +649,7 @@ function showToast(msg, type) {
 })();
 
 document.addEventListener('DOMContentLoaded', function () {
+    NG_LevelI18n.applyStatic(L1);
     renderGrid();
     setTimeout(() => NG_Speech.sayInstruction('Welcome to Level 1! Tap any number to hear it!'), 500);
 });

@@ -17,6 +17,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
     <link rel="stylesheet" href="../../assets/css/style.css">
     <script src="../../assets/js/accessibility.js"></script>
     <script src="../../assets/js/i18n-common.js"></script>
+    <script src="../../assets/js/i18n-level.js"></script>
     <style>
         .answer-reveal {
             font-size: 68px;
@@ -158,7 +159,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
             <div class="brand-icon">🍎</div>
             <div>
                 <h1 id="lvlHeading">Level 2</h1>
-                <p>Counting Objects</p>
+                <p data-i18n="subHeading">Counting Objects</p>
             </div>
         </div>
         <a href="../../index.php" class="back-btn" id="lvlBackLink">← Home</a>
@@ -168,20 +169,20 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
         <!-- Activity tabs -->
         <div class="tab-bar activity-tabs">
-            <button class="tab-btn mint"         id="tabCount" onclick="switchActivity('counters')">🔢 Counters</button>
-            <button class="tab-btn mint active"  id="tabAdd"   onclick="switchActivity('addition')">➕ Addition</button>
-            <button class="tab-btn mint"         id="tabSub"   onclick="switchActivity('subtraction')">➖ Subtraction</button>
+            <button class="tab-btn mint"         id="tabCount" onclick="switchActivity('counters')" data-i18n="tabCount">🔢 Counters</button>
+            <button class="tab-btn mint active"  id="tabAdd"   onclick="switchActivity('addition')" data-i18n="tabAdd">➕ Addition</button>
+            <button class="tab-btn mint"         id="tabSub"   onclick="switchActivity('subtraction')" data-i18n="tabSub">➖ Subtraction</button>
         </div>
 
         <!-- Score row -->
         <div class="activity-score">
-            <div class="score-chip">Correct: <span id="scoreCorrect">0</span></div>
-            <div class="score-chip">Streak: <span id="scoreStreak">0</span></div>
+            <div class="score-chip"><span data-i18n="correctLabel">Correct:</span> <span id="scoreCorrect">0</span></div>
+            <div class="score-chip"><span data-i18n="streakLabel">Streak:</span> <span id="scoreStreak">0</span></div>
             <div class="difficulty-row" style="margin:0;">
-                <span>Level:</span>
-                <button class="diff-btn active" id="diffEasy"   onclick="setDifficulty('easy')">Easy</button>
-                <button class="diff-btn"         id="diffMedium" onclick="setDifficulty('medium')">Medium</button>
-                <button class="diff-btn"         id="diffHard"   onclick="setDifficulty('hard')">Hard</button>
+                <span data-i18n="levelLabel">Level:</span>
+                <button class="diff-btn active" id="diffEasy"   onclick="setDifficulty('easy')" data-i18n="easy">Easy</button>
+                <button class="diff-btn"         id="diffMedium" onclick="setDifficulty('medium')" data-i18n="medium">Medium</button>
+                <button class="diff-btn"         id="diffHard"   onclick="setDifficulty('hard')" data-i18n="hard">Hard</button>
             </div>
         </div>
 
@@ -207,7 +208,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
             <!-- Wrong answer banner -->
             <div class="wrong-banner" id="wrongBanner">
                 <div class="wrong-banner-icon">❌</div>
-                <div class="wrong-banner-text">That is not right — try again!</div>
+                <div class="wrong-banner-text" data-i18n="wrongBannerText">That is not right — try again!</div>
                 <div class="wrong-banner-answer" id="wrongHint"></div>
             </div>
 
@@ -219,8 +220,8 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
             <!-- Next question -->
             <div class="next-btn-wrap">
-                <button class="btn btn-mint btn-sm" id="nextBtn" onclick="newQuestion()" style="display:none;">Next Question →</button>
-                <button class="btn btn-outline btn-sm" onclick="newQuestion()">New Example 🔄</button>
+                <button class="btn btn-mint btn-sm" id="nextBtn" onclick="newQuestion()" style="display:none;" data-i18n="nextQuestion">Next Question →</button>
+                <button class="btn btn-outline btn-sm" onclick="newQuestion()" data-i18n="newExample">New Example 🔄</button>
             </div>
 
         </div>
@@ -253,6 +254,169 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 </script>
 <script src="../../assets/js/storage.js"></script>
 <script>
+
+/* ================================================================
+   LEVEL 2 — translations (visible text only; narration stays
+   English — see speech.js)
+================================================================ */
+const L2 = {
+    en: {
+        subHeading:'Counting Objects', tabCount:'🔢 Counters', tabAdd:'➕ Addition', tabSub:'➖ Subtraction',
+        correctLabel:'Correct:', streakLabel:'Streak:', levelLabel:'Level:',
+        easy:'Easy', medium:'Medium', hard:'Hard',
+        wrongBannerText:'That is not right — try again!',
+        nextQuestion:'Next Question →', newExample:'New Example 🔄',
+        howManyTogether:'How many all together?', howManyLeft:'How many are left?',
+        countMatch:'Count the {item} and match to the right number!',
+        removeN:'Remove {n}',
+        wrongHintCounters:'Count each {emoji} one by one — there are {n} {item}.',
+        wrongHintMath:'Hint: count all the objects carefully. The answer is {n}.',
+        toastCountersCorrect:'✓ There are {n} {item} all together!',
+        toastCorrect:'✓ Correct! The answer is {n}',
+        toastCountersWrong:'❌ Sorry — there are {n} {item}.',
+        toastWrong:'❌ The answer is {n}',
+        counterResultLabel:'{n} {item} — well done!',
+        mergedLabel:'{a} and {b} all together = {sum}!',
+        brilliant:'Brilliant!',
+        sectionCompleteSub:'You got <strong>{target} correct</strong> in <strong>{activity}</strong>! Amazing work! 🎉',
+        sectionCompletePrompt:'Would you like to move on to <strong>{nextLabel}</strong>, or <strong>proceed to Level 3</strong> (Number Gear), or practise <strong>{activity}</strong> again?',
+        goToLevel3:'⭐ Go to Level 3 — Number Gear', tryNext:'Try {nextLabel} →', tryAgain:'Try again 🔁',
+        actNameCounters:'Counting Objects', actNameAddition:'Addition', actNameSubtraction:'Subtraction',
+        actLabelAddition:'Addition ➕', actLabelSubtraction:'Subtraction ➖', actLabelCounters:'Counters 🔢'
+    },
+    de: {
+        subHeading:'Objekte zählen', tabCount:'🔢 Zähler', tabAdd:'➕ Addition', tabSub:'➖ Subtraktion',
+        correctLabel:'Richtig:', streakLabel:'Serie:', levelLabel:'Stufe:',
+        easy:'Leicht', medium:'Mittel', hard:'Schwer',
+        wrongBannerText:'Das ist nicht richtig — versuch es noch einmal!',
+        nextQuestion:'Nächste Frage →', newExample:'Neues Beispiel 🔄',
+        howManyTogether:'Wie viele sind es zusammen?', howManyLeft:'Wie viele bleiben übrig?',
+        countMatch:'Zähle die {item} und finde die richtige Zahl!',
+        removeN:'Entferne {n}',
+        wrongHintCounters:'Zähle jedes {emoji} einzeln — es sind {n} {item}.',
+        wrongHintMath:'Tipp: Zähle alle Objekte sorgfältig. Die Antwort ist {n}.',
+        toastCountersCorrect:'✓ Es sind {n} {item} zusammen!',
+        toastCorrect:'✓ Richtig! Die Antwort ist {n}',
+        toastCountersWrong:'❌ Es sind {n} {item}.',
+        toastWrong:'❌ Die Antwort ist {n}',
+        counterResultLabel:'{n} {item} — gut gemacht!',
+        mergedLabel:'{a} und {b} zusammen = {sum}!',
+        brilliant:'Großartig!',
+        sectionCompleteSub:'Du hast <strong>{target} richtig</strong> bei <strong>{activity}</strong>! Tolle Arbeit! 🎉',
+        sectionCompletePrompt:'Möchtest du zu <strong>{nextLabel}</strong> weitergehen, <strong>zu Stufe 3</strong> (Zahlenrad) übergehen, oder <strong>{activity}</strong> noch einmal üben?',
+        goToLevel3:'⭐ Zu Stufe 3 — Zahlenrad', tryNext:'{nextLabel} probieren →', tryAgain:'Noch einmal versuchen 🔁',
+        actNameCounters:'Objekte zählen', actNameAddition:'Addition', actNameSubtraction:'Subtraktion',
+        actLabelAddition:'Addition ➕', actLabelSubtraction:'Subtraktion ➖', actLabelCounters:'Zähler 🔢'
+    },
+    fr: {
+        subHeading:'Compter les objets', tabCount:'🔢 Compteurs', tabAdd:'➕ Addition', tabSub:'➖ Soustraction',
+        correctLabel:'Correct :', streakLabel:'Série :', levelLabel:'Niveau :',
+        easy:'Facile', medium:'Moyen', hard:'Difficile',
+        wrongBannerText:"Ce n'est pas correct — réessaie !",
+        nextQuestion:'Question suivante →', newExample:'Nouvel exemple 🔄',
+        howManyTogether:'Combien y en a-t-il en tout ?', howManyLeft:'Combien en reste-t-il ?',
+        countMatch:'Compte les {item} et trouve le bon nombre !',
+        removeN:'Retire {n}',
+        wrongHintCounters:'Compte chaque {emoji} un par un — il y en a {n}.',
+        wrongHintMath:'Astuce : compte bien tous les objets. La réponse est {n}.',
+        toastCountersCorrect:'✓ Il y a {n} {item} en tout !',
+        toastCorrect:'✓ Correct ! La réponse est {n}',
+        toastCountersWrong:'❌ Il y a {n} {item}.',
+        toastWrong:'❌ La réponse est {n}',
+        counterResultLabel:'{n} {item} — bien joué !',
+        mergedLabel:'{a} et {b} en tout = {sum} !',
+        brilliant:'Génial !',
+        sectionCompleteSub:'Tu as eu <strong>{target} bonnes réponses</strong> en <strong>{activity}</strong> ! Bravo ! 🎉',
+        sectionCompletePrompt:'Veux-tu continuer avec <strong>{nextLabel}</strong>, passer au <strong>niveau 3</strong> (engrenage), ou refaire <strong>{activity}</strong> ?',
+        goToLevel3:'⭐ Aller au niveau 3 — Engrenage', tryNext:'Essayer {nextLabel} →', tryAgain:'Réessayer 🔁',
+        actNameCounters:'Compter les objets', actNameAddition:'Addition', actNameSubtraction:'Soustraction',
+        actLabelAddition:'Addition ➕', actLabelSubtraction:'Soustraction ➖', actLabelCounters:'Compteurs 🔢'
+    },
+    ar: {
+        subHeading:'عدّ الأشياء', tabCount:'🔢 العدّ', tabAdd:'➕ الجمع', tabSub:'➖ الطرح',
+        correctLabel:'صحيح:', streakLabel:'متتالية:', levelLabel:'المستوى:',
+        easy:'سهل', medium:'متوسط', hard:'صعب',
+        wrongBannerText:'هذا غير صحيح — حاول مرة أخرى!',
+        nextQuestion:'السؤال التالي ←', newExample:'مثال جديد 🔄',
+        howManyTogether:'كم عددها معاً؟', howManyLeft:'كم تبقى؟',
+        countMatch:'عدّ {item} وطابقه مع الرقم الصحيح!',
+        removeN:'أزل {n}',
+        wrongHintCounters:'عدّ كل {emoji} واحدة تلو الأخرى — العدد هو {n}.',
+        wrongHintMath:'تلميح: عدّ كل الأشياء بعناية. الإجابة هي {n}.',
+        toastCountersCorrect:'✓ يوجد {n} {item} معاً!',
+        toastCorrect:'✓ صحيح! الإجابة هي {n}',
+        toastCountersWrong:'❌ العدد الصحيح هو {n} {item}.',
+        toastWrong:'❌ الإجابة هي {n}',
+        counterResultLabel:'{n} {item} — أحسنت!',
+        mergedLabel:'{a} و {b} معاً = {sum}!',
+        brilliant:'رائع!',
+        sectionCompleteSub:'حصلت على <strong>{target} إجابة صحيحة</strong> في <strong>{activity}</strong>! عمل مذهل! 🎉',
+        sectionCompletePrompt:'هل تريد الانتقال إلى <strong>{nextLabel}</strong>، أو الانتقال إلى <strong>المستوى 3</strong> (تروس الأرقام)، أو التدرب على <strong>{activity}</strong> مرة أخرى؟',
+        goToLevel3:'⭐ الانتقال إلى المستوى 3 — تروس الأرقام', tryNext:'جرّب {nextLabel} ←', tryAgain:'حاول مرة أخرى 🔁',
+        actNameCounters:'عدّ الأشياء', actNameAddition:'الجمع', actNameSubtraction:'الطرح',
+        actLabelAddition:'الجمع ➕', actLabelSubtraction:'الطرح ➖', actLabelCounters:'العدّ 🔢'
+    },
+    zh: {
+        subHeading:'数数物体', tabCount:'🔢 数数', tabAdd:'➕ 加法', tabSub:'➖ 减法',
+        correctLabel:'正确：', streakLabel:'连续：', levelLabel:'难度：',
+        easy:'简单', medium:'中等', hard:'困难',
+        wrongBannerText:'不对哦，再试一次！',
+        nextQuestion:'下一题 →', newExample:'换一个例子 🔄',
+        howManyTogether:'一共有多少？', howManyLeft:'还剩多少？',
+        countMatch:'数一数{item}，找到正确的数字！',
+        removeN:'拿走 {n} 个',
+        wrongHintCounters:'一个一个数{emoji}——一共有 {n} 个{item}。',
+        wrongHintMath:'提示：仔细数一数所有物体。答案是 {n}。',
+        toastCountersCorrect:'✓ 一共有 {n} 个{item}！',
+        toastCorrect:'✓ 正确！答案是 {n}',
+        toastCountersWrong:'❌ 正确数量是 {n} 个{item}。',
+        toastWrong:'❌ 答案是 {n}',
+        counterResultLabel:'{n} 个{item} —— 做得好！',
+        mergedLabel:'{a} 和 {b} 一共 = {sum}！',
+        brilliant:'太棒了！',
+        sectionCompleteSub:'你在<strong>{activity}</strong>中答对了 <strong>{target} 题</strong>！太厉害了！🎉',
+        sectionCompletePrompt:'你想继续学习 <strong>{nextLabel}</strong>，还是前往 <strong>第3关</strong>（数字齿轮），或者再练习一次 <strong>{activity}</strong>？',
+        goToLevel3:'⭐ 前往第3关 — 数字齿轮', tryNext:'试试{nextLabel} →', tryAgain:'再试一次 🔁',
+        actNameCounters:'数数物体', actNameAddition:'加法', actNameSubtraction:'减法',
+        actLabelAddition:'加法 ➕', actLabelSubtraction:'减法 ➖', actLabelCounters:'数数 🔢'
+    }
+};
+
+// Number words 0–20, used in the visible (not spoken) Counters feedback text.
+const NUM_WORDS_BY_LANG = {
+    en: ['zero','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen','twenty'],
+    de: ['null','eins','zwei','drei','vier','fünf','sechs','sieben','acht','neun','zehn','elf','zwölf','dreizehn','vierzehn','fünfzehn','sechzehn','siebzehn','achtzehn','neunzehn','zwanzig'],
+    fr: ['zéro','un','deux','trois','quatre','cinq','six','sept','huit','neuf','dix','onze','douze','treize','quatorze','quinze','seize','dix-sept','dix-huit','dix-neuf','vingt'],
+    ar: ['صفر','واحد','اثنان','ثلاثة','أربعة','خمسة','ستة','سبعة','ثمانية','تسعة','عشرة','أحد عشر','اثنا عشر','ثلاثة عشر','أربعة عشر','خمسة عشر','ستة عشر','سبعة عشر','ثمانية عشر','تسعة عشر','عشرون'],
+    zh: ['零','一','二','三','四','五','六','七','八','九','十','十一','十二','十三','十四','十五','十六','十七','十八','十九','二十']
+};
+function numWordLocalized(n) {
+    const words = NUM_WORDS_BY_LANG[NG_LevelI18n.lang()] || NUM_WORDS_BY_LANG.en;
+    return words[n] || String(n);
+}
+
+// 12 countable items: {en:{s,p}, de:{s,p}, fr:{s,p}, ar:'single form', zh:'single form'}
+const ITEM_NAMES = [
+    { emoji:'🍌', en:{s:'banana',p:'bananas'}, de:{s:'Banane',p:'Bananen'}, fr:{s:'banane',p:'bananes'}, ar:'موز', zh:'香蕉' },
+    { emoji:'🍎', en:{s:'apple',p:'apples'}, de:{s:'Apfel',p:'Äpfel'}, fr:{s:'pomme',p:'pommes'}, ar:'تفاح', zh:'苹果' },
+    { emoji:'🍊', en:{s:'orange',p:'oranges'}, de:{s:'Orange',p:'Orangen'}, fr:{s:'orange',p:'oranges'}, ar:'برتقال', zh:'橙子' },
+    { emoji:'🍇', en:{s:'grape',p:'grapes'}, de:{s:'Traube',p:'Trauben'}, fr:{s:'raisin',p:'raisins'}, ar:'عنب', zh:'葡萄' },
+    { emoji:'🍓', en:{s:'strawberry',p:'strawberries'}, de:{s:'Erdbeere',p:'Erdbeeren'}, fr:{s:'fraise',p:'fraises'}, ar:'فراولة', zh:'草莓' },
+    { emoji:'🧸', en:{s:'teddy bear',p:'teddy bears'}, de:{s:'Teddybär',p:'Teddybären'}, fr:{s:'ours en peluche',p:'ours en peluche'}, ar:'دبدوب', zh:'玩具熊' },
+    { emoji:'🎈', en:{s:'balloon',p:'balloons'}, de:{s:'Luftballon',p:'Luftballons'}, fr:{s:'ballon',p:'ballons'}, ar:'بالون', zh:'气球' },
+    { emoji:'⭐', en:{s:'star',p:'stars'}, de:{s:'Stern',p:'Sterne'}, fr:{s:'étoile',p:'étoiles'}, ar:'نجمة', zh:'星星' },
+    { emoji:'🌸', en:{s:'flower',p:'flowers'}, de:{s:'Blume',p:'Blumen'}, fr:{s:'fleur',p:'fleurs'}, ar:'زهرة', zh:'花' },
+    { emoji:'🐱', en:{s:'cat',p:'cats'}, de:{s:'Katze',p:'Katzen'}, fr:{s:'chat',p:'chats'}, ar:'قطة', zh:'猫' },
+    { emoji:'🐶', en:{s:'dog',p:'dogs'}, de:{s:'Hund',p:'Hunde'}, fr:{s:'chien',p:'chiens'}, ar:'كلب', zh:'狗' },
+    { emoji:'🦋', en:{s:'butterfly',p:'butterflies'}, de:{s:'Schmetterling',p:'Schmetterlinge'}, fr:{s:'papillon',p:'papillons'}, ar:'فراشة', zh:'蝴蝶' },
+];
+function itemNameLocalized(item, count) {
+    const lang = NG_LevelI18n.lang();
+    const entry = item[lang] || item.en;
+    if (typeof entry === 'string') return entry;        // ar / zh — single form
+    return count === 1 ? entry.s : entry.p;              // en / de / fr — singular/plural
+}
+function itemNamePluralEn(item) { return item.en.p; }    // kept for the few spots that still want the English-only plural (storage/back-compat)
 
 /* ================================================================
    NUMBER TO WORD HELPER
@@ -323,11 +487,11 @@ function newQuestion() {
         a = Math.min(a, range.max);
         b = Math.min(b, a - 1);
         currentAnswer = a - b;             // always positive
-        document.getElementById('actInstruction').textContent = 'How many are left?';
+        document.getElementById('actInstruction').textContent = NG_LevelI18n.t(L2, 'howManyLeft');
         document.getElementById('opSign').textContent = '−';
     } else {
         currentAnswer = a + b;
-        document.getElementById('actInstruction').textContent = 'How many all together?';
+        document.getElementById('actInstruction').textContent = NG_LevelI18n.t(L2, 'howManyTogether');
         document.getElementById('opSign').textContent = '+';
     }
 
@@ -354,21 +518,6 @@ function newQuestion() {
 /* ================================================================
    COUNTERS ACTIVITY — show N objects, match to the right number
 ================================================================ */
-const EMOJI_ITEMS = [
-    { emoji: '🍌', name: 'banana' },
-    { emoji: '🍎', name: 'apple' },
-    { emoji: '🍊', name: 'orange' },
-    { emoji: '🍇', name: 'grape' },
-    { emoji: '🍓', name: 'strawberry' },
-    { emoji: '🧸', name: 'teddy bear' },
-    { emoji: '🎈', name: 'balloon' },
-    { emoji: '⭐', name: 'star' },
-    { emoji: '🌸', name: 'flower' },
-    { emoji: '🐱', name: 'cat' },
-    { emoji: '🐶', name: 'dog' },
-    { emoji: '🦋', name: 'butterfly' },
-];
-
 let counterItem = null;
 let counterCount = 0;
 
@@ -377,13 +526,12 @@ function newCounterQuestion() {
 
     const range = getRange();
     counterCount = rand(range.min, range.max);
-    counterItem  = EMOJI_ITEMS[Math.floor(Math.random() * EMOJI_ITEMS.length)];
+    counterItem  = ITEM_NAMES[Math.floor(Math.random() * ITEM_NAMES.length)];
     currentAnswer = counterCount;
 
     // Instruction
-    const plural = counterCount === 1 ? counterItem.name : counterItem.name + 's';
     document.getElementById('actInstruction').textContent =
-        `Count the ${plural} and match to the right number!`;
+        NG_LevelI18n.t(L2, 'countMatch', { item: itemNameLocalized(counterItem, counterCount) });
 
     // Build stage — just one group of N emojis
     const stage = document.getElementById('counterStage');
@@ -401,7 +549,8 @@ function newCounterQuestion() {
     stage.appendChild(grp);
 
     buildChoices(counterCount);
-    NG_Speech.sayInstruction(`How many ${plural} do you see? Find the matching number!`);
+    const pluralEn = itemNamePluralEn(counterItem);
+    NG_Speech.sayInstruction(`How many ${pluralEn} do you see? Find the matching number!`);
     questionActive = true;
 }
 
@@ -437,7 +586,7 @@ function buildStage(a, b, emoji) {
 
         const removeNote = document.createElement('div');
         removeNote.style.cssText = 'font-size:13px;font-weight:700;color:var(--peach-dark);margin-top:4px;';
-        removeNote.textContent = `Remove ${b}`;
+        removeNote.textContent = NG_LevelI18n.t(L2, 'removeN', { n: b });
         total.appendChild(removeNote);
 
         stage.appendChild(total);
@@ -485,7 +634,7 @@ function animateCounterCorrect() {
         const label = document.createElement('div');
         label.className = 'counter-result-label';
         label.style.cssText = 'font-size:18px;font-weight:900;color:var(--mint-dark);margin-top:10px;text-align:center;';
-        label.textContent = `${counterCount} ${counterCount === 1 ? counterItem.name : counterItem.name + 's'} — well done!`;
+        label.textContent = NG_LevelI18n.t(L2, 'counterResultLabel', { n: counterCount, item: itemNameLocalized(counterItem, counterCount) });
         stage.appendChild(label);
     }, totalDelay);
 }
@@ -524,7 +673,7 @@ function animateAddition(a, b, emoji) {
 
         const label = document.createElement('div');
         label.style.cssText = 'font-size:14px;font-weight:700;color:var(--mint-dark);';
-        label.textContent = `${a} and ${b} all together = ${a + b}!`;
+        label.textContent = NG_LevelI18n.t(L2, 'mergedLabel', { a, b, sum: a + b });
 
         mergedWrap.appendChild(merged);
         mergedWrap.appendChild(label);
@@ -599,7 +748,7 @@ function checkChoice(selected, btn, correct) {
         showAnswerReveal(correct);
 
         if (currentActivity === 'counters') {
-            const plural = correct === 1 ? counterItem.name : counterItem.name + 's';
+            const plural = correct === 1 ? counterItem.en.s : counterItem.en.p;
             NG_Speech.sayInstruction(`Very good! There are ${numWord(correct)} ${plural} all together.`);
         } else if (currentActivity === 'addition') {
             NG_Speech.sayAddition(
@@ -616,10 +765,9 @@ function checkChoice(selected, btn, correct) {
         }
 
         if (currentActivity === 'counters') {
-            const plural = correct === 1 ? counterItem.name : counterItem.name + 's';
-            showToast(`✓ There are ${numWord(correct)} ${plural} all together!`, 'success');
+            showToast(NG_LevelI18n.t(L2, 'toastCountersCorrect', { n: numWordLocalized(correct), item: itemNameLocalized(counterItem, correct) }), 'success');
         } else {
-            showToast(`✓ Correct! The answer is ${correct}`, 'success');
+            showToast(NG_LevelI18n.t(L2, 'toastCorrect', { n: correct }), 'success');
         }
         const newScore = Math.min(100, NG_Storage.getLvl2Score() + 5);
         NG_Storage.setLvl2Score(newScore);
@@ -644,12 +792,12 @@ function checkChoice(selected, btn, correct) {
         showWrongBanner(correct);
 
         if (currentActivity === 'counters') {
-            const plural = correct === 1 ? counterItem.name : counterItem.name + 's';
+            const plural = correct === 1 ? counterItem.en.s : counterItem.en.p;
             NG_Speech.sayInstruction(`Sorry, try again. There are ${numWord(correct)} ${plural}.`);
-            showToast(`❌ Sorry — there are ${numWord(correct)} ${plural}.`, 'error');
+            showToast(NG_LevelI18n.t(L2, 'toastCountersWrong', { n: numWordLocalized(correct), item: itemNameLocalized(counterItem, correct) }), 'error');
         } else {
             NG_Speech.sayWrong(correct);
-            showToast(`❌ The answer is ${correct}`, 'error');
+            showToast(NG_LevelI18n.t(L2, 'toastWrong', { n: correct }), 'error');
         }
 
         setTimeout(() => {
@@ -670,12 +818,11 @@ function showWrongBanner(correct) {
     const banner = document.getElementById('wrongBanner');
     banner.classList.add('show');
     if (currentActivity === 'counters') {
-        const plural = correct === 1 ? counterItem.name : counterItem.name + 's';
         document.getElementById('wrongHint').textContent =
-            `Count each ${counterItem.emoji} one by one — there are ${numWord(correct)} ${plural}.`;
+            NG_LevelI18n.t(L2, 'wrongHintCounters', { emoji: counterItem.emoji, n: numWordLocalized(correct), item: itemNameLocalized(counterItem, correct) });
     } else {
         document.getElementById('wrongHint').textContent =
-            `Hint: count all the objects carefully. The answer is ${correct}.`;
+            NG_LevelI18n.t(L2, 'wrongHintMath', { n: correct });
     }
 }
 
@@ -824,41 +971,40 @@ function showToast(msg, type) {
 })();
 
 function showSectionCompletion() {
-    const actNames = { counters: 'Counting Objects', addition: 'Addition', subtraction: 'Subtraction' };
+    const actNames = { counters: NG_LevelI18n.t(L2, 'actNameCounters'), addition: NG_LevelI18n.t(L2, 'actNameAddition'), subtraction: NG_LevelI18n.t(L2, 'actNameSubtraction') };
     const actNext  = { counters: 'addition', addition: 'subtraction', subtraction: 'counters' };
-    const actLabel = { counters: 'Addition ➕', addition: 'Subtraction ➖', subtraction: 'Counters 🔢' };
+    const actLabel = { counters: NG_LevelI18n.t(L2, 'actLabelAddition'), addition: NG_LevelI18n.t(L2, 'actLabelSubtraction'), subtraction: NG_LevelI18n.t(L2, 'actLabelCounters') };
 
     const overlay = document.getElementById('lvl2CompletionOverlay');
     overlay.style.display = 'flex';
 
     document.getElementById('lvl2CompEmoji').textContent = '🌟';
-    document.getElementById('lvl2CompTitle').textContent = 'Brilliant!';
+    document.getElementById('lvl2CompTitle').textContent = NG_LevelI18n.t(L2, 'brilliant');
     document.getElementById('lvl2CompSub').innerHTML =
-        `You got <strong>${SECTION_TARGET} correct</strong> in <strong>${actNames[currentActivity]}</strong>! Amazing work! 🎉`;
+        NG_LevelI18n.t(L2, 'sectionCompleteSub', { target: SECTION_TARGET, activity: actNames[currentActivity] });
 
     const nextAct   = actNext[currentActivity];
     const nextLabel = actLabel[nextAct];
 
     document.getElementById('lvl2CompPrompt').innerHTML =
-        `Would you like to move on to <strong>${nextLabel}</strong>, ` +
-        `or <strong>proceed to Level 3</strong> (Number Gear), ` +
-        `or practise <strong>${actNames[currentActivity]}</strong> again?`;
+        NG_LevelI18n.t(L2, 'sectionCompletePrompt', { nextLabel, activity: actNames[currentActivity] });
 
     // Next level button
-    document.getElementById('lvl2NextLevelBtn').textContent = '⭐ Go to Level 3 — Number Gear';
+    document.getElementById('lvl2NextLevelBtn').textContent = NG_LevelI18n.t(L2, 'goToLevel3');
     document.getElementById('lvl2NextLevelBtn').onclick = () => {
         closeSectionCompletion();
         window.location.href = '../level3/index.php';
     };
 
     // Next section button
-    document.getElementById('lvl2NextSectionBtn').textContent = `Try ${nextLabel} →`;
+    document.getElementById('lvl2NextSectionBtn').textContent = NG_LevelI18n.t(L2, 'tryNext', { nextLabel });
     document.getElementById('lvl2NextSectionBtn').onclick = () => {
         closeSectionCompletion();
         switchActivity(nextAct);
     };
 
     // Try again button
+    document.getElementById('lvl2TryAgainBtn').textContent = NG_LevelI18n.t(L2, 'tryAgain');
     document.getElementById('lvl2TryAgainBtn').onclick = () => {
         closeSectionCompletion();
         sectionCorrect = 0;
@@ -882,6 +1028,7 @@ function closeSectionCompletion() {
    INIT
 ================================================================ */
 document.addEventListener('DOMContentLoaded', function () {
+    NG_LevelI18n.applyStatic(L2);
     const saved = NG_Storage.getLvl2Activity();
     if (saved === 'subtraction') switchActivity('subtraction');
     else newQuestion();
