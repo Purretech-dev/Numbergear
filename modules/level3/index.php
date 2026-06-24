@@ -17,6 +17,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
     <link rel="stylesheet" href="../../assets/css/style.css">
     <script src="../../assets/js/accessibility.js"></script>
     <script src="../../assets/js/i18n-common.js"></script>
+    <script src="../../assets/js/i18n-level.js"></script>
     <style>
         .gear-layout {
             display: flex;
@@ -615,7 +616,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
             <div class="brand-icon">⚙️</div>
             <div>
                 <h1 id="lvlHeading">Level 3</h1>
-                <p>Number Gear</p>
+                <p data-i18n="subHeading">Number Gear</p>
             </div>
         </div>
         <a href="../../index.php" class="back-btn" id="lvlBackLink">← Home</a>
@@ -623,15 +624,15 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
     <main class="level-page">
 
-        <p class="gear-intro">The Number Gear has <strong>10 spinning planes</strong>. Each plane counts in multiples — Plane 1 starts at <strong>1</strong> and counts 1, 2, 3 … up to 10. Plane 2 starts at <strong>2</strong> and counts 2, 4, 6 … up to 20. Plane 3 starts at <strong>3</strong> and counts 3, 6, 9 … up to 30, and so on. Plane 10 starts at <strong>10</strong> and counts 10, 20, 30 … all the way to 100. The <strong>orange arrow ▼</strong> marks the reference point — every plane's first number always lines up there!</p>
+        <p class="gear-intro" data-i18n-html="gearIntro">The Number Gear has <strong>10 spinning planes</strong>. Each plane counts in multiples — Plane 1 starts at <strong>1</strong> and counts 1, 2, 3 … up to 10. Plane 2 starts at <strong>2</strong> and counts 2, 4, 6 … up to 20. Plane 3 starts at <strong>3</strong> and counts 3, 6, 9 … up to 30, and so on. Plane 10 starts at <strong>10</strong> and counts 10, 20, 30 … all the way to 100. The <strong>orange arrow ▼</strong> marks the reference point — every plane's first number always lines up there!</p>
 
         <div class="gear-layout">
 
             <!-- LEFT — Canvas -->
             <div class="gear-left">
                 <div class="stats-row">
-                    <div class="stat-chip-sm">Planes explored: <span id="exploredCount">0</span>/10</div>
-                    <div class="stat-chip-sm">Rotations: <span id="rotCount">0</span></div>
+                    <div class="stat-chip-sm"><span data-i18n="planesExplored">Planes explored:</span> <span id="exploredCount">0</span>/10</div>
+                    <div class="stat-chip-sm"><span data-i18n="rotations">Rotations:</span> <span id="rotCount">0</span></div>
                 </div>
                 <canvas id="gearCanvas" width="560" height="560"></canvas>
             </div>
@@ -641,11 +642,11 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
                 <!-- Mode toggle -->
                 <div class="mode-toggle-wrap">
-                    <span class="mode-label active" id="normalLabel">Normal</span>
+                    <span class="mode-label active" id="normalLabel" data-i18n="normalMode">Normal</span>
                     <button class="toggle-track" id="modeToggle" onclick="toggleCalcMode()" aria-label="Switch mode">
                         <div class="toggle-thumb"></div>
                     </button>
-                    <span class="mode-label" id="calcLabel">Calc Mode</span>
+                    <span class="mode-label" id="calcLabel" data-i18n="calcMode">Calc Mode</span>
                 </div>
 
                 <!-- Calc panel (hidden in normal mode) -->
@@ -658,7 +659,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
                         <div class="ex-ring-hint" id="exRingHint">Use Plane 3</div>
                         <div class="ex-desc" id="exDesc">Find 15 on Plane 3, then count 9 steps — move clockwise.</div>
                         <button class="ex-go-btn" id="exGoBtn" onclick="runExample()">
-                            <span class="ex-go-icon">⚙️</span> Show me on the gear!
+                            <span class="ex-go-icon">⚙️</span> <span data-i18n="showOnGear">Show me on the gear!</span>
                         </button>
                     </div>
 
@@ -667,11 +668,11 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
                         <div class="cr-equation" id="crEquation"></div>
                         <div class="cr-steps"   id="crSteps"></div>
                         <div class="cr-hint"    id="crHint"></div>
-                        <button class="ex-next-btn" onclick="nextExample()">Next Example →</button>
+                        <button class="ex-next-btn" onclick="nextExample()" data-i18n="nextExample">Next Example →</button>
                     </div>
 
                     <!-- Next button (before result too) -->
-                    <button class="ex-next-btn outline" id="nextBtnTop" onclick="nextExample()">Next Example →</button>
+                    <button class="ex-next-btn outline" id="nextBtnTop" onclick="nextExample()" data-i18n="nextExample">Next Example →</button>
 
                 </div>
 
@@ -681,7 +682,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
                 <!-- Number at pointer -->
                 <div class="ring-display">
                     <div class="ring-meta">
-                        <div class="rm-label">Number at pointer</div>
+                        <div class="rm-label" data-i18n="numberAtPointer">Number at pointer</div>
                         <div class="ring-big-num" id="windowNum">1</div>
                         <div class="rm-detail" id="windowDetail">Plane 1 · step 1 = 1</div>
                         <div class="rm-table"  id="windowTable">Table: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10</div>
@@ -691,47 +692,47 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
                 <!-- Plane selector -->
                 <div class="ctrl-card">
-                    <div class="card-title">Select a plane</div>
+                    <div class="card-title" data-i18n="selectPlane">Select a plane</div>
                     <div class="ring-grid" id="ringGrid"></div>
                 </div>
 
                 <!-- Rotate controls -->
                 <div class="ctrl-card">
-                    <div class="card-title">Rotate selected plane</div>
+                    <div class="card-title" data-i18n="rotateSelected">Rotate selected plane</div>
                     <div class="rot-row">
                         <button class="rot-btn ccw" onclick="rotateCCW()">
                             <span class="rot-icon">↺</span>
-                            <span>Anti-clockwise</span>
+                            <span data-i18n="antiClockwise">Anti-clockwise</span>
                         </button>
                         <button class="rot-btn cw" onclick="rotateCW()">
                             <span class="rot-icon">↻</span>
-                            <span>Clockwise</span>
+                            <span data-i18n="clockwise">Clockwise</span>
                         </button>
                     </div>
                     <div class="sub-row">
-                        <button class="spin-btn" id="spinBtn" onclick="toggleSpin()">▶ Auto-Spin</button>
-                        <button class="reset-ring-btn" onclick="resetActiveRing()" title="Reset this ring only">↺ This ring</button>
+                        <button class="spin-btn" id="spinBtn" onclick="toggleSpin()" data-i18n="autoSpin">▶ Auto-Spin</button>
+                        <button class="reset-ring-btn" onclick="resetActiveRing()" title="Reset this ring only" data-i18n="resetThisRing">↺ This ring</button>
                     </div>
                 </div>
 
                 <!-- Gear-level actions -->
                 <div class="ctrl-card">
-                    <div class="card-title">Gear actions</div>
+                    <div class="card-title" data-i18n="gearActions">Gear actions</div>
                     <div class="action-row">
-                        <button class="action-btn reset" onclick="resetAllRings()">↺ Reset All</button>
-                        <button class="action-btn mix" id="mixBtn" onclick="toggleMix()">🎲 Mix Challenge</button>
+                        <button class="action-btn reset" onclick="resetAllRings()" data-i18n="resetAll">↺ Reset All</button>
+                        <button class="action-btn mix" id="mixBtn" onclick="toggleMix()" data-i18n="mixChallenge">🎲 Mix Challenge</button>
                     </div>
                 </div>
 
                 <!-- Mix challenge status -->
                 <div class="mix-card" id="mixCard">
-                    <div class="mix-card-title">🎯 Mix Challenge</div>
-                    <div class="mix-card-desc">All planes are shuffled! Click a plane, then use <strong>↺ Anti-clockwise</strong> or <strong>↻ Clockwise</strong> to rotate it until its reference number lines up with the <strong>orange arrow</strong>.</div>
+                    <div class="mix-card-title" data-i18n="mixChallengeTitle">🎯 Mix Challenge</div>
+                    <div class="mix-card-desc" data-i18n-html="mixChallengeDesc">All planes are shuffled! Click a plane, then use <strong>↺ Anti-clockwise</strong> or <strong>↻ Clockwise</strong> to rotate it until its reference number lines up with the <strong>orange arrow</strong>.</div>
                     <div class="mix-prog-label" id="mixProgLabel">0 / 10 planes aligned</div>
                     <div class="mix-prog-track">
                         <div class="mix-prog-fill" id="mixProgFill"></div>
                     </div>
-                    <div class="mix-hint" id="mixHint">Select a plane to begin</div>
+                    <div class="mix-hint" id="mixHint" data-i18n="selectPlaneToBegin">Select a plane to begin</div>
                 </div>
 
                 </div><!-- /normalPanel -->
@@ -750,6 +751,163 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 </script>
 <script src="../../assets/js/storage.js"></script>
 <script>
+/* ================================================================
+   LEVEL 3 — translations (visible text only; narration stays
+   English — see speech.js)
+================================================================ */
+const L3 = {
+    en: {
+        subHeading:'Number Gear',
+        gearIntro:'The Number Gear has <strong>10 spinning planes</strong>. Each plane counts in multiples — Plane 1 starts at <strong>1</strong> and counts 1, 2, 3 … up to 10. Plane 2 starts at <strong>2</strong> and counts 2, 4, 6 … up to 20. Plane 3 starts at <strong>3</strong> and counts 3, 6, 9 … up to 30, and so on. Plane 10 starts at <strong>10</strong> and counts 10, 20, 30 … all the way to 100. The <strong>orange arrow ▼</strong> marks the reference point — every plane\'s first number always lines up there!',
+        planesExplored:'Planes explored:', rotations:'Rotations:',
+        normalMode:'Normal', calcMode:'Calc Mode',
+        showOnGear:'Show me on the gear!', nextExample:'Next Example →',
+        numberAtPointer:'Number at pointer', selectPlane:'Select a plane', rotateSelected:'Rotate selected plane',
+        antiClockwise:'Anti-clockwise', clockwise:'Clockwise',
+        autoSpin:'▶ Auto-Spin', stopSpin:'⏸ Stop', resetThisRing:'↺ This ring',
+        gearActions:'Gear actions', resetAll:'↺ Reset All', mixChallenge:'🎲 Mix Challenge', exitChallenge:'✕ Exit Challenge',
+        mixChallengeTitle:'🎯 Mix Challenge',
+        mixChallengeDesc:'All planes are shuffled! Click a plane, then use <strong>↺ Anti-clockwise</strong> or <strong>↻ Clockwise</strong> to rotate it until its reference number lines up with the <strong>orange arrow</strong>.',
+        selectPlaneToBegin:'Select a plane to begin',
+        plane:'Plane {n}', planeRange:'{a}–{b}',
+        windowDetail:'Plane {n}  ·  step {step}  =  {num}', windowTable:'Table: {table}',
+        ringReset:'Plane {n} reset ↺', allReset:'All planes reset to reference ↺', ringsMixed:'Rings mixed! 🎲 Line them all up!',
+        mixAligned:'✓ Plane {n} is aligned! Select another plane.',
+        mixRotateCw:'Plane {n}: rotate ↻ clockwise {steps} step{plural}.',
+        mixRotateCcw:'Plane {n}: rotate ↺ anti-clockwise {steps} step{plural}.',
+        mixComplete:'🎉 All rings aligned! Well done!',
+        mixProgress:'{n} / 10 planes aligned',
+        exampleOf:'Example {i} of {total}', usePlane:'Use Plane {n}  (counts {n}, {n2}, {n3}…{n10})',
+        findCountAdd:'Find {start} on Plane {plane}, then count {steps} steps — move clockwise.',
+        findCountSub:'Find {start} on Plane {plane}, then count {steps} steps — move anticlockwise.',
+        equationLine:'{start} {sym} {steps} = {answer}',
+        startedAt:'Started at {start} on Plane {plane}, {dir} {steps} step{plural}.',
+        movingCw:'moving clockwise', movingCcw:'moving anticlockwise',
+        landsOn:'{answer} = {factor} × {mult} — lands right on a ring number! ✓',
+        sitsBetween:'{answer} sits between {lo} and {hi} on Plane {mult}.'
+    },
+    de: {
+        subHeading:'Zahlenrad',
+        gearIntro:'Das Zahlenrad hat <strong>10 drehbare Ebenen</strong>. Jede Ebene zählt in Vielfachen — Ebene 1 beginnt bei <strong>1</strong> und zählt 1, 2, 3 … bis 10. Ebene 2 beginnt bei <strong>2</strong> und zählt 2, 4, 6 … bis 20. Ebene 3 beginnt bei <strong>3</strong> und zählt 3, 6, 9 … bis 30, und so weiter. Ebene 10 beginnt bei <strong>10</strong> und zählt 10, 20, 30 … bis 100. Der <strong>orange Pfeil ▼</strong> markiert den Bezugspunkt — die erste Zahl jeder Ebene liegt dort immer an!',
+        planesExplored:'Erkundete Ebenen:', rotations:'Drehungen:',
+        normalMode:'Normal', calcMode:'Rechenmodus',
+        showOnGear:'Zeig es mir am Zahnrad!', nextExample:'Nächstes Beispiel →',
+        numberAtPointer:'Zahl am Zeiger', selectPlane:'Ebene wählen', rotateSelected:'Ausgewählte Ebene drehen',
+        antiClockwise:'Gegen den Uhrzeigersinn', clockwise:'Im Uhrzeigersinn',
+        autoSpin:'▶ Auto-Drehung', stopSpin:'⏸ Stopp', resetThisRing:'↺ Diese Ebene',
+        gearActions:'Zahnrad-Aktionen', resetAll:'↺ Alles zurücksetzen', mixChallenge:'🎲 Mix-Herausforderung', exitChallenge:'✕ Herausforderung beenden',
+        mixChallengeTitle:'🎯 Mix-Herausforderung',
+        mixChallengeDesc:'Alle Ebenen sind durcheinander! Klicke eine Ebene an und drehe sie mit <strong>↺ gegen den Uhrzeigersinn</strong> oder <strong>↻ im Uhrzeigersinn</strong>, bis ihre Bezugszahl am <strong>orangen Pfeil</strong> ausgerichtet ist.',
+        selectPlaneToBegin:'Wähle eine Ebene, um zu beginnen',
+        plane:'Ebene {n}', planeRange:'{a}–{b}',
+        windowDetail:'Ebene {n}  ·  Schritt {step}  =  {num}', windowTable:'Reihe: {table}',
+        ringReset:'Ebene {n} zurückgesetzt ↺', allReset:'Alle Ebenen auf Bezugspunkt zurückgesetzt ↺', ringsMixed:'Ebenen gemischt! 🎲 Richte alle aus!',
+        mixAligned:'✓ Ebene {n} ist ausgerichtet! Wähle eine andere Ebene.',
+        mixRotateCw:'Ebene {n}: drehe ↻ im Uhrzeigersinn {steps} Schritte.',
+        mixRotateCcw:'Ebene {n}: drehe ↺ gegen den Uhrzeigersinn {steps} Schritte.',
+        mixComplete:'🎉 Alle Ebenen ausgerichtet! Gut gemacht!',
+        mixProgress:'{n} / 10 Ebenen ausgerichtet',
+        exampleOf:'Beispiel {i} von {total}', usePlane:'Nutze Ebene {n}  (zählt {n}, {n2}, {n3}…{n10})',
+        findCountAdd:'Finde {start} auf Ebene {plane}, zähle dann {steps} Schritte — im Uhrzeigersinn.',
+        findCountSub:'Finde {start} auf Ebene {plane}, zähle dann {steps} Schritte — gegen den Uhrzeigersinn.',
+        equationLine:'{start} {sym} {steps} = {answer}',
+        startedAt:'Start bei {start} auf Ebene {plane}, {dir} {steps} Schritte.',
+        movingCw:'im Uhrzeigersinn', movingCcw:'gegen den Uhrzeigersinn',
+        landsOn:'{answer} = {factor} × {mult} — landet genau auf einer Ringzahl! ✓',
+        sitsBetween:'{answer} liegt zwischen {lo} und {hi} auf Ebene {mult}.'
+    },
+    fr: {
+        subHeading:'Engrenage numérique',
+        gearIntro:"L'engrenage numérique a <strong>10 plans rotatifs</strong>. Chaque plan compte par multiples — le plan 1 commence à <strong>1</strong> et compte 1, 2, 3 … jusqu'à 10. Le plan 2 commence à <strong>2</strong> et compte 2, 4, 6 … jusqu'à 20. Le plan 3 commence à <strong>3</strong> et compte 3, 6, 9 … jusqu'à 30, et ainsi de suite. Le plan 10 commence à <strong>10</strong> et compte 10, 20, 30 … jusqu'à 100. La <strong>flèche orange ▼</strong> marque le point de référence — le premier nombre de chaque plan s'aligne toujours là !",
+        planesExplored:'Plans explorés :', rotations:'Rotations :',
+        normalMode:'Normal', calcMode:'Mode calcul',
+        showOnGear:"Montre-moi sur l'engrenage !", nextExample:'Exemple suivant →',
+        numberAtPointer:'Nombre au repère', selectPlane:'Choisir un plan', rotateSelected:'Faire tourner le plan choisi',
+        antiClockwise:'Sens antihoraire', clockwise:'Sens horaire',
+        autoSpin:'▶ Rotation auto', stopSpin:'⏸ Arrêter', resetThisRing:'↺ Ce plan',
+        gearActions:"Actions de l'engrenage", resetAll:'↺ Tout réinitialiser', mixChallenge:'🎲 Défi mélange', exitChallenge:'✕ Quitter le défi',
+        mixChallengeTitle:'🎯 Défi mélange',
+        mixChallengeDesc:'Tous les plans sont mélangés ! Clique sur un plan, puis utilise <strong>↺ Sens antihoraire</strong> ou <strong>↻ Sens horaire</strong> pour le tourner jusqu\'à ce que son nombre de référence soit aligné avec la <strong>flèche orange</strong>.',
+        selectPlaneToBegin:'Choisis un plan pour commencer',
+        plane:'Plan {n}', planeRange:'{a}–{b}',
+        windowDetail:'Plan {n}  ·  étape {step}  =  {num}', windowTable:'Table : {table}',
+        ringReset:'Plan {n} réinitialisé ↺', allReset:'Tous les plans réinitialisés ↺', ringsMixed:'Plans mélangés ! 🎲 Aligne-les tous !',
+        mixAligned:'✓ Le plan {n} est aligné ! Choisis un autre plan.',
+        mixRotateCw:'Plan {n} : tourne ↻ sens horaire de {steps} pas.',
+        mixRotateCcw:'Plan {n} : tourne ↺ sens antihoraire de {steps} pas.',
+        mixComplete:'🎉 Tous les plans sont alignés ! Bravo !',
+        mixProgress:'{n} / 10 plans alignés',
+        exampleOf:'Exemple {i} sur {total}', usePlane:'Utilise le plan {n}  (compte {n}, {n2}, {n3}…{n10})',
+        findCountAdd:'Trouve {start} sur le plan {plane}, puis compte {steps} pas — sens horaire.',
+        findCountSub:'Trouve {start} sur le plan {plane}, puis compte {steps} pas — sens antihoraire.',
+        equationLine:'{start} {sym} {steps} = {answer}',
+        startedAt:'Départ à {start} sur le plan {plane}, {dir} de {steps} pas.',
+        movingCw:'en sens horaire', movingCcw:'en sens antihoraire',
+        landsOn:'{answer} = {factor} × {mult} — tombe juste sur un nombre de l\'anneau ! ✓',
+        sitsBetween:'{answer} se situe entre {lo} et {hi} sur le plan {mult}.'
+    },
+    ar: {
+        subHeading:'تروس الأرقام',
+        gearIntro:'تحتوي تروس الأرقام على <strong>10 طبقات دوارة</strong>. كل طبقة تعد بالمضاعفات — الطبقة 1 تبدأ من <strong>1</strong> وتعد 1، 2، 3 … حتى 10. الطبقة 2 تبدأ من <strong>2</strong> وتعد 2، 4، 6 … حتى 20. الطبقة 3 تبدأ من <strong>3</strong> وتعد 3، 6، 9 … حتى 30، وهكذا. الطبقة 10 تبدأ من <strong>10</strong> وتعد 10، 20، 30 … حتى 100. <strong>السهم البرتقالي ▼</strong> يحدد نقطة المرجع — أول رقم في كل طبقة يصطف هناك دائماً!',
+        planesExplored:'الطبقات المستكشفة:', rotations:'الدورات:',
+        normalMode:'عادي', calcMode:'وضع الحساب',
+        showOnGear:'أرني على التروس!', nextExample:'المثال التالي ←',
+        numberAtPointer:'الرقم عند المؤشر', selectPlane:'اختر طبقة', rotateSelected:'تدوير الطبقة المختارة',
+        antiClockwise:'عكس عقارب الساعة', clockwise:'مع عقارب الساعة',
+        autoSpin:'▶ دوران تلقائي', stopSpin:'⏸ إيقاف', resetThisRing:'↺ هذه الطبقة',
+        gearActions:'إجراءات التروس', resetAll:'↺ إعادة تعيين الكل', mixChallenge:'🎲 تحدي المزج', exitChallenge:'✕ الخروج من التحدي',
+        mixChallengeTitle:'🎯 تحدي المزج',
+        mixChallengeDesc:'تم خلط جميع الطبقات! اضغط على طبقة، ثم استخدم <strong>↺ عكس عقارب الساعة</strong> أو <strong>↻ مع عقارب الساعة</strong> لتدويرها حتى يتطابق رقمها المرجعي مع <strong>السهم البرتقالي</strong>.',
+        selectPlaneToBegin:'اختر طبقة للبدء',
+        plane:'الطبقة {n}', planeRange:'{a}–{b}',
+        windowDetail:'الطبقة {n}  ·  الخطوة {step}  =  {num}', windowTable:'الجدول: {table}',
+        ringReset:'تمت إعادة تعيين الطبقة {n} ↺', allReset:'تمت إعادة تعيين جميع الطبقات ↺', ringsMixed:'تم مزج الطبقات! 🎲 رتّبها جميعاً!',
+        mixAligned:'✓ الطبقة {n} متطابقة! اختر طبقة أخرى.',
+        mixRotateCw:'الطبقة {n}: أدرها ↻ مع عقارب الساعة {steps} خطوة.',
+        mixRotateCcw:'الطبقة {n}: أدرها ↺ عكس عقارب الساعة {steps} خطوة.',
+        mixComplete:'🎉 جميع الطبقات متطابقة! أحسنت!',
+        mixProgress:'{n} / 10 طبقات متطابقة',
+        exampleOf:'المثال {i} من {total}', usePlane:'استخدم الطبقة {n}  (تعد {n}، {n2}، {n3}…{n10})',
+        findCountAdd:'ابحث عن {start} في الطبقة {plane}، ثم عد {steps} خطوة — مع عقارب الساعة.',
+        findCountSub:'ابحث عن {start} في الطبقة {plane}، ثم عد {steps} خطوة — عكس عقارب الساعة.',
+        equationLine:'{start} {sym} {steps} = {answer}',
+        startedAt:'البداية من {start} في الطبقة {plane}، {dir} {steps} خطوة.',
+        movingCw:'مع عقارب الساعة', movingCcw:'عكس عقارب الساعة',
+        landsOn:'{answer} = {factor} × {mult} — يقع تماماً على رقم في الحلقة! ✓',
+        sitsBetween:'{answer} يقع بين {lo} و {hi} في الطبقة {mult}.'
+    },
+    zh: {
+        subHeading:'数字齿轮',
+        gearIntro:'数字齿轮有<strong>10个旋转层</strong>。每一层按倍数计数——第1层从<strong>1</strong>开始，数1、2、3……一直到10。第2层从<strong>2</strong>开始，数2、4、6……一直到20。第3层从<strong>3</strong>开始，数3、6、9……一直到30，以此类推。第10层从<strong>10</strong>开始，数10、20、30……一直到100。<strong>橙色箭头▼</strong>标记参考点——每一层的第一个数字总是对齐在那里！',
+        planesExplored:'已探索层数：', rotations:'旋转次数：',
+        normalMode:'普通模式', calcMode:'计算模式',
+        showOnGear:'在齿轮上演示给我看！', nextExample:'下一个例子 →',
+        numberAtPointer:'指针处的数字', selectPlane:'选择一层', rotateSelected:'旋转选中的层',
+        antiClockwise:'逆时针', clockwise:'顺时针',
+        autoSpin:'▶ 自动旋转', stopSpin:'⏸ 停止', resetThisRing:'↺ 重置此层',
+        gearActions:'齿轮操作', resetAll:'↺ 全部重置', mixChallenge:'🎲 混合挑战', exitChallenge:'✕ 退出挑战',
+        mixChallengeTitle:'🎯 混合挑战',
+        mixChallengeDesc:'所有层都被打乱了！点击一层，然后用<strong>↺ 逆时针</strong>或<strong>↻ 顺时针</strong>旋转它，直到它的参考数字对准<strong>橙色箭头</strong>。',
+        selectPlaneToBegin:'选择一层开始',
+        plane:'第{n}层', planeRange:'{a}–{b}',
+        windowDetail:'第{n}层 · 第{step}步 = {num}', windowTable:'数列：{table}',
+        ringReset:'第{n}层已重置 ↺', allReset:'所有层已重置到参考点 ↺', ringsMixed:'各层已打乱！🎲 把它们全部对齐吧！',
+        mixAligned:'✓ 第{n}层已对齐！选择另一层。',
+        mixRotateCw:'第{n}层：顺时针旋转 {steps} 步。',
+        mixRotateCcw:'第{n}层：逆时针旋转 {steps} 步。',
+        mixComplete:'🎉 所有层都对齐了！做得好！',
+        mixProgress:'{n} / 10 层已对齐',
+        exampleOf:'第 {i} 个例子（共 {total} 个）', usePlane:'使用第{n}层（数 {n}、{n2}、{n3}……{n10}）',
+        findCountAdd:'在第{plane}层找到 {start}，然后数 {steps} 步——顺时针。',
+        findCountSub:'在第{plane}层找到 {start}，然后数 {steps} 步——逆时针。',
+        equationLine:'{start} {sym} {steps} = {answer}',
+        startedAt:'从第{plane}层的 {start} 开始，{dir} {steps} 步。',
+        movingCw:'顺时针移动', movingCcw:'逆时针移动',
+        landsOn:'{answer} = {factor} × {mult} —— 正好落在一个齿轮数字上！✓',
+        sitsBetween:'{answer} 位于第{mult}层的 {lo} 和 {hi} 之间。'
+    }
+};
+
 /* ================================================================
    GEOMETRY
    CANVAS = 560 × 560   CX = CY = 280
@@ -1145,7 +1303,7 @@ function buildRingGrid() {
             + (i === activePlane ? ' active' : '')
             + (aligned ? ' aligned' : '');
         btn.id = 'ring-btn-' + i;
-        btn.innerHTML = `<strong>Plane ${i+1}</strong><br><small>${i+1}–${(i+1)*10}</small>`;
+        btn.innerHTML = `<strong>${NG_LevelI18n.t(L3, 'plane', { n: i + 1 })}</strong><br><small>${NG_LevelI18n.t(L3, 'planeRange', { a: i + 1, b: (i + 1) * 10 })}</small>`;
         if (aligned) {
             const chk = document.createElement('div');
             chk.className = 'ring-check';
@@ -1204,7 +1362,7 @@ function resetActiveRing() {
     updateWindowDisplay();
     drawGear();
     if (mixMode) checkMixProgress();
-    showToast('Plane ' + (activePlane + 1) + ' reset ↺', '');
+    showToast(NG_LevelI18n.t(L3, 'ringReset', { n: activePlane + 1 }), '');
 }
 
 function resetAllRings() {
@@ -1216,7 +1374,7 @@ function resetAllRings() {
     updateWindowDisplay();
     updateStats();
     drawGear();
-    showToast('All planes reset to reference ↺', '');
+    showToast(NG_LevelI18n.t(L3, 'allReset'), '');
     NG_Speech.sayInstruction('All planes reset. The reference numbers are lined up.');
 }
 
@@ -1231,14 +1389,14 @@ function toggleSpin() {
     if (spinInterval) stopSpin(); else startSpin();
 }
 function startSpin() {
-    document.getElementById('spinBtn').textContent = '⏸ Stop';
+    document.getElementById('spinBtn').textContent = NG_LevelI18n.t(L3, 'stopSpin');
     document.getElementById('spinBtn').classList.add('spinning');
     spinInterval = setInterval(rotateCW, 650);
 }
 function stopSpin() {
     clearInterval(spinInterval);
     spinInterval = null;
-    document.getElementById('spinBtn').textContent = '▶ Auto-Spin';
+    document.getElementById('spinBtn').textContent = NG_LevelI18n.t(L3, 'autoSpin');
     document.getElementById('spinBtn').classList.remove('spinning');
 }
 
@@ -1252,7 +1410,7 @@ function toggleMix() {
 function startMix() {
     if (spinInterval) stopSpin();
     mixMode = true;
-    document.getElementById('mixBtn').textContent  = '✕ Exit Challenge';
+    document.getElementById('mixBtn').textContent  = NG_LevelI18n.t(L3, 'exitChallenge');
     document.getElementById('mixBtn').classList.add('active');
     document.getElementById('mixCard').classList.add('show');
 
@@ -1268,20 +1426,20 @@ function startMix() {
     updateStats();
     drawGear();
     checkMixProgress();
-    showToast('Rings mixed! 🎲 Line them all up!', '');
+    showToast(NG_LevelI18n.t(L3, 'ringsMixed'), '');
     NG_Speech.sayInstruction('Mix challenge! Rotate each plane until its number lines up with the reference arrow.');
 }
 
 function exitMixMode() {
     mixMode = false;
-    document.getElementById('mixBtn').textContent = '🎲 Mix Challenge';
+    document.getElementById('mixBtn').textContent = NG_LevelI18n.t(L3, 'mixChallenge');
     document.getElementById('mixBtn').classList.remove('active');
     document.getElementById('mixCard').classList.remove('show');
 }
 
 function checkMixProgress() {
     const aligned = ringOffsets.filter(o => o === 0).length;
-    document.getElementById('mixProgLabel').textContent = `${aligned} / 10 planes aligned`;
+    document.getElementById('mixProgLabel').textContent = NG_LevelI18n.t(L3, 'mixProgress', { n: aligned });
     document.getElementById('mixProgFill').style.width  = (aligned * 10) + '%';
     updateMixHint();
     if (aligned === NUM_RINGS) onMixComplete();
@@ -1292,15 +1450,15 @@ function updateMixHint() {
     const offset  = ringOffsets[activePlane];
     if (offset === 0) {
         hintEl.className = 'mix-hint aligned';
-        hintEl.textContent = `✓ Plane ${activePlane + 1} is aligned! Select another plane.`;
+        hintEl.textContent = NG_LevelI18n.t(L3, 'mixAligned', { n: activePlane + 1 });
     } else {
         hintEl.className = 'mix-hint';
         const cwSteps  = SLOTS - offset;
         const ccwSteps = offset;
         if (cwSteps <= ccwSteps) {
-            hintEl.textContent = `Plane ${activePlane + 1}: rotate ↻ clockwise ${cwSteps} step${cwSteps > 1 ? 's' : ''}.`;
+            hintEl.textContent = NG_LevelI18n.t(L3, 'mixRotateCw', { n: activePlane + 1, steps: cwSteps, plural: cwSteps > 1 ? 's' : '' });
         } else {
-            hintEl.textContent = `Plane ${activePlane + 1}: rotate ↺ anti-clockwise ${ccwSteps} step${ccwSteps > 1 ? 's' : ''}.`;
+            hintEl.textContent = NG_LevelI18n.t(L3, 'mixRotateCcw', { n: activePlane + 1, steps: ccwSteps, plural: ccwSteps > 1 ? 's' : '' });
         }
     }
 }
@@ -1310,7 +1468,7 @@ function onMixComplete() {
     exitMixMode();
     buildRingGrid();
     drawGear();
-    showToast('🎉 All rings aligned! Well done!', 'success');
+    showToast(NG_LevelI18n.t(L3, 'mixComplete'), 'success');
     NG_Speech.sayInstruction('Very good! All rings are lined up. You solved the mix challenge!');
     NG_Storage.setLvl3Score(Math.min(100, NG_Storage.getLvl3Score() + 20));
 }
@@ -1328,9 +1486,9 @@ function updateWindowDisplay() {
     el.textContent = num;
 
     document.getElementById('windowDetail').textContent =
-        `Plane ${activePlane + 1}  ·  step ${step}  =  ${num}`;
+        NG_LevelI18n.t(L3, 'windowDetail', { n: activePlane + 1, step, num });
     document.getElementById('windowTable').textContent =
-        `Table: ${table}`;
+        NG_LevelI18n.t(L3, 'windowTable', { table });
 }
 
 /* ================================================================
@@ -1365,20 +1523,20 @@ function showToast(msg, type) {
    CALC MODE — EXAMPLES
 ================================================================ */
 
-// All examples: { ring (0-based), start, op, steps, desc }
+// All examples: { ring (0-based), start, op, steps }
 const EXAMPLES = [
-    { ring:2, start:15, op:'add', steps:9,  desc:'Find 15 on Plane 3, then count 9 steps — move clockwise.' },
-    { ring:2, start:24, op:'sub', steps:6,  desc:'Find 24 on Plane 3, then count 6 steps — move anticlockwise.' },
-    { ring:1, start:8,  op:'add', steps:6,  desc:'Find 8 on Plane 2, then count 6 steps — move clockwise.' },
-    { ring:1, start:14, op:'sub', steps:4,  desc:'Find 14 on Plane 2, then count 4 steps — move anticlockwise.' },
-    { ring:4, start:25, op:'add', steps:10, desc:'Find 25 on Plane 5, then count 10 steps — move clockwise.' },
-    { ring:4, start:40, op:'sub', steps:15, desc:'Find 40 on Plane 5, then count 15 steps — move anticlockwise.' },
-    { ring:3, start:16, op:'add', steps:8,  desc:'Find 16 on Plane 4, then count 8 steps — move clockwise.' },
-    { ring:3, start:32, op:'sub', steps:12, desc:'Find 32 on Plane 4, then count 12 steps — move anticlockwise.' },
-    { ring:5, start:18, op:'add', steps:12, desc:'Find 18 on Plane 6, then count 12 steps — move clockwise.' },
-    { ring:6, start:21, op:'add', steps:14, desc:'Find 21 on Plane 7, then count 14 steps — move clockwise.' },
-    { ring:7, start:32, op:'add', steps:16, desc:'Find 32 on Plane 8, then count 16 steps — move clockwise.' },
-    { ring:8, start:27, op:'add', steps:18, desc:'Find 27 on Plane 9, then count 18 steps — move clockwise.' },
+    { ring:2, start:15, op:'add', steps:9 },
+    { ring:2, start:24, op:'sub', steps:6 },
+    { ring:1, start:8,  op:'add', steps:6 },
+    { ring:1, start:14, op:'sub', steps:4 },
+    { ring:4, start:25, op:'add', steps:10 },
+    { ring:4, start:40, op:'sub', steps:15 },
+    { ring:3, start:16, op:'add', steps:8 },
+    { ring:3, start:32, op:'sub', steps:12 },
+    { ring:5, start:18, op:'add', steps:12 },
+    { ring:6, start:21, op:'add', steps:14 },
+    { ring:7, start:32, op:'add', steps:16 },
+    { ring:8, start:27, op:'add', steps:18 },
 ];
 
 let currentExampleIdx = 0;
@@ -1389,10 +1547,10 @@ function loadExample(idx) {
     const ans  = ex.op === 'add' ? ex.start + ex.steps : ex.start - ex.steps;
     const mult = ex.ring + 1;
 
-    document.getElementById('exBadge').textContent   = `Example ${idx + 1} of ${EXAMPLES.length}`;
+    document.getElementById('exBadge').textContent   = NG_LevelI18n.t(L3, 'exampleOf', { i: idx + 1, total: EXAMPLES.length });
     document.getElementById('exSum').textContent      = `${ex.start} ${sym} ${ex.steps}`;
-    document.getElementById('exRingHint').textContent = `Use Plane ${mult}  (counts ${mult}, ${mult*2}, ${mult*3}…${mult*10})`;
-    document.getElementById('exDesc').textContent     = ex.desc;
+    document.getElementById('exRingHint').textContent = NG_LevelI18n.t(L3, 'usePlane', { n: mult, n2: mult*2, n3: mult*3, n10: mult*10 });
+    document.getElementById('exDesc').textContent     = NG_LevelI18n.t(L3, ex.op === 'add' ? 'findCountAdd' : 'findCountSub', { start: ex.start, plane: mult, steps: ex.steps });
 
     // Reset result
     document.getElementById('calcResult').classList.remove('show');
@@ -1446,16 +1604,16 @@ function runExample() {
 
 function showExampleResult(ex, answer, mult) {
     const sym    = ex.op === 'add' ? '+' : '−';
-    const opWord = ex.op === 'add' ? 'moving clockwise' : 'moving anticlockwise';
+    const dir    = ex.op === 'add' ? NG_LevelI18n.t(L3, 'movingCw') : NG_LevelI18n.t(L3, 'movingCcw');
 
-    document.getElementById('crEquation').textContent = `${ex.start} ${sym} ${ex.steps} = ${answer}`;
+    document.getElementById('crEquation').textContent = NG_LevelI18n.t(L3, 'equationLine', { start: ex.start, sym, steps: ex.steps, answer });
     document.getElementById('crSteps').textContent =
-        `Started at ${ex.start} on Plane ${mult}, ${opWord} ${ex.steps} step${ex.steps > 1 ? 's' : ''}.`;
+        NG_LevelI18n.t(L3, 'startedAt', { start: ex.start, plane: mult, dir, steps: ex.steps, plural: ex.steps > 1 ? 's' : '' });
 
     const nearestMultiple = Math.round(answer / mult) * mult;
     const hint = nearestMultiple === answer
-        ? `${answer} = ${answer/mult} × ${mult} — lands right on a ring number! ✓`
-        : `${answer} sits between ${Math.floor(answer/mult)*mult} and ${Math.ceil(answer/mult)*mult} on Plane ${mult}.`;
+        ? NG_LevelI18n.t(L3, 'landsOn', { answer, factor: answer/mult, mult })
+        : NG_LevelI18n.t(L3, 'sitsBetween', { answer, lo: Math.floor(answer/mult)*mult, hi: Math.ceil(answer/mult)*mult, mult });
     document.getElementById('crHint').textContent = hint;
 
     document.getElementById('calcResult').classList.add('show');
@@ -1493,6 +1651,7 @@ function buildCalcRingGrid() {
    INIT
 ================================================================ */
 document.addEventListener('DOMContentLoaded', function () {
+    NG_LevelI18n.applyStatic(L3);
     buildRingGrid();
     updateWindowDisplay();
     updateStats();

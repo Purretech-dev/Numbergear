@@ -38,11 +38,15 @@ const NG_LevelI18n = (function () {
     }
 
     // Applies translations to every element tagged with
-    // data-i18n="key" (sets textContent) or data-i18n-title="key"
-    // (sets the title attribute, for tooltips).
+    // data-i18n="key" (sets textContent), data-i18n-html="key"
+    // (sets innerHTML — for text with embedded <strong> etc.),
+    // data-i18n-title="key" (tooltip), or data-i18n-placeholder="key".
     function applyStatic(dict) {
         document.querySelectorAll('[data-i18n]').forEach(function (el) {
             el.textContent = t(dict, el.getAttribute('data-i18n'));
+        });
+        document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+            el.innerHTML = t(dict, el.getAttribute('data-i18n-html'));
         });
         document.querySelectorAll('[data-i18n-title]').forEach(function (el) {
             el.title = t(dict, el.getAttribute('data-i18n-title'));
