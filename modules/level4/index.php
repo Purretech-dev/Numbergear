@@ -17,6 +17,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
     <link rel="stylesheet" href="../../assets/css/style.css">
     <script src="../../assets/js/accessibility.js"></script>
     <script src="../../assets/js/i18n-common.js"></script>
+    <script src="../../assets/js/i18n-level.js"></script>
     <style>
         .gear-intro {
             font-size: 14px;
@@ -393,7 +394,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
             <div class="brand-icon">✖️</div>
             <div>
                 <h1 id="lvlHeading">Level 4</h1>
-                <p>Multiply &amp; Divide</p>
+                <p data-i18n="subHeading">Multiply &amp; Divide</p>
             </div>
         </div>
         <a href="../../index.php" class="back-btn" id="lvlBackLink">← Home</a>
@@ -401,12 +402,12 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
     <main class="level-page">
 
-        <div class="instruction-banner">
+        <div class="instruction-banner" data-i18n="instructionBanner">
             ✖️ Watch how multiplying and dividing work on the gear — then try the quiz yourself!
         </div>
 
         <!-- Explainer -->
-        <p class="gear-intro">
+        <p class="gear-intro" data-i18n-html="gearIntro">
             Both multiplication and division work the <strong>same way</strong> on this gear: start at <strong>0</strong> on the reference arrow ▼ and spin <strong>clockwise ↻</strong>, counting each spin.
             🟢 <strong>Multiply:</strong> count a fixed number of spins — the number at the arrow is your answer.
             🟣 <strong>Divide:</strong> keep spinning until your number appears at the arrow — the spins you counted is your answer.
@@ -414,8 +415,8 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
         <!-- Mode tabs -->
         <div class="tab-bar" style="margin-bottom:16px;">
-            <button class="tab-btn active" id="modeChalBtn"  onclick="setMode('challenge')" >🎯 Illustrated</button>
-            <button class="tab-btn"        id="modeQuizBtn"  onclick="setMode('quiz')"      >🧮 Quiz</button>
+            <button class="tab-btn active" id="modeChalBtn"  onclick="setMode('challenge')" data-i18n="tabIllustrated">🎯 Illustrated</button>
+            <button class="tab-btn"        id="modeQuizBtn"  onclick="setMode('quiz')"      data-i18n="tabQuiz">🧮 Quiz</button>
         </div>
 
         <!-- ===== CHALLENGE MODE ===== -->
@@ -425,8 +426,8 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
                 <!-- LEFT — gear canvas (reused) -->
                 <div class="gear-left">
                     <div class="stats-row">
-                        <div class="stat-chip-sm">Planes explored: <span id="tablesExplored2">0</span>/10</div>
-                        <div class="stat-chip-sm">Score: <span id="quizScore2">0</span></div>
+                        <div class="stat-chip-sm"><span data-i18n="planesExplored">Planes explored:</span> <span id="tablesExplored2">0</span>/10</div>
+                        <div class="stat-chip-sm"><span data-i18n="score">Score:</span> <span id="quizScore2">0</span></div>
                     </div>
                     <canvas id="gearCanvas4b" width="560" height="560"></canvas>
 
@@ -437,15 +438,15 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
                     <!-- Operation picker -->
                     <div class="ctrl-card">
-                        <div class="card-title">Choose an operation</div>
+                        <div class="card-title" data-i18n="chooseOperation">Choose an operation</div>
                         <div class="rot-row">
                             <button class="rot-btn cw" id="opMultBtn" onclick="selectOp('multiply')">
                                 <span class="rot-icon">✖️</span>
-                                <span>Multiply</span>
+                                <span data-i18n="multiply">Multiply</span>
                             </button>
                             <button class="rot-btn cw" id="opDivBtn" onclick="selectOp('divide')" style="border-color:var(--purple);color:var(--purple-dark);background:var(--purple-light);">
                                 <span class="rot-icon">➗</span>
-                                <span>Divide</span>
+                                <span data-i18n="divide">Divide</span>
                             </button>
                         </div>
                     </div>
@@ -460,12 +461,12 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
                     <!-- Show on gear -->
                     <button class="ex-go-btn" id="showOnGearBtn" onclick="showOnGear()">
-                        <span class="ex-go-icon">⚙️</span> Show on Gear!
+                        <span class="ex-go-icon">⚙️</span> <span data-i18n="showOnGear">Show on Gear!</span>
                     </button>
 
                     <!-- How it works -->
                     <div id="chalStepCard" style="display:none;" class="ctrl-card">
-                        <div class="card-title">How it works</div>
+                        <div class="card-title" data-i18n="howItWorks">How it works</div>
                         <div id="chalStepText" style="font-size:14px;font-weight:700;color:var(--text);line-height:1.8;"></div>
                     </div>
 
@@ -473,7 +474,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
                     <div id="chalIllustResult" style="display:none;" class="ctrl-card">
                         <div id="chalIllustEq"  style="font-size:28px;font-weight:900;color:var(--mint-dark);text-align:center;"></div>
                         <div id="chalIllustSub" style="font-size:13px;font-weight:700;color:var(--text-soft);text-align:center;margin-top:4px;"></div>
-                        <button class="ex-next-btn" onclick="nextExample4()" style="margin-top:10px;">Next Example →</button>
+                        <button class="ex-next-btn" onclick="nextExample4()" style="margin-top:10px;" data-i18n="nextExample">Next Example →</button>
                     </div>
 
                 </div>
@@ -487,25 +488,25 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
                 <!-- LEFT — quiz gear canvas + rotate controls -->
                 <div class="gear-left">
                     <div class="stats-row">
-                        <div class="stat-chip-sm">Correct: <span id="qzCorrect">0</span></div>
-                        <div class="stat-chip-sm">Streak: <span id="qzStreak">0</span></div>
-                        <div class="stat-chip-sm">Score: <span id="qzScore">0</span></div>
+                        <div class="stat-chip-sm"><span data-i18n="correctLabel">Correct:</span> <span id="qzCorrect">0</span></div>
+                        <div class="stat-chip-sm"><span data-i18n="streakLabel">Streak:</span> <span id="qzStreak">0</span></div>
+                        <div class="stat-chip-sm"><span data-i18n="score">Score:</span> <span id="qzScore">0</span></div>
                     </div>
                     <canvas id="gearCanvasQz" width="560" height="560"></canvas>
                     <div style="width:100%;max-width:560px;">
                         <div class="ctrl-card" style="margin-top:10px;">
-                            <div class="card-title">Rotate the gear to find your answer</div>
+                            <div class="card-title" data-i18n="rotateToFind">Rotate the gear to find your answer</div>
                             <div class="rot-row">
                                 <button class="rot-btn ccw" onclick="qzRotateCCW()">
-                                    <span class="rot-icon">↺</span><span>Anti-clockwise</span>
+                                    <span class="rot-icon">↺</span><span data-i18n="antiClockwise">Anti-clockwise</span>
                                 </button>
                                 <button class="rot-btn cw" onclick="qzRotateCW()">
-                                    <span class="rot-icon">↻</span><span>Clockwise</span>
+                                    <span class="rot-icon">↻</span><span data-i18n="clockwise">Clockwise</span>
                                 </button>
                             </div>
                             <div class="sub-row">
-                                <button class="spin-btn" id="qzSpinBtn" onclick="qzToggleSpin()">▶ Auto-Spin</button>
-                                <button class="reset-ring-btn" onclick="qzResetPlane()">↺ Reset plane</button>
+                                <button class="spin-btn" id="qzSpinBtn" onclick="qzToggleSpin()" data-i18n="autoSpin">▶ Auto-Spin</button>
+                                <button class="reset-ring-btn" onclick="qzResetPlane()" data-i18n="resetPlane">↺ Reset plane</button>
                             </div>
                         </div>
                     </div>
@@ -516,13 +517,13 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
                     <!-- Operation selector -->
                     <div class="ctrl-card">
-                        <div class="card-title">Choose operation</div>
+                        <div class="card-title" data-i18n="chooseOperationQuiz">Choose operation</div>
                         <div class="rot-row">
                             <button class="rot-btn cw"  id="qzMultBtn" onclick="qzSelectOp('multiply')">
-                                <span class="rot-icon">✖️</span><span>Multiply</span>
+                                <span class="rot-icon">✖️</span><span data-i18n="multiply">Multiply</span>
                             </button>
                             <button class="rot-btn cw" id="qzDivBtn"  onclick="qzSelectOp('divide')" style="border-color:var(--purple);color:var(--purple-dark);background:var(--purple-light);">
-                                <span class="rot-icon">➗</span><span>Divide</span>
+                                <span class="rot-icon">➗</span><span data-i18n="divide">Divide</span>
                             </button>
                         </div>
                     </div>
@@ -540,20 +541,20 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
                     <!-- Plane selector -->
                     <div class="ctrl-card">
-                        <div class="card-title">Select a plane</div>
+                        <div class="card-title" data-i18n="selectPlane">Select a plane</div>
                         <div class="ring-grid" id="qzPlaneGrid"></div>
                     </div>
 
                     <!-- Submit -->
                     <button class="ex-go-btn" id="qzSubmitBtn" onclick="qzSubmit()">
-                        <span class="ex-go-icon">✓</span> Submit Answer
+                        <span class="ex-go-icon">✓</span> <span data-i18n="submitAnswer">Submit Answer</span>
                     </button>
 
                     <!-- Feedback -->
                     <div id="qzFeedback" style="display:none;" class="ctrl-card">
                         <div class="card-title" id="qzFeedbackTitle">Result</div>
                         <div id="qzFeedbackBody" style="font-size:14px;font-weight:700;color:var(--text);line-height:1.8;"></div>
-                        <button class="ex-next-btn" onclick="qzNext()" style="margin-top:10px;">Next Question →</button>
+                        <button class="ex-next-btn" onclick="qzNext()" style="margin-top:10px;" data-i18n="nextQuestion">Next Question →</button>
                     </div>
 
                 </div>
@@ -573,6 +574,163 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 </script>
 <script src="../../assets/js/storage.js"></script>
 <script>
+/* ================================================================
+   LEVEL 4 — translations (visible text only; narration stays
+   English — see speech.js)
+================================================================ */
+const L4 = {
+    en: {
+        subHeading:'Multiply & Divide',
+        instructionBanner:'✖️ Watch how multiplying and dividing work on the gear — then try the quiz yourself!',
+        gearIntro:'Both multiplication and division work the <strong>same way</strong> on this gear: start at <strong>0</strong> on the reference arrow ▼ and spin <strong>clockwise ↻</strong>, counting each spin. 🟢 <strong>Multiply:</strong> count a fixed number of spins — the number at the arrow is your answer. 🟣 <strong>Divide:</strong> keep spinning until your number appears at the arrow — the spins you counted is your answer.',
+        tabIllustrated:'🎯 Illustrated', tabQuiz:'🧮 Quiz',
+        planesExplored:'Planes explored:', score:'Score:', correctLabel:'Correct:', streakLabel:'Streak:',
+        chooseOperation:'Choose an operation', chooseOperationQuiz:'Choose operation',
+        multiply:'Multiply', divide:'Divide',
+        showOnGear:'Show on Gear!', howItWorks:'How it works', nextExample:'Next Example →',
+        exampleOf:'Example {i} of {total}', usePlaneCounts:'Use Plane {n} (counts in {n}s)',
+        descMultiply:'Start at 0 on the reference arrow. Rotate clockwise ↻ and count {steps} spins — the number at the arrow is your answer!',
+        descDivide:'Start at 0 on the reference arrow. Rotate clockwise ↻ and count the spins until {dividend} reaches the arrow — the spins counted is your answer!',
+        stepMultiplyHtml:'Step 1: <strong>Plane {plane}</strong> counts in {plane}s. Start with <strong>0</strong> at the reference arrow ▼.<br>Step 2: Rotate <strong>clockwise ↻</strong>, one spin at a time, counting as you go: 1, 2, 3… up to <strong>{steps} spins</strong>.<br>Step 3: Read the number now sitting at the arrow — that\'s your answer.<br>{plane} × {steps} = <strong>{result}</strong>',
+        stepDivideHtml:'Step 1: <strong>Plane {plane}</strong> counts in {plane}s. Start with <strong>0</strong> at the reference arrow ▼.<br>Step 2: Rotate <strong>clockwise ↻</strong>, one spin at a time, counting as you go, until <strong>{dividend}</strong> lands on the arrow.<br>Step 3: Count how many spins you took to get there — that\'s your answer.<br>{dividend} ÷ {plane} = <strong>{quotient}</strong>',
+        illustSubMultiply:'{plane} jumped {steps} spins clockwise to land on {result}',
+        illustSubDivide:'Rotated clockwise {quotient} spins until {dividend} reached the arrow — counted {quotient} spins!',
+        numberAtArrow:'Number at arrow: {n}',
+        rotateToFind:'Rotate the gear to find your answer',
+        selectPlane:'Select a plane', submitAnswer:'Submit Answer', nextQuestion:'Next Question →',
+        antiClockwise:'Anti-clockwise', clockwise:'Clockwise', autoSpin:'▶ Auto-Spin', stopSpin:'⏸ Stop', resetPlane:'↺ Reset plane',
+        multiplication:'Multiplication', division:'Division',
+        hintMultiplyHtml:'Start at <strong>0</strong> on the reference arrow ▼. Use <strong>Plane {a}</strong> and rotate <strong>clockwise ↻</strong>, counting {b} spins — then read the number at the arrow.',
+        hintDivideHtml:'Start at <strong>0</strong> on the reference arrow ▼. Use <strong>Plane {a}</strong> and rotate <strong>clockwise ↻</strong>, counting your spins, until <strong>{answer}</strong> reaches the arrow — the spins you counted is your answer.',
+        correctTitle:'✅ Correct!', notQuiteTitle:'❌ Not quite!',
+        feedbackCorrectMultiplyHtml:'Well done! <strong>{a} × {b} = {answer}</strong>.<br>You selected Plane {a} and spun {b} spins clockwise to land on {answer}. ✓',
+        feedbackCorrectDivideHtml:'Well done! <strong>{answer} ÷ {a} = {b}</strong>.<br>You found {answer} on Plane {a} — it is {b} spins from 0. ✓',
+        feedbackWrongMultiplyHtml:'The answer is <strong>{answer}</strong>.<br>Select Plane {a}, spin clockwise {b} spins — the arrow shows <strong>{answer}</strong>.',
+        feedbackWrongDivideHtml:'The answer is <strong>{b}</strong>.<br>Select Plane {a}, rotate until <strong>{answer}</strong> is at the arrow — that is {b} spins from 0.',
+        spinsLabel:'↻ {n} spin{plural}'
+    },
+    de: {
+        subHeading:'Multiplizieren & Dividieren',
+        instructionBanner:'✖️ Sieh dir an, wie Multiplikation und Division am Zahnrad funktionieren — probiere danach das Quiz!',
+        gearIntro:'Multiplikation und Division funktionieren <strong>genauso</strong> auf diesem Zahnrad: Starte bei <strong>0</strong> am Bezugspfeil ▼ und drehe <strong>im Uhrzeigersinn ↻</strong>, dabei zählst du jede Drehung. 🟢 <strong>Multiplizieren:</strong> zähle eine feste Anzahl von Drehungen — die Zahl am Pfeil ist deine Antwort. 🟣 <strong>Dividieren:</strong> drehe weiter, bis deine Zahl am Pfeil erscheint — die gezählten Drehungen sind deine Antwort.',
+        tabIllustrated:'🎯 Anschaulich', tabQuiz:'🧮 Quiz',
+        planesExplored:'Erkundete Ebenen:', score:'Punkte:', correctLabel:'Richtig:', streakLabel:'Serie:',
+        chooseOperation:'Wähle eine Rechenart', chooseOperationQuiz:'Rechenart wählen',
+        multiply:'Multiplizieren', divide:'Dividieren',
+        showOnGear:'Am Zahnrad zeigen!', howItWorks:'So funktioniert es', nextExample:'Nächstes Beispiel →',
+        exampleOf:'Beispiel {i} von {total}', usePlaneCounts:'Nutze Ebene {n} (zählt in {n}er-Schritten)',
+        descMultiply:'Starte bei 0 am Bezugspfeil. Drehe im Uhrzeigersinn ↻ und zähle {steps} Drehungen — die Zahl am Pfeil ist deine Antwort!',
+        descDivide:'Starte bei 0 am Bezugspfeil. Drehe im Uhrzeigersinn ↻ und zähle, bis {dividend} am Pfeil erscheint — die gezählten Drehungen sind deine Antwort!',
+        stepMultiplyHtml:'Schritt 1: <strong>Ebene {plane}</strong> zählt in {plane}er-Schritten. Starte mit <strong>0</strong> am Bezugspfeil ▼.<br>Schritt 2: Drehe <strong>im Uhrzeigersinn ↻</strong>, eine Drehung nach der anderen: 1, 2, 3… bis <strong>{steps} Drehungen</strong>.<br>Schritt 3: Lies die Zahl am Pfeil ab — das ist deine Antwort.<br>{plane} × {steps} = <strong>{result}</strong>',
+        stepDivideHtml:'Schritt 1: <strong>Ebene {plane}</strong> zählt in {plane}er-Schritten. Starte mit <strong>0</strong> am Bezugspfeil ▼.<br>Schritt 2: Drehe <strong>im Uhrzeigersinn ↻</strong>, eine Drehung nach der anderen, bis <strong>{dividend}</strong> am Pfeil ankommt.<br>Schritt 3: Zähle, wie viele Drehungen du gebraucht hast — das ist deine Antwort.<br>{dividend} ÷ {plane} = <strong>{quotient}</strong>',
+        illustSubMultiply:'{plane} sprang {steps} Drehungen im Uhrzeigersinn und landete auf {result}',
+        illustSubDivide:'Im Uhrzeigersinn {quotient} Drehungen, bis {dividend} den Pfeil erreichte — {quotient} Drehungen gezählt!',
+        numberAtArrow:'Zahl am Pfeil: {n}',
+        rotateToFind:'Drehe das Zahnrad, um die Antwort zu finden',
+        selectPlane:'Ebene wählen', submitAnswer:'Antwort abgeben', nextQuestion:'Nächste Frage →',
+        antiClockwise:'Gegen den Uhrzeigersinn', clockwise:'Im Uhrzeigersinn', autoSpin:'▶ Auto-Drehung', stopSpin:'⏸ Stopp', resetPlane:'↺ Ebene zurücksetzen',
+        multiplication:'Multiplikation', division:'Division',
+        hintMultiplyHtml:'Starte bei <strong>0</strong> am Bezugspfeil ▼. Nutze <strong>Ebene {a}</strong> und drehe <strong>im Uhrzeigersinn ↻</strong>, zähle {b} Drehungen — lies dann die Zahl am Pfeil ab.',
+        hintDivideHtml:'Starte bei <strong>0</strong> am Bezugspfeil ▼. Nutze <strong>Ebene {a}</strong> und drehe <strong>im Uhrzeigersinn ↻</strong>, bis <strong>{answer}</strong> den Pfeil erreicht — die gezählten Drehungen sind deine Antwort.',
+        correctTitle:'✅ Richtig!', notQuiteTitle:'❌ Nicht ganz!',
+        feedbackCorrectMultiplyHtml:'Gut gemacht! <strong>{a} × {b} = {answer}</strong>.<br>Du hast Ebene {a} gewählt und {b} Drehungen im Uhrzeigersinn gemacht, um auf {answer} zu landen. ✓',
+        feedbackCorrectDivideHtml:'Gut gemacht! <strong>{answer} ÷ {a} = {b}</strong>.<br>Du hast {answer} auf Ebene {a} gefunden — das sind {b} Drehungen von 0. ✓',
+        feedbackWrongMultiplyHtml:'Die Antwort ist <strong>{answer}</strong>.<br>Wähle Ebene {a}, drehe {b} Drehungen im Uhrzeigersinn — der Pfeil zeigt <strong>{answer}</strong>.',
+        feedbackWrongDivideHtml:'Die Antwort ist <strong>{b}</strong>.<br>Wähle Ebene {a}, drehe, bis <strong>{answer}</strong> am Pfeil steht — das sind {b} Drehungen von 0.',
+        spinsLabel:'↻ {n} Drehungen'
+    },
+    fr: {
+        subHeading:'Multiplier et diviser',
+        instructionBanner:"✖️ Regarde comment la multiplication et la division fonctionnent sur l'engrenage — puis essaie le quiz !",
+        gearIntro:"La multiplication et la division fonctionnent <strong>de la même façon</strong> sur cet engrenage : pars de <strong>0</strong> à la flèche de référence ▼ et tourne <strong>dans le sens horaire ↻</strong>, en comptant chaque tour. 🟢 <strong>Multiplier :</strong> compte un nombre fixe de tours — le nombre à la flèche est ta réponse. 🟣 <strong>Diviser :</strong> continue de tourner jusqu'à ce que ton nombre apparaisse à la flèche — les tours comptés sont ta réponse.",
+        tabIllustrated:'🎯 Illustré', tabQuiz:'🧮 Quiz',
+        planesExplored:'Plans explorés :', score:'Score :', correctLabel:'Correct :', streakLabel:'Série :',
+        chooseOperation:'Choisis une opération', chooseOperationQuiz:'Choisir une opération',
+        multiply:'Multiplier', divide:'Diviser',
+        showOnGear:"Montre-moi sur l'engrenage !", howItWorks:'Comment ça marche', nextExample:'Exemple suivant →',
+        exampleOf:'Exemple {i} sur {total}', usePlaneCounts:'Utilise le plan {n} (compte en {n})',
+        descMultiply:'Pars de 0 à la flèche de référence. Tourne dans le sens horaire ↻ et compte {steps} tours — le nombre à la flèche est ta réponse !',
+        descDivide:'Pars de 0 à la flèche de référence. Tourne dans le sens horaire ↻ et compte jusqu\'à ce que {dividend} atteigne la flèche — les tours comptés sont ta réponse !',
+        stepMultiplyHtml:'Étape 1 : le <strong>plan {plane}</strong> compte en {plane}. Commence à <strong>0</strong> à la flèche de référence ▼.<br>Étape 2 : tourne <strong>dans le sens horaire ↻</strong>, un tour à la fois : 1, 2, 3… jusqu\'à <strong>{steps} tours</strong>.<br>Étape 3 : lis le nombre à la flèche — c\'est ta réponse.<br>{plane} × {steps} = <strong>{result}</strong>',
+        stepDivideHtml:'Étape 1 : le <strong>plan {plane}</strong> compte en {plane}. Commence à <strong>0</strong> à la flèche de référence ▼.<br>Étape 2 : tourne <strong>dans le sens horaire ↻</strong>, un tour à la fois, jusqu\'à ce que <strong>{dividend}</strong> arrive à la flèche.<br>Étape 3 : compte combien de tours tu as fait — c\'est ta réponse.<br>{dividend} ÷ {plane} = <strong>{quotient}</strong>',
+        illustSubMultiply:'{plane} a sauté {steps} tours dans le sens horaire pour atterrir sur {result}',
+        illustSubDivide:'Tourné dans le sens horaire {quotient} fois jusqu\'à ce que {dividend} atteigne la flèche — {quotient} tours comptés !',
+        numberAtArrow:'Nombre à la flèche : {n}',
+        rotateToFind:"Tourne l'engrenage pour trouver ta réponse",
+        selectPlane:'Choisir un plan', submitAnswer:'Valider la réponse', nextQuestion:'Question suivante →',
+        antiClockwise:'Sens antihoraire', clockwise:'Sens horaire', autoSpin:'▶ Rotation auto', stopSpin:'⏸ Arrêter', resetPlane:'↺ Réinitialiser le plan',
+        multiplication:'Multiplication', division:'Division',
+        hintMultiplyHtml:'Pars de <strong>0</strong> à la flèche de référence ▼. Utilise le <strong>plan {a}</strong> et tourne <strong>dans le sens horaire ↻</strong>, en comptant {b} tours — puis lis le nombre à la flèche.',
+        hintDivideHtml:'Pars de <strong>0</strong> à la flèche de référence ▼. Utilise le <strong>plan {a}</strong> et tourne <strong>dans le sens horaire ↻</strong>, en comptant tes tours, jusqu\'à ce que <strong>{answer}</strong> atteigne la flèche — les tours comptés sont ta réponse.',
+        correctTitle:'✅ Correct !', notQuiteTitle:'❌ Pas tout à fait !',
+        feedbackCorrectMultiplyHtml:'Bien joué ! <strong>{a} × {b} = {answer}</strong>.<br>Tu as choisi le plan {a} et tourné {b} fois dans le sens horaire pour atterrir sur {answer}. ✓',
+        feedbackCorrectDivideHtml:'Bien joué ! <strong>{answer} ÷ {a} = {b}</strong>.<br>Tu as trouvé {answer} sur le plan {a} — c\'est {b} tours depuis 0. ✓',
+        feedbackWrongMultiplyHtml:'La réponse est <strong>{answer}</strong>.<br>Choisis le plan {a}, tourne {b} fois dans le sens horaire — la flèche montre <strong>{answer}</strong>.',
+        feedbackWrongDivideHtml:'La réponse est <strong>{b}</strong>.<br>Choisis le plan {a}, tourne jusqu\'à ce que <strong>{answer}</strong> soit à la flèche — c\'est {b} tours depuis 0.',
+        spinsLabel:'↻ {n} tours'
+    },
+    ar: {
+        subHeading:'الضرب والقسمة',
+        instructionBanner:'✖️ شاهد كيف يعمل الضرب والقسمة على التروس — ثم جرّب الاختبار بنفسك!',
+        gearIntro:'يعمل الضرب والقسمة <strong>بنفس الطريقة</strong> على هذه التروس: ابدأ من <strong>0</strong> عند السهم المرجعي ▼ وأدر <strong>مع عقارب الساعة ↻</strong>، معدّاً كل دورة. 🟢 <strong>الضرب:</strong> عدّ عدداً ثابتاً من الدورات — الرقم عند السهم هو إجابتك. 🟣 <strong>القسمة:</strong> استمر بالدوران حتى يظهر رقمك عند السهم — الدورات التي عددتها هي إجابتك.',
+        tabIllustrated:'🎯 توضيحي', tabQuiz:'🧮 اختبار',
+        planesExplored:'الطبقات المستكشفة:', score:'النقاط:', correctLabel:'صحيح:', streakLabel:'متتالية:',
+        chooseOperation:'اختر عملية', chooseOperationQuiz:'اختر العملية',
+        multiply:'ضرب', divide:'قسمة',
+        showOnGear:'أرني على التروس!', howItWorks:'كيف يعمل', nextExample:'المثال التالي ←',
+        exampleOf:'المثال {i} من {total}', usePlaneCounts:'استخدم الطبقة {n} (تعد بمضاعفات {n})',
+        descMultiply:'ابدأ من 0 عند السهم المرجعي. أدر مع عقارب الساعة ↻ وعدّ {steps} دورة — الرقم عند السهم هو إجابتك!',
+        descDivide:'ابدأ من 0 عند السهم المرجعي. أدر مع عقارب الساعة ↻ وعدّ حتى يصل {dividend} إلى السهم — الدورات التي عددتها هي إجابتك!',
+        stepMultiplyHtml:'الخطوة 1: <strong>الطبقة {plane}</strong> تعد بمضاعفات {plane}. ابدأ من <strong>0</strong> عند السهم المرجعي ▼.<br>الخطوة 2: أدر <strong>مع عقارب الساعة ↻</strong>، دورة تلو الأخرى: 1، 2، 3… حتى <strong>{steps} دورة</strong>.<br>الخطوة 3: اقرأ الرقم عند السهم — هذه إجابتك.<br>{plane} × {steps} = <strong>{result}</strong>',
+        stepDivideHtml:'الخطوة 1: <strong>الطبقة {plane}</strong> تعد بمضاعفات {plane}. ابدأ من <strong>0</strong> عند السهم المرجعي ▼.<br>الخطوة 2: أدر <strong>مع عقارب الساعة ↻</strong>، دورة تلو الأخرى، حتى يصل <strong>{dividend}</strong> إلى السهم.<br>الخطوة 3: عدّ كم دورة استغرقت — هذه إجابتك.<br>{dividend} ÷ {plane} = <strong>{quotient}</strong>',
+        illustSubMultiply:'قفزت {plane} {steps} دورة مع عقارب الساعة لتصل إلى {result}',
+        illustSubDivide:'دوران مع عقارب الساعة {quotient} مرة حتى وصل {dividend} إلى السهم — تم عدّ {quotient} دورة!',
+        numberAtArrow:'الرقم عند السهم: {n}',
+        rotateToFind:'أدر التروس لتجد إجابتك',
+        selectPlane:'اختر طبقة', submitAnswer:'إرسال الإجابة', nextQuestion:'السؤال التالي ←',
+        antiClockwise:'عكس عقارب الساعة', clockwise:'مع عقارب الساعة', autoSpin:'▶ دوران تلقائي', stopSpin:'⏸ إيقاف', resetPlane:'↺ إعادة تعيين الطبقة',
+        multiplication:'الضرب', division:'القسمة',
+        hintMultiplyHtml:'ابدأ من <strong>0</strong> عند السهم المرجعي ▼. استخدم <strong>الطبقة {a}</strong> وأدر <strong>مع عقارب الساعة ↻</strong>، عادّاً {b} دورة — ثم اقرأ الرقم عند السهم.',
+        hintDivideHtml:'ابدأ من <strong>0</strong> عند السهم المرجعي ▼. استخدم <strong>الطبقة {a}</strong> وأدر <strong>مع عقارب الساعة ↻</strong>، عادّاً دوراتك، حتى يصل <strong>{answer}</strong> إلى السهم — الدورات التي عددتها هي إجابتك.',
+        correctTitle:'✅ صحيح!', notQuiteTitle:'❌ ليس تماماً!',
+        feedbackCorrectMultiplyHtml:'أحسنت! <strong>{a} × {b} = {answer}</strong>.<br>اخترت الطبقة {a} وأدرت {b} دورة مع عقارب الساعة لتصل إلى {answer}. ✓',
+        feedbackCorrectDivideHtml:'أحسنت! <strong>{answer} ÷ {a} = {b}</strong>.<br>وجدت {answer} في الطبقة {a} — وهي {b} دورة من 0. ✓',
+        feedbackWrongMultiplyHtml:'الإجابة هي <strong>{answer}</strong>.<br>اختر الطبقة {a}، وأدر {b} دورة مع عقارب الساعة — يُظهر السهم <strong>{answer}</strong>.',
+        feedbackWrongDivideHtml:'الإجابة هي <strong>{b}</strong>.<br>اختر الطبقة {a}، وأدر حتى يصبح <strong>{answer}</strong> عند السهم — وهي {b} دورة من 0.',
+        spinsLabel:'↻ {n} دورة'
+    },
+    zh: {
+        subHeading:'乘法与除法',
+        instructionBanner:'✖️ 看看乘法和除法在齿轮上是如何运作的——然后自己试试测验！',
+        gearIntro:'乘法和除法在这个齿轮上的运作方式<strong>完全相同</strong>：从参考箭头▼处的<strong>0</strong>开始，<strong>顺时针↻</strong>旋转，并数每一次旋转。🟢 <strong>乘法：</strong>数固定次数的旋转——箭头处的数字就是答案。🟣 <strong>除法：</strong>持续旋转直到你的数字出现在箭头处——你数的旋转次数就是答案。',
+        tabIllustrated:'🎯 图解', tabQuiz:'🧮 测验',
+        planesExplored:'已探索层数：', score:'分数：', correctLabel:'正确：', streakLabel:'连续：',
+        chooseOperation:'选择一种运算', chooseOperationQuiz:'选择运算',
+        multiply:'乘法', divide:'除法',
+        showOnGear:'在齿轮上演示！', howItWorks:'原理说明', nextExample:'下一个例子 →',
+        exampleOf:'第 {i} 个例子（共 {total} 个）', usePlaneCounts:'使用第{n}层（按{n}的倍数计数）',
+        descMultiply:'从参考箭头处的0开始。顺时针↻旋转并数 {steps} 次——箭头处的数字就是答案！',
+        descDivide:'从参考箭头处的0开始。顺时针↻旋转并数，直到 {dividend} 到达箭头处——数到的次数就是答案！',
+        stepMultiplyHtml:'第1步：<strong>第{plane}层</strong>按{plane}的倍数计数。从参考箭头▼处的<strong>0</strong>开始。<br>第2步：<strong>顺时针↻</strong>旋转，一次一次地数：1、2、3……一直到<strong>{steps}次</strong>。<br>第3步：读出箭头处现在的数字——那就是答案。<br>{plane} × {steps} = <strong>{result}</strong>',
+        stepDivideHtml:'第1步：<strong>第{plane}层</strong>按{plane}的倍数计数。从参考箭头▼处的<strong>0</strong>开始。<br>第2步：<strong>顺时针↻</strong>旋转，一次一次地数，直到<strong>{dividend}</strong>落在箭头处。<br>第3步：数一数你转了多少次——那就是答案。<br>{dividend} ÷ {plane} = <strong>{quotient}</strong>',
+        illustSubMultiply:'{plane} 顺时针跳了 {steps} 次，落在了 {result}',
+        illustSubDivide:'顺时针旋转了 {quotient} 次，直到 {dividend} 到达箭头处——数到了 {quotient} 次！',
+        numberAtArrow:'箭头处的数字：{n}',
+        rotateToFind:'旋转齿轮找到你的答案',
+        selectPlane:'选择一层', submitAnswer:'提交答案', nextQuestion:'下一题 →',
+        antiClockwise:'逆时针', clockwise:'顺时针', autoSpin:'▶ 自动旋转', stopSpin:'⏸ 停止', resetPlane:'↺ 重置该层',
+        multiplication:'乘法', division:'除法',
+        hintMultiplyHtml:'从参考箭头▼处的<strong>0</strong>开始。使用<strong>第{a}层</strong>，<strong>顺时针↻</strong>旋转，数 {b} 次——然后读出箭头处的数字。',
+        hintDivideHtml:'从参考箭头▼处的<strong>0</strong>开始。使用<strong>第{a}层</strong>，<strong>顺时针↻</strong>旋转，数你转的次数，直到<strong>{answer}</strong>到达箭头处——你数的次数就是答案。',
+        correctTitle:'✅ 正确！', notQuiteTitle:'❌ 不太对！',
+        feedbackCorrectMultiplyHtml:'做得好！<strong>{a} × {b} = {answer}</strong>。<br>你选择了第{a}层，顺时针转了 {b} 次，落在了 {answer}。✓',
+        feedbackCorrectDivideHtml:'做得好！<strong>{answer} ÷ {a} = {b}</strong>。<br>你在第{a}层找到了 {answer}——它距离0是 {b} 次。✓',
+        feedbackWrongMultiplyHtml:'答案是 <strong>{answer}</strong>。<br>选择第{a}层，顺时针转 {b} 次——箭头会显示 <strong>{answer}</strong>。',
+        feedbackWrongDivideHtml:'答案是 <strong>{b}</strong>。<br>选择第{a}层，旋转直到 <strong>{answer}</strong> 到达箭头处——那是距离0的 {b} 次。',
+        spinsLabel:'↻ {n} 次'
+    }
+};
+
 /* ================================================================
    CONSTANTS
 ================================================================ */
@@ -690,28 +848,22 @@ function loadExample4() {
     const b    = chalOp === 'multiply' ? ex.steps    : ex.plane;
     const ans  = chalOp === 'multiply' ? ex.result   : ex.quotient;
 
-    document.getElementById('exBadge4').textContent = `Example ${chalExIdx + 1} of ${total}`;
+    document.getElementById('exBadge4').textContent = NG_LevelI18n.t(L4, 'exampleOf', { i: chalExIdx + 1, total });
     document.getElementById('exSum4').textContent   = `${a} ${sym} ${b} = ?`;
-    document.getElementById('exHint4').textContent  = `Use Plane ${ex.plane} (counts in ${ex.plane}s)`;
+    document.getElementById('exHint4').textContent  = NG_LevelI18n.t(L4, 'usePlaneCounts', { n: ex.plane });
 
     // Uniform explainer structure for both operations:
     // 1) Where we start  2) Direction + what to count  3) How to read the answer
     if (chalOp === 'multiply') {
         document.getElementById('exDesc4').textContent =
-            `Start at 0 on the reference arrow. Rotate clockwise ↻ and count ${ex.steps} spins — the number at the arrow is your answer!`;
+            NG_LevelI18n.t(L4, 'descMultiply', { steps: ex.steps });
         document.getElementById('chalStepText').innerHTML =
-            `Step 1: <strong>Plane ${ex.plane}</strong> counts in ${ex.plane}s. Start with <strong>0</strong> at the reference arrow ▼.<br>` +
-            `Step 2: Rotate <strong>clockwise ↻</strong>, one spin at a time, counting as you go: 1, 2, 3… up to <strong>${ex.steps} spins</strong>.<br>` +
-            `Step 3: Read the number now sitting at the arrow — that's your answer.<br>` +
-            `${ex.plane} × ${ex.steps} = <strong>${ex.result}</strong>`;
+            NG_LevelI18n.t(L4, 'stepMultiplyHtml', { plane: ex.plane, steps: ex.steps, result: ex.result });
     } else {
         document.getElementById('exDesc4').textContent =
-            `Start at 0 on the reference arrow. Rotate clockwise ↻ and count the spins until ${ex.dividend} reaches the arrow — the spins counted is your answer!`;
+            NG_LevelI18n.t(L4, 'descDivide', { dividend: ex.dividend });
         document.getElementById('chalStepText').innerHTML =
-            `Step 1: <strong>Plane ${ex.plane}</strong> counts in ${ex.plane}s. Start with <strong>0</strong> at the reference arrow ▼.<br>` +
-            `Step 2: Rotate <strong>clockwise ↻</strong>, one spin at a time, counting as you go, until <strong>${ex.dividend}</strong> lands on the arrow.<br>` +
-            `Step 3: Count how many spins you took to get there — that's your answer.<br>` +
-            `${ex.dividend} ÷ ${ex.plane} = <strong>${ex.quotient}</strong>`;
+            NG_LevelI18n.t(L4, 'stepDivideHtml', { plane: ex.plane, dividend: ex.dividend, quotient: ex.quotient });
     }
 
     document.getElementById('chalStepCard').style.display     = 'none';
@@ -764,11 +916,11 @@ function showOnGear() {
             clearInterval(chalAnimTimer4);
             if (chalOp === 'multiply') {
                 document.getElementById('chalIllustEq').textContent  = `${ex.plane} × ${ex.steps} = ${ex.result}`;
-                document.getElementById('chalIllustSub').textContent = `${ex.plane} jumped ${ex.steps} spins clockwise to land on ${ex.result}`;
+                document.getElementById('chalIllustSub').textContent = NG_LevelI18n.t(L4, 'illustSubMultiply', { plane: ex.plane, steps: ex.steps, result: ex.result });
                 NG_Speech.sayInstruction(`${ex.plane} times ${ex.steps} equals ${ex.result}.`);
             } else {
                 document.getElementById('chalIllustEq').textContent  = `${ex.dividend} ÷ ${ex.plane} = ${ex.quotient}`;
-                document.getElementById('chalIllustSub').textContent = `Rotated clockwise ${ex.quotient} spins until ${ex.dividend} reached the arrow — counted ${ex.quotient} spins!`;
+                document.getElementById('chalIllustSub').textContent = NG_LevelI18n.t(L4, 'illustSubDivide', { quotient: ex.quotient, dividend: ex.dividend });
                 NG_Speech.sayInstruction(`${ex.dividend} divided by ${ex.plane} equals ${ex.quotient}.`);
             }
             document.getElementById('chalIllustResult').style.display = 'block';
@@ -931,7 +1083,7 @@ function drawGear4b() {
         ctx4b.font = 'bold 13px Nunito, sans-serif';
         ctx4b.fillStyle = color;
         ctx4b.textAlign = 'center';
-        ctx4b.fillText(label + ' spin' + (stepsDone > 1 ? 's' : ''), CX, CY - GEAR_OUTER - 22);
+        ctx4b.fillText(NG_LevelI18n.t(L4, 'spinsLabel', { n: stepsDone, plural: stepsDone > 1 ? 's' : '' }), CX, CY - GEAR_OUTER - 22);
 
         // Current value at arrow — large label just inside the outer edge
         const atArrowVal = (activeTable4b + 1) * (tableOffsets4b[activeTable4b] || 0);
@@ -1019,7 +1171,7 @@ function qzSelectOp(op) {
         mBtn.style.opacity = '0.5'; mBtn.style.fontWeight = '700';
     }
     document.getElementById('qzOpLabel').textContent =
-        op === 'multiply' ? 'Multiplication' : 'Division';
+        op === 'multiply' ? NG_LevelI18n.t(L4, 'multiplication') : NG_LevelI18n.t(L4, 'division');
     qzGenerateQuestion();
 }
 
@@ -1040,7 +1192,7 @@ function qzGenerateQuestion() {
         qzQuestion = { op:'multiply', a, b, answer };
         document.getElementById('qzQuestion').textContent = `${a} × ${b} = ?`;
         document.getElementById('qzHint').innerHTML =
-            `Start at <strong>0</strong> on the reference arrow ▼. Use <strong>Plane ${a}</strong> and rotate <strong>clockwise ↻</strong>, counting ${b} spins — then read the number at the arrow.`;
+            NG_LevelI18n.t(L4, 'hintMultiplyHtml', { a, b });
         // Pre-select the right plane
         qzActivePlane = a - 1;
     } else {
@@ -1054,7 +1206,7 @@ function qzGenerateQuestion() {
         qzDivPointerRad = (270 + b * 36) * Math.PI / 180;
         document.getElementById('qzQuestion').textContent = `${answer} ÷ ${a} = ?`;
         document.getElementById('qzHint').innerHTML =
-            `Start at <strong>0</strong> on the reference arrow ▼. Use <strong>Plane ${a}</strong> and rotate <strong>clockwise ↻</strong>, counting your spins, until <strong>${answer}</strong> reaches the arrow — the spins you counted is your answer.`;
+            NG_LevelI18n.t(L4, 'hintDivideHtml', { a, answer });
         qzActivePlane = a - 1;
     }
 
@@ -1108,20 +1260,20 @@ function qzToggleSpin() {
     if (qzSpinInterval) qzStopSpin(); else qzStartSpin();
 }
 function qzStartSpin() {
-    document.getElementById('qzSpinBtn').textContent = '⏸ Stop';
+    document.getElementById('qzSpinBtn').textContent = NG_LevelI18n.t(L4, 'stopSpin');
     document.getElementById('qzSpinBtn').classList.add('spinning');
     qzSpinInterval = setInterval(qzRotateCW, 600);
 }
 function qzStopSpin() {
     clearInterval(qzSpinInterval);
     qzSpinInterval = null;
-    document.getElementById('qzSpinBtn').textContent = '▶ Auto-Spin';
+    document.getElementById('qzSpinBtn').textContent = NG_LevelI18n.t(L4, 'autoSpin');
     document.getElementById('qzSpinBtn').classList.remove('spinning');
 }
 
 function updateQzPointer() {
     const val = (qzActivePlane + 1) * qzOffset;
-    document.getElementById('qzPointerVal').textContent = `Number at arrow: ${val}`;
+    document.getElementById('qzPointerVal').textContent = NG_LevelI18n.t(L4, 'numberAtArrow', { n: val });
 }
 
 function qzHear() {
@@ -1163,14 +1315,12 @@ function qzSubmit() {
         qzCorrectCount++;
         qzStreakCount++;
         qzScoreCount += 10 + (qzStreakCount > 2 ? 5 : 0);
-        document.getElementById('qzFeedbackTitle').textContent = '✅ Correct!';
+        document.getElementById('qzFeedbackTitle').textContent = NG_LevelI18n.t(L4, 'correctTitle');
         document.getElementById('qzFeedbackTitle').style.color  = 'var(--mint-dark)';
         document.getElementById('qzFeedbackBody').innerHTML =
             q.op === 'multiply'
-                ? `Well done! <strong>${q.a} × ${q.b} = ${q.answer}</strong>.<br>` +
-                  `You selected Plane ${q.a} and spun ${q.b} spins clockwise to land on ${q.answer}. ✓`
-                : `Well done! <strong>${q.answer} ÷ ${q.a} = ${q.b}</strong>.<br>` +
-                  `You found ${q.answer} on Plane ${q.a} — it is ${q.b} spins from 0. ✓`;
+                ? NG_LevelI18n.t(L4, 'feedbackCorrectMultiplyHtml', { a: q.a, b: q.b, answer: q.answer })
+                : NG_LevelI18n.t(L4, 'feedbackCorrectDivideHtml', { a: q.a, b: q.b, answer: q.answer });
         NG_Speech.sayInstruction(
             q.op === 'multiply'
                 ? `Correct! ${q.a} times ${q.b} equals ${q.answer}.`
@@ -1178,13 +1328,12 @@ function qzSubmit() {
         );
     } else {
         qzStreakCount = 0;
-        document.getElementById('qzFeedbackTitle').textContent = '❌ Not quite!';
+        document.getElementById('qzFeedbackTitle').textContent = NG_LevelI18n.t(L4, 'notQuiteTitle');
         document.getElementById('qzFeedbackTitle').style.color  = 'var(--peach-dark)';
-        const expected = q.op === 'multiply'
-            ? `Select Plane ${q.a}, spin clockwise ${q.b} spins — the arrow shows <strong>${q.answer}</strong>.`
-            : `Select Plane ${q.a}, rotate until <strong>${q.answer}</strong> is at the arrow — that is ${q.b} spins from 0.`;
         document.getElementById('qzFeedbackBody').innerHTML =
-            `The answer is <strong>${q.op === 'multiply' ? q.answer : q.b}</strong>.<br>${expected}`;
+            q.op === 'multiply'
+                ? NG_LevelI18n.t(L4, 'feedbackWrongMultiplyHtml', { a: q.a, b: q.b, answer: q.answer })
+                : NG_LevelI18n.t(L4, 'feedbackWrongDivideHtml', { a: q.a, b: q.b, answer: q.answer });
         NG_Speech.sayInstruction(
             q.op === 'multiply'
                 ? `Not quite. ${q.a} times ${q.b} equals ${q.answer}.`
@@ -1407,6 +1556,7 @@ function qzDrawGear() {
    INIT
 ================================================================ */
 document.addEventListener('DOMContentLoaded', function () {
+    NG_LevelI18n.applyStatic(L4);
     initChallenge();
 
     setTimeout(() => {
