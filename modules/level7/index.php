@@ -17,6 +17,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
     <link rel="stylesheet" href="../../assets/css/style.css">
     <script src="../../assets/js/accessibility.js"></script>
     <script src="../../assets/js/i18n-common.js"></script>
+    <script src="../../assets/js/i18n-level.js"></script>
     <style>
 
         /* ===== PAGE WRAP ===== */
@@ -302,7 +303,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
             <div class="brand-icon">🥇</div>
             <div>
                 <h1 id="lvlHeading">Level 7</h1>
-                <p>Ordinal Numbers</p>
+                <p data-i18n="subtitle">Ordinal Numbers</p>
             </div>
         </div>
         <a href="../../index.php" class="back-btn" id="lvlBackLink">← Home</a>
@@ -315,8 +316,8 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
         <div class="explainer-card">
             <div class="ex-icon">🥇</div>
             <div class="ex-body">
-                <h3>What are Ordinal Numbers?</h3>
-                <p>
+                <h3 data-i18n="explainerTitle">What are Ordinal Numbers?</h3>
+                <p data-i18n-html="explainerBodyHtml">
                     <strong>Cardinal numbers</strong> tell us <em>how many</em> — 1, 2, 3…
                     <strong>Ordinal numbers</strong> tell us <em>the position</em> — <strong>1st, 2nd, 3rd</strong>…
                     Like finishing a race: <strong>1st</strong> = first, <strong>2nd</strong> = second, <strong>3rd</strong> = third!
@@ -329,15 +330,15 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
         <div class="mode-tabs">
             <button class="mode-tab active" id="tabLearn" onclick="setMode('learn')">
                 <span class="tab-icon">📖</span>
-                Learn
+                <span data-i18n="tabLearn">Learn</span>
             </button>
             <button class="mode-tab" id="tabMatch" onclick="setMode('match')">
                 <span class="tab-icon">🔗</span>
-                Match
+                <span data-i18n="tabMatch">Match</span>
             </button>
             <button class="mode-tab" id="tabSpell" onclick="setMode('spell')">
                 <span class="tab-icon">✏️</span>
-                Spell It
+                <span data-i18n="tabSpell">Spell It</span>
             </button>
         </div>
 
@@ -352,7 +353,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
             <!-- Learned count -->
             <div class="learned-banner-l6">
-                <strong id="learnedCount">0</strong> of 100 ordinal numbers heard ✓
+                <strong id="learnedCount">0</strong> <span data-i18n="learnedBannerLabel">of 100 ordinal numbers heard ✓</span>
             </div>
 
         </div>
@@ -374,10 +375,10 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
                 <!-- Question card -->
                 <div class="match-question-card" id="matchQuestionCard">
-                    <div class="match-prompt" id="matchPrompt">What is the ordinal number for this position?</div>
+                    <div class="match-prompt" id="matchPrompt" data-i18n="matchPromptDefault">What is the ordinal number for this position?</div>
                     <div class="match-big" id="matchBig">–</div>
-                    <div class="match-sub" id="matchSub">Choose the correct ordinal word below</div>
-                    <button class="match-replay-btn" onclick="replayMatch()">🔊 Hear it again</button>
+                    <div class="match-sub" id="matchSub" data-i18n="matchSubDefault">Choose the correct ordinal word below</div>
+                    <button class="match-replay-btn" onclick="replayMatch()" data-i18n="hearAgainBtn">🔊 Hear it again</button>
                 </div>
 
                 <!-- Choices -->
@@ -385,18 +386,18 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
                 <!-- Score -->
                 <div class="match-score-row">
-                    <div class="score-chip-l6">✅ Correct: <span id="matchCorrect">0</span></div>
-                    <div class="score-chip-l6">🔥 Streak: <span id="matchStreak">0</span></div>
+                    <div class="score-chip-l6"><span data-i18n="correctChip">✅ Correct:</span> <span id="matchCorrect">0</span></div>
+                    <div class="score-chip-l6"><span data-i18n="streakChip">🔥 Streak:</span> <span id="matchStreak">0</span></div>
                 </div>
 
                 <!-- Completion with flowers -->
                 <div class="completion-card" id="matchCompletion">
                     <div class="comp-flowers" id="matchCompFlowers">🌸 🌺 🌼</div>
-                    <div class="comp-title"   id="matchCompTitle">Well Done!</div>
-                    <div class="comp-sub"     id="matchCompSub">You matched all 10 ordinal numbers!</div>
+                    <div class="comp-title"   id="matchCompTitle" data-i18n="wellDoneTitle">Well Done!</div>
+                    <div class="comp-sub"     id="matchCompSub" data-i18n="matchCompSubDefault">You matched all 10 ordinal numbers!</div>
                     <div class="comp-btns">
-                        <button class="btn btn-sky" id="matchNextBatchBtn">Next Batch →</button>
-                        <button class="btn btn-outline" onclick="startMatch(1)">Start Over 🔁</button>
+                        <button class="btn btn-sky" id="matchNextBatchBtn" data-i18n="nextBatchBtn">Next Batch →</button>
+                        <button class="btn btn-outline" onclick="startMatch(1)" data-i18n="startOverBtn">Start Over 🔁</button>
                     </div>
                 </div>
 
@@ -417,9 +418,9 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
                 <!-- Question card -->
                 <div class="spell-question-card">
-                    <div class="spell-prompt">What is the ordinal word for this number?</div>
+                    <div class="spell-prompt" data-i18n="spellPromptText">What is the ordinal word for this number?</div>
                     <div class="spell-big" id="spellBig">–</div>
-                    <div class="spell-sub" id="spellSub">e.g. 1 → first, 2 → second</div>
+                    <div class="spell-sub" id="spellSub" data-i18n="spellSubExample">e.g. 1 → first, 2 → second</div>
                 </div>
 
                 <!-- Choices -->
@@ -427,18 +428,18 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
                 <!-- Score -->
                 <div class="match-score-row">
-                    <div class="score-chip-l6" style="border-color:var(--peach);">✅ Correct: <span id="spellCorrect" style="color:var(--peach-dark);">0</span></div>
-                    <div class="score-chip-l6" style="border-color:var(--peach);">🔥 Streak: <span id="spellStreak" style="color:var(--peach-dark);">0</span></div>
+                    <div class="score-chip-l6" style="border-color:var(--peach);"><span data-i18n="correctChip">✅ Correct:</span> <span id="spellCorrect" style="color:var(--peach-dark);">0</span></div>
+                    <div class="score-chip-l6" style="border-color:var(--peach);"><span data-i18n="streakChip">🔥 Streak:</span> <span id="spellStreak" style="color:var(--peach-dark);">0</span></div>
                 </div>
 
                 <!-- Completion -->
                 <div class="completion-card" id="spellCompletion" style="border-color:var(--peach);">
                     <div class="comp-emoji">🌟</div>
-                    <div class="comp-title" id="spellCompTitle" style="color:var(--peach-dark);">Brilliant!</div>
-                    <div class="comp-sub"   id="spellCompSub">You spelled all 10 ordinal words!</div>
+                    <div class="comp-title" id="spellCompTitle" style="color:var(--peach-dark);" data-i18n="brilliantTitle">Brilliant!</div>
+                    <div class="comp-sub"   id="spellCompSub" data-i18n="spellCompSubDefault">You spelled all 10 ordinal words!</div>
                     <div class="comp-btns">
-                        <button class="btn btn-peach"   onclick="startSpell()">Play Again 🔁</button>
-                        <button class="btn btn-outline" onclick="setMode('match')">Try Match 🔗</button>
+                        <button class="btn btn-peach"   onclick="startSpell()" data-i18n="playAgainBtn">Play Again 🔁</button>
+                        <button class="btn btn-outline" onclick="setMode('match')" data-i18n="tryMatchBtn">Try Match 🔗</button>
                     </div>
                 </div>
 
@@ -507,6 +508,145 @@ function getSuffix(n) {
 function getOrdinalLabel(n) {
     return n + getSuffix(n);
 }
+
+/* ================================================================
+   L7 — translations (UI chrome only; the ordinal words themselves
+   are the English vocabulary this level teaches, so getOrdinal()
+   and getOrdinalLabel() stay in English for every language — same
+   approach as the speech narration in speech.js)
+================================================================ */
+const L7 = {
+    en: {
+        subtitle: 'Ordinal Numbers',
+        explainerTitle: 'What are Ordinal Numbers?',
+        explainerBodyHtml: '<strong>Cardinal numbers</strong> tell us <em>how many</em> — 1, 2, 3… <strong>Ordinal numbers</strong> tell us <em>the position</em> — <strong>1st, 2nd, 3rd</strong>… Like finishing a race: <strong>1st</strong> = first, <strong>2nd</strong> = second, <strong>3rd</strong> = third! Tap any card to hear the ordinal number, then try the quiz!',
+        tabLearn: 'Learn', tabMatch: 'Match', tabSpell: 'Spell It',
+        learnedBannerLabel: 'of 100 ordinal numbers heard ✓',
+        matchPromptDefault: 'What is the ordinal number for this position?',
+        matchSubDefault: 'Choose the correct ordinal word below',
+        hearAgainBtn: '🔊 Hear it again',
+        correctChip: '✅ Correct:', streakChip: '🔥 Streak:',
+        wellDoneTitle: 'Well Done!', matchCompSubDefault: 'You matched all 10 ordinal numbers!',
+        nextBatchBtn: 'Next Batch →', startOverBtn: 'Start Over 🔁',
+        spellPromptText: 'What is the ordinal word for this number?',
+        spellSubExample: 'e.g. 1 → first, 2 → second',
+        brilliantTitle: 'Brilliant!', spellCompSubDefault: 'You spelled all 10 ordinal words!',
+        playAgainBtn: 'Play Again 🔁', tryMatchBtn: 'Try Match 🔗',
+        matchSubQ: 'What is the ordinal word for {n}?',
+        matchPromptQ: 'Position {n} in a race — what do we call it?',
+        correctMark: '✓ {word}', answerIsLabel: 'The answer is {word}',
+        perfectExclaim: 'Perfect! 🌟', wellDoneExclaim: 'Well Done! 🎉',
+        matchedOutOf: 'You matched {correct} out of 10 ordinals from {start} to {end}!',
+        allDoneBtn: '🏆 All 100 done!', nextRangeBtn: 'Next: {start}–{end} →',
+        spellSubQ: 'Tap the correct ordinal word for {label}',
+        perfectSpellingExclaim: 'Perfect Spelling! 🌟', brilliantExclaim: 'Brilliant! 🎉',
+        gotOutOf: 'You got {correct} out of 10 correct!'
+    },
+    de: {
+        subtitle: 'Ordnungszahlen',
+        explainerTitle: 'Was sind Ordnungszahlen?',
+        explainerBodyHtml: '<strong>Grundzahlen</strong> sagen uns, <em>wie viele</em> — 1, 2, 3… <strong>Ordnungszahlen</strong> sagen uns <em>die Position</em> — <strong>1st, 2nd, 3rd</strong>… Wie beim Zieleinlauf eines Rennens: <strong>1st</strong> = erste, <strong>2nd</strong> = zweite, <strong>3rd</strong> = dritte! Tippe auf eine Karte, um die Ordnungszahl zu hören, und probiere dann das Quiz!',
+        tabLearn: 'Lernen', tabMatch: 'Zuordnen', tabSpell: 'Buchstabieren',
+        learnedBannerLabel: 'von 100 Ordnungszahlen gehört ✓',
+        matchPromptDefault: 'Wie heißt die Ordnungszahl für diese Position?',
+        matchSubDefault: 'Wähle unten das richtige Ordnungszahlwort',
+        hearAgainBtn: '🔊 Noch einmal hören',
+        correctChip: '✅ Richtig:', streakChip: '🔥 Serie:',
+        wellDoneTitle: 'Gut gemacht!', matchCompSubDefault: 'Du hast alle 10 Ordnungszahlen zugeordnet!',
+        nextBatchBtn: 'Nächster Block →', startOverBtn: 'Neu starten 🔁',
+        spellPromptText: 'Wie heißt das Ordnungszahlwort für diese Zahl?',
+        spellSubExample: 'z. B. 1 → first, 2 → second',
+        brilliantTitle: 'Großartig!', spellCompSubDefault: 'Du hast alle 10 Ordnungszahlwörter richtig buchstabiert!',
+        playAgainBtn: 'Noch einmal spielen 🔁', tryMatchBtn: 'Zuordnen ausprobieren 🔗',
+        matchSubQ: 'Wie heißt das Ordnungszahlwort für {n}?',
+        matchPromptQ: 'Position {n} bei einem Rennen — wie nennen wir das?',
+        correctMark: '✓ {word}', answerIsLabel: 'Die richtige Antwort ist {word}',
+        perfectExclaim: 'Perfekt! 🌟', wellDoneExclaim: 'Gut gemacht! 🎉',
+        matchedOutOf: 'Du hast {correct} von 10 Ordnungszahlen von {start} bis {end} zugeordnet!',
+        allDoneBtn: '🏆 Alle 100 geschafft!', nextRangeBtn: 'Weiter: {start}–{end} →',
+        spellSubQ: 'Tippe auf das richtige Ordnungszahlwort für {label}',
+        perfectSpellingExclaim: 'Perfekt buchstabiert! 🌟', brilliantExclaim: 'Großartig! 🎉',
+        gotOutOf: 'Du hast {correct} von 10 richtig!'
+    },
+    fr: {
+        subtitle: 'Nombres ordinaux',
+        explainerTitle: 'Que sont les nombres ordinaux ?',
+        explainerBodyHtml: "Les <strong>nombres cardinaux</strong> indiquent <em>combien</em> — 1, 2, 3… Les <strong>nombres ordinaux</strong> indiquent <em>la position</em> — <strong>1st, 2nd, 3rd</strong>… Comme à la fin d'une course : <strong>1st</strong> = premier, <strong>2nd</strong> = deuxième, <strong>3rd</strong> = troisième ! Touche une carte pour entendre le nombre ordinal, puis essaie le quiz !",
+        tabLearn: 'Apprendre', tabMatch: 'Associer', tabSpell: 'Épeler',
+        learnedBannerLabel: 'nombres ordinaux sur 100 entendus ✓',
+        matchPromptDefault: 'Quel est le nombre ordinal pour cette position ?',
+        matchSubDefault: 'Choisis le bon mot ordinal ci-dessous',
+        hearAgainBtn: '🔊 Réécouter',
+        correctChip: 'Correct :', streakChip: 'Série :',
+        wellDoneTitle: 'Bravo !', matchCompSubDefault: 'Tu as associé les 10 nombres ordinaux !',
+        nextBatchBtn: 'Lot suivant →', startOverBtn: 'Recommencer 🔁',
+        spellPromptText: 'Quel est le mot ordinal pour ce nombre ?',
+        spellSubExample: 'ex. 1 → first, 2 → second',
+        brilliantTitle: 'Génial !', spellCompSubDefault: 'Tu as épelé les 10 mots ordinaux !',
+        playAgainBtn: 'Rejouer 🔁', tryMatchBtn: 'Essayer Associer 🔗',
+        matchSubQ: 'Quel est le mot ordinal pour {n} ?',
+        matchPromptQ: "Position {n} dans une course — comment l'appelle-t-on ?",
+        correctMark: '✓ {word}', answerIsLabel: 'La réponse est {word}',
+        perfectExclaim: 'Parfait ! 🌟', wellDoneExclaim: 'Bravo ! 🎉',
+        matchedOutOf: 'Tu as associé {correct} ordinaux sur 10, de {start} à {end} !',
+        allDoneBtn: '🏆 Les 100 sont faits !', nextRangeBtn: 'Suivant : {start}–{end} →',
+        spellSubQ: 'Touche le bon mot ordinal pour {label}',
+        perfectSpellingExclaim: 'Orthographe parfaite ! 🌟', brilliantExclaim: 'Génial ! 🎉',
+        gotOutOf: 'Tu as eu {correct} sur 10 !'
+    },
+    ar: {
+        subtitle: 'الأعداد الترتيبية',
+        explainerTitle: 'ما هي الأعداد الترتيبية؟',
+        explainerBodyHtml: 'تخبرنا <strong>الأعداد الأصلية</strong> <em>بالكمية</em> — 1، 2، 3… وتخبرنا <strong>الأعداد الترتيبية</strong> <em>بالموضع</em> — <strong>1st، 2nd، 3rd</strong>… كما في نهاية السباق: <strong>1st</strong> = الأول، <strong>2nd</strong> = الثاني، <strong>3rd</strong> = الثالث! اضغط على أي بطاقة لسماع العدد الترتيبي، ثم جرّب الاختبار!',
+        tabLearn: 'تعلّم', tabMatch: 'طابق', tabSpell: 'تهجّ',
+        learnedBannerLabel: 'من ١٠٠ عدد ترتيبي تم سماعها ✓',
+        matchPromptDefault: 'ما هو العدد الترتيبي لهذا الموضع؟',
+        matchSubDefault: 'اختر الكلمة الترتيبية الصحيحة أدناه',
+        hearAgainBtn: '🔊 استمع مرة أخرى',
+        correctChip: '✅ صحيح:', streakChip: '🔥 التتابع:',
+        wellDoneTitle: 'أحسنت!', matchCompSubDefault: 'طابقت جميع الأعداد الترتيبية العشرة!',
+        nextBatchBtn: '← المجموعة التالية', startOverBtn: 'إعادة البدء 🔁',
+        spellPromptText: 'ما هي الكلمة الترتيبية لهذا العدد؟',
+        spellSubExample: 'مثال: 1 → first، 2 → second',
+        brilliantTitle: 'رائع!', spellCompSubDefault: 'تهجّأت جميع الكلمات الترتيبية العشرة!',
+        playAgainBtn: 'اللعب مرة أخرى 🔁', tryMatchBtn: 'جرّب المطابقة 🔗',
+        matchSubQ: 'ما هي الكلمة الترتيبية لـ {n}؟',
+        matchPromptQ: 'الموضع {n} في سباق — ماذا نسميه؟',
+        correctMark: '✓ {word}', answerIsLabel: 'الإجابة هي {word}',
+        perfectExclaim: 'ممتاز! 🌟', wellDoneExclaim: 'أحسنت! 🎉',
+        matchedOutOf: 'طابقت {correct} من 10 أعداد ترتيبية من {start} إلى {end}!',
+        allDoneBtn: '🏆 أنهيت كل المئة!', nextRangeBtn: '← التالي: {start}–{end}',
+        spellSubQ: 'اضغط على الكلمة الترتيبية الصحيحة لـ {label}',
+        perfectSpellingExclaim: 'تهجٍ مثالي! 🌟', brilliantExclaim: 'رائع! 🎉',
+        gotOutOf: 'حصلت على {correct} من 10!'
+    },
+    zh: {
+        subtitle: '序数词',
+        explainerTitle: '什么是序数词？',
+        explainerBodyHtml: '<strong>基数词</strong>告诉我们<em>有多少</em>——1、2、3……<strong>序数词</strong>告诉我们<em>位置</em>——<strong>1st、2nd、3rd</strong>……就像比赛终点：<strong>1st</strong> = 第一，<strong>2nd</strong> = 第二，<strong>3rd</strong> = 第三！点击任意卡片听序数词，然后试试测验！',
+        tabLearn: '学习', tabMatch: '配对', tabSpell: '拼写',
+        learnedBannerLabel: '个序数词已听过（共100个）✓',
+        matchPromptDefault: '这个位置的序数词是什么？',
+        matchSubDefault: '在下面选择正确的序数词',
+        hearAgainBtn: '🔊 再听一次',
+        correctChip: '✅ 正确：', streakChip: '🔥 连续：',
+        wellDoneTitle: '做得好！', matchCompSubDefault: '你配对了全部10个序数词！',
+        nextBatchBtn: '下一组 →', startOverBtn: '重新开始 🔁',
+        spellPromptText: '这个数字的序数词是什么？',
+        spellSubExample: '例如：1 → first，2 → second',
+        brilliantTitle: '太棒了！', spellCompSubDefault: '你拼出了全部10个序数词！',
+        playAgainBtn: '再玩一次 🔁', tryMatchBtn: '试试配对 🔗',
+        matchSubQ: '{n} 的序数词是什么？',
+        matchPromptQ: '比赛中的第{n}名——我们怎么称呼它？',
+        correctMark: '✓ {word}', answerIsLabel: '正确答案是 {word}',
+        perfectExclaim: '完美！🌟', wellDoneExclaim: '做得好！🎉',
+        matchedOutOf: '你在{start}到{end}之间配对了 {correct}/10 个序数词！',
+        allDoneBtn: '🏆 全部100个完成！', nextRangeBtn: '下一组：{start}–{end} →',
+        spellSubQ: '点击 {label} 正确的序数词',
+        perfectSpellingExclaim: '完美拼写！🌟', brilliantExclaim: '太棒了！🎉',
+        gotOutOf: '你答对了 {correct}/10！'
+    }
+};
 
 /* ================================================================
    STATE
@@ -649,8 +789,8 @@ function nextMatchQuestion() {
     numEl.style.animation = 'none';
     setTimeout(() => numEl.style.animation = '', 50);
 
-    document.getElementById('matchSub').textContent    = `What is the ordinal word for ${matchCurrent}?`;
-    document.getElementById('matchPrompt').textContent = `Position ${matchCurrent} in a race — what do we call it?`;
+    document.getElementById('matchSub').textContent    = NG_LevelI18n.t(L7, 'matchSubQ', { n: matchCurrent });
+    document.getElementById('matchPrompt').textContent = NG_LevelI18n.t(L7, 'matchPromptQ', { n: matchCurrent });
 
     updateMatchProgress();
     renderMatchChoices(matchCurrent);
@@ -693,7 +833,7 @@ function checkMatchAnswer(selected, btn, correct) {
         updateLearnedCount();
         saveProgress();
         NG_Speech.sayInstruction(`Very good! That is ${getOrdinal(correct)}.`);
-        showToast(`✓ ${getOrdinal(correct)}`, 'success');
+        showToast(NG_LevelI18n.t(L7, 'correctMark', { word: getOrdinal(correct) }), 'success');
         burstConfetti6();
         setTimeout(nextMatchQuestion, 1500);
     } else {
@@ -704,7 +844,7 @@ function checkMatchAnswer(selected, btn, correct) {
             if (b.querySelector('strong').textContent === getOrdinalLabel(correct)) b.classList.add('correct');
         });
         NG_Speech.sayInstruction(`Sorry, try again. The answer is ${getOrdinal(correct)}.`);
-        showToast(`The answer is ${getOrdinal(correct)}`, 'error');
+        showToast(NG_LevelI18n.t(L7, 'answerIsLabel', { word: getOrdinal(correct) }), 'error');
         setTimeout(nextMatchQuestion, 2000);
     }
 }
@@ -735,16 +875,16 @@ function showMatchCompletion() {
     const flowerStr = flowers.slice(0, matchCorrect).join(' ');
 
     document.getElementById('matchCompFlowers').textContent = flowerStr;
-    document.getElementById('matchCompTitle').textContent   = perfect ? 'Perfect! 🌟' : 'Well Done! 🎉';
+    document.getElementById('matchCompTitle').textContent   = NG_LevelI18n.t(L7, perfect ? 'perfectExclaim' : 'wellDoneExclaim');
     document.getElementById('matchCompSub').textContent     =
-        `You matched ${matchCorrect} out of 10 ordinals from ${getOrdinalLabel(start)} to ${getOrdinalLabel(end)}!`;
+        NG_LevelI18n.t(L7, 'matchedOutOf', { correct: matchCorrect, start: getOrdinalLabel(start), end: getOrdinalLabel(end) });
 
     const nextBtn = document.getElementById('matchNextBatchBtn');
     if (isLastBatch) {
-        nextBtn.textContent = '🏆 All 100 done!';
+        nextBtn.textContent = NG_LevelI18n.t(L7, 'allDoneBtn');
         nextBtn.onclick     = () => startMatch(1);
     } else {
-        nextBtn.textContent = `Next: ${getOrdinalLabel(end + 1)}–${getOrdinalLabel(end + 10)} →`;
+        nextBtn.textContent = NG_LevelI18n.t(L7, 'nextRangeBtn', { start: getOrdinalLabel(end + 1), end: getOrdinalLabel(end + 10) });
         nextBtn.onclick     = () => startMatch(matchBatch + 1);
     }
 
@@ -789,7 +929,7 @@ function nextSpellQuestion() {
     document.getElementById('spellBig').style.animation = 'none';
     setTimeout(() => document.getElementById('spellBig').style.animation = '', 50);
     document.getElementById('spellSub').textContent  =
-        `Tap the correct ordinal word for ${getOrdinalLabel(spellCurrent)}`;
+        NG_LevelI18n.t(L7, 'spellSubQ', { label: getOrdinalLabel(spellCurrent) });
 
     updateSpellProgress();
     renderSpellChoices(spellCurrent);
@@ -834,7 +974,7 @@ function checkSpellAnswer(selected, btn, correct) {
         updateLearnedCount();
         saveProgress();
         NG_Speech.sayInstruction(`Very good! That is ${getOrdinal(correct)}.`);
-        showToast(`✓ ${getOrdinal(correct)}`, 'success');
+        showToast(NG_LevelI18n.t(L7, 'correctMark', { word: getOrdinal(correct) }), 'success');
         burstConfetti6();
         setTimeout(nextSpellQuestion, 1600);
     } else {
@@ -845,7 +985,7 @@ function checkSpellAnswer(selected, btn, correct) {
             if (b.textContent === getOrdinal(correct)) b.classList.add('correct');
         });
         NG_Speech.sayInstruction(`Sorry, try again. The answer is ${getOrdinal(correct)}.`);
-        showToast(`The answer is ${getOrdinal(correct)}`, 'error');
+        showToast(NG_LevelI18n.t(L7, 'answerIsLabel', { word: getOrdinal(correct) }), 'error');
         setTimeout(nextSpellQuestion, 2200);
     }
 }
@@ -862,9 +1002,9 @@ function showSpellCompletion() {
     document.getElementById('spellLabel').textContent     = '10 / 10';
 
     const perfect = spellCorrect >= 9;
-    document.getElementById('spellCompTitle').textContent = perfect ? 'Perfect Spelling! 🌟' : 'Brilliant! 🎉';
+    document.getElementById('spellCompTitle').textContent = NG_LevelI18n.t(L7, perfect ? 'perfectSpellingExclaim' : 'brilliantExclaim');
     document.getElementById('spellCompSub').textContent   =
-        `You got ${spellCorrect} out of 10 correct!`;
+        NG_LevelI18n.t(L7, 'gotOutOf', { correct: spellCorrect });
     document.getElementById('spellCompletion').classList.add('show');
 
     NG_Speech.sayInstruction(`Brilliant! You got ${spellCorrect} out of 10!`);
@@ -920,6 +1060,7 @@ function showToast(msg, type) {
    INIT
 ================================================================ */
 document.addEventListener('DOMContentLoaded', function () {
+    NG_LevelI18n.applyStatic(L7);
     buildLearnBatches();
     renderLearnGrid();
     setTimeout(() => {

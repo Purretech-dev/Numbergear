@@ -348,6 +348,7 @@ if (!$user) { header('Location: auth/login.php'); exit; }
                         <option value="Verdana, Geneva, sans-serif">Verdana</option>
                         <option value="'Trebuchet MS', Arial, sans-serif">Trebuchet MS</option>
                         <option value="'Comic Sans MS', 'Comic Sans', cursive">Comic Sans</option>
+                        <option value="'Algerian', 'Showcard Gothic', fantasy">Algerian</option>
                     </select>
                 </label>
                 <label class="accessibility-field" for="fontSizePicker">Size

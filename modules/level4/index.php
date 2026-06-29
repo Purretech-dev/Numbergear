@@ -18,6 +18,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
     <script src="../../assets/js/accessibility.js"></script>
     <script src="../../assets/js/i18n-common.js"></script>
     <script src="../../assets/js/i18n-level.js"></script>
+    <script src="../../assets/js/music.js"></script>
     <style>
         .gear-intro {
             font-size: 14px;
@@ -1558,6 +1559,7 @@ function qzDrawGear() {
 document.addEventListener('DOMContentLoaded', function () {
     NG_LevelI18n.applyStatic(L4);
     initChallenge();
+    NG_Music.init();
 
     setTimeout(() => {
         NG_Speech.sayInstruction('Welcome to Level 4! See how multiplication and division work on the gear, then try the quiz!');

@@ -17,6 +17,7 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
     <link rel="stylesheet" href="../../assets/css/style.css">
     <script src="../../assets/js/accessibility.js"></script>
     <script src="../../assets/js/i18n-common.js"></script>
+    <script src="../../assets/js/i18n-level.js"></script>
     <style>
         .level-main { max-width: 1100px; margin: 0 auto; padding: 26px 20px 50px; width: 100%; }
         .lesson-hero { background: linear-gradient(135deg, var(--sky-light), var(--purple-light)); border: 2px solid var(--border); border-radius: 24px; padding: 22px; box-shadow: var(--shadow); margin-bottom: 20px; }
@@ -57,7 +58,10 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
         .score-box span { font-size: 12px; font-weight: 800; color: var(--text-soft); text-transform: uppercase; }
         .mini-note { margin-top: 10px; font-size: 14px; font-weight: 700; color: var(--text-soft); line-height: 1.6; }
     </style>
-    <script>document.addEventListener('DOMContentLoaded', function () { if (window.NG_I18nCommon) NG_I18nCommon.apply(5); });</script>
+    <script>document.addEventListener('DOMContentLoaded', function () {
+        if (window.NG_I18nCommon) NG_I18nCommon.apply(5);
+        if (window.NG_LevelI18n) NG_LevelI18n.applyStatic(L5);
+    });</script>
 </head>
 <body>
 <div class="app-shell">
@@ -71,51 +75,51 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 
     <main class="level-main">
         <section class="lesson-hero">
-            <h2>🌈 Learn Even and Odd Numbers</h2>
-            <p>Even numbers can be shared into two equal groups. Odd numbers always have one left over. Tap numbers, see the objects, then answer the quizzes.</p>
+            <h2 data-i18n="heroTitle">🌈 Learn Even and Odd Numbers</h2>
+            <p data-i18n="heroDesc">Even numbers can be shared into two equal groups. Odd numbers always have one left over. Tap numbers, see the objects, then answer the quizzes.</p>
         </section>
 
         <section class="lesson-grid">
             <div class="concept-card even-card">
-                <h3>✅ Even Numbers</h3>
-                <p>When every object gets a partner, the number is even.</p>
+                <h3 data-i18n="evenTitle">✅ Even Numbers</h3>
+                <p data-i18n="evenDesc">When every object gets a partner, the number is even.</p>
                 <div class="objects" aria-label="six objects"><span class="object-dot">🍎</span><span class="object-dot">🍎</span><span class="object-dot">🍎</span><span class="object-dot">🍎</span><span class="object-dot">🍎</span><span class="object-dot">🍎</span></div>
                 <div class="pair-line"><div class="pair-box">🍎🍎</div><div class="pair-box">🍎🍎</div><div class="pair-box">🍎🍎</div></div>
-                <div class="rule-box even-rule">2, 4, 6, 8, 10 are even.</div>
+                <div class="rule-box even-rule" data-i18n="evenRule">2, 4, 6, 8, 10 are even.</div>
             </div>
             <div class="concept-card odd-card">
-                <h3>⭐ Odd Numbers</h3>
-                <p>When one object has no partner, the number is odd.</p>
+                <h3 data-i18n="oddTitle">⭐ Odd Numbers</h3>
+                <p data-i18n="oddDesc">When one object has no partner, the number is odd.</p>
                 <div class="objects" aria-label="five objects"><span class="object-dot">⭐</span><span class="object-dot">⭐</span><span class="object-dot">⭐</span><span class="object-dot">⭐</span><span class="object-dot">⭐</span></div>
                 <div class="pair-line"><div class="pair-box">⭐⭐</div><div class="pair-box">⭐⭐</div><div class="pair-box">⭐</div></div>
-                <div class="rule-box odd-rule">1, 3, 5, 7, 9 are odd.</div>
+                <div class="rule-box odd-rule" data-i18n="oddRule">1, 3, 5, 7, 9 are odd.</div>
             </div>
         </section>
 
         <section class="practice-card">
-            <h3>👆 Tap a Number to Check</h3>
-            <p class="mini-note">Tip: Look at the last digit. Numbers ending in 0, 2, 4, 6, or 8 are even. Numbers ending in 1, 3, 5, 7, or 9 are odd.</p>
+            <h3 data-i18n="practiceTitle">👆 Tap a Number to Check</h3>
+            <p class="mini-note" data-i18n="practiceTip">Tip: Look at the last digit. Numbers ending in 0, 2, 4, 6, or 8 are even. Numbers ending in 1, 3, 5, 7, or 9 are odd.</p>
             <div class="number-strip" id="numberStrip"></div>
-            <div class="feedback" id="practiceFeedback">Tap any number from 1 to 20.</div>
+            <div class="feedback" id="practiceFeedback" data-i18n="practiceDefault">Tap any number from 1 to 20.</div>
         </section>
 
         <section class="quiz-card" style="margin-top:20px;">
-            <h3>🎯 Quick Quiz</h3>
+            <h3 data-i18n="quizTitle">🎯 Quick Quiz</h3>
             <div class="score-row">
-                <div class="score-box"><strong id="scoreCorrect">0</strong><span>Correct</span></div>
-                <div class="score-box"><strong id="scoreTotal">0</strong><span>Answered</span></div>
-                <div class="score-box"><strong id="scorePercent">0%</strong><span>Progress</span></div>
+                <div class="score-box"><strong id="scoreCorrect">0</strong><span data-i18n="correctLabel">Correct</span></div>
+                <div class="score-box"><strong id="scoreTotal">0</strong><span data-i18n="answeredLabel">Answered</span></div>
+                <div class="score-box"><strong id="scorePercent">0%</strong><span data-i18n="progressLabel">Progress</span></div>
             </div>
             <div class="quiz-area">
-                <p><strong>Is this number even or odd?</strong></p>
+                <p><strong data-i18n="quizQuestion">Is this number even or odd?</strong></p>
                 <div class="quiz-number" id="quizNumber">4</div>
                 <div class="answer-row">
-                    <button class="answer-btn even-answer" onclick="checkAnswer('even')">Even</button>
-                    <button class="answer-btn odd-answer" onclick="checkAnswer('odd')">Odd</button>
+                    <button class="answer-btn even-answer" onclick="checkAnswer('even')" data-i18n="evenBtn">Even</button>
+                    <button class="answer-btn odd-answer" onclick="checkAnswer('odd')" data-i18n="oddBtn">Odd</button>
                 </div>
-                <button class="speak-btn" onclick="speakCurrent()">🔊 Hear the question</button><br>
-                <button class="next-btn" onclick="newQuestion()">Next Number →</button>
-                <div class="feedback" id="quizFeedback">Choose Even or Odd.</div>
+                <button class="speak-btn" onclick="speakCurrent()" data-i18n="hearBtn">🔊 Hear the question</button><br>
+                <button class="next-btn" onclick="newQuestion()" data-i18n="nextBtn">Next Number →</button>
+                <div class="feedback" id="quizFeedback" data-i18n="quizDefault">Choose Even or Odd.</div>
             </div>
         </section>
     </main>
@@ -128,6 +132,99 @@ if (!$ng_current_user) { header('Location: ../../auth/login.php'); exit; }
 <script src="../../assets/js/storage.js"></script>
 <script src="../../assets/js/speech.js"></script>
 <script>
+const L5 = {
+    en: {
+        heroTitle: '🌈 Learn Even and Odd Numbers',
+        heroDesc: 'Even numbers can be shared into two equal groups. Odd numbers always have one left over. Tap numbers, see the objects, then answer the quizzes.',
+        evenTitle: '✅ Even Numbers', evenDesc: 'When every object gets a partner, the number is even.', evenRule: '2, 4, 6, 8, 10 are even.',
+        oddTitle: '⭐ Odd Numbers', oddDesc: 'When one object has no partner, the number is odd.', oddRule: '1, 3, 5, 7, 9 are odd.',
+        practiceTitle: '👆 Tap a Number to Check',
+        practiceTip: 'Tip: Look at the last digit. Numbers ending in 0, 2, 4, 6, or 8 are even. Numbers ending in 1, 3, 5, 7, or 9 are odd.',
+        practiceDefault: 'Tap any number from 1 to 20.',
+        quizTitle: '🎯 Quick Quiz', correctLabel: 'Correct', answeredLabel: 'Answered', progressLabel: 'Progress',
+        quizQuestion: 'Is this number even or odd?', evenBtn: 'Even', oddBtn: 'Odd',
+        hearBtn: '🔊 Hear the question', nextBtn: 'Next Number →', quizDefault: 'Choose Even or Odd.',
+        evenWord: 'even', oddWord: 'odd',
+        practiceMsg: '{n} is {kind}. Its last digit is {digit}. {note}',
+        noteEven: 'It can make equal pairs.', noteOdd: 'One is left without a partner.',
+        correctMsg: 'Great job! {n} is {kind}.',
+        wrongMsg: 'Good try! {n} is {kind}. Remember to check the last digit.',
+        speakQuestion: 'Is {n} even or odd?'
+    },
+    de: {
+        heroTitle: '🌈 Lerne gerade und ungerade Zahlen',
+        heroDesc: 'Gerade Zahlen lassen sich in zwei gleiche Gruppen teilen. Bei ungeraden Zahlen bleibt immer eine übrig. Tippe auf Zahlen, schau dir die Objekte an und beantworte dann die Quizfragen.',
+        evenTitle: '✅ Gerade Zahlen', evenDesc: 'Wenn jedes Objekt einen Partner hat, ist die Zahl gerade.', evenRule: '2, 4, 6, 8, 10 sind gerade.',
+        oddTitle: '⭐ Ungerade Zahlen', oddDesc: 'Wenn ein Objekt keinen Partner hat, ist die Zahl ungerade.', oddRule: '1, 3, 5, 7, 9 sind ungerade.',
+        practiceTitle: '👆 Tippe auf eine Zahl zum Prüfen',
+        practiceTip: 'Tipp: Schau auf die letzte Ziffer. Zahlen, die auf 0, 2, 4, 6 oder 8 enden, sind gerade. Zahlen, die auf 1, 3, 5, 7 oder 9 enden, sind ungerade.',
+        practiceDefault: 'Tippe auf eine Zahl von 1 bis 20.',
+        quizTitle: '🎯 Schnelles Quiz', correctLabel: 'Richtig', answeredLabel: 'Beantwortet', progressLabel: 'Fortschritt',
+        quizQuestion: 'Ist diese Zahl gerade oder ungerade?', evenBtn: 'Gerade', oddBtn: 'Ungerade',
+        hearBtn: '🔊 Frage anhören', nextBtn: 'Nächste Zahl →', quizDefault: 'Wähle Gerade oder Ungerade.',
+        evenWord: 'gerade', oddWord: 'ungerade',
+        practiceMsg: '{n} ist {kind}. Die letzte Ziffer ist {digit}. {note}',
+        noteEven: 'Sie kann in gleiche Paare aufgeteilt werden.', noteOdd: 'Eine bleibt ohne Partner übrig.',
+        correctMsg: 'Gut gemacht! {n} ist {kind}.',
+        wrongMsg: 'Guter Versuch! {n} ist {kind}. Denk daran, die letzte Ziffer zu prüfen.',
+        speakQuestion: 'Ist {n} gerade oder ungerade?'
+    },
+    fr: {
+        heroTitle: '🌈 Apprends les nombres pairs et impairs',
+        heroDesc: "Les nombres pairs peuvent être partagés en deux groupes égaux. Les nombres impairs ont toujours un élément en trop. Touche les nombres, observe les objets, puis réponds aux quiz.",
+        evenTitle: '✅ Nombres pairs', evenDesc: "Quand chaque objet a un partenaire, le nombre est pair.", evenRule: '2, 4, 6, 8, 10 sont pairs.',
+        oddTitle: '⭐ Nombres impairs', oddDesc: "Quand un objet n'a pas de partenaire, le nombre est impair.", oddRule: '1, 3, 5, 7, 9 sont impairs.',
+        practiceTitle: '👆 Touche un nombre pour vérifier',
+        practiceTip: 'Astuce : regarde le dernier chiffre. Les nombres se terminant par 0, 2, 4, 6 ou 8 sont pairs. Ceux se terminant par 1, 3, 5, 7 ou 9 sont impairs.',
+        practiceDefault: 'Touche un nombre de 1 à 20.',
+        quizTitle: '🎯 Quiz rapide', correctLabel: 'Correct', answeredLabel: 'Répondu', progressLabel: 'Progression',
+        quizQuestion: 'Ce nombre est-il pair ou impair ?', evenBtn: 'Pair', oddBtn: 'Impair',
+        hearBtn: '🔊 Écouter la question', nextBtn: 'Nombre suivant →', quizDefault: 'Choisis Pair ou Impair.',
+        evenWord: 'pair', oddWord: 'impair',
+        practiceMsg: '{n} est {kind}. Son dernier chiffre est {digit}. {note}',
+        noteEven: 'Il peut former des paires égales.', noteOdd: 'Un élément reste sans partenaire.',
+        correctMsg: 'Bravo ! {n} est {kind}.',
+        wrongMsg: "Bel essai ! {n} est {kind}. N'oublie pas de vérifier le dernier chiffre.",
+        speakQuestion: '{n} est-il pair ou impair ?'
+    },
+    ar: {
+        heroTitle: '🌈 تعلّم الأعداد الزوجية والفردية',
+        heroDesc: 'يمكن تقسيم الأعداد الزوجية إلى مجموعتين متساويتين. أما الأعداد الفردية فيتبقى منها عنصر واحد دائمًا. اضغط على الأرقام، شاهد الأشياء، ثم أجب عن الأسئلة.',
+        evenTitle: '✅ الأعداد الزوجية', evenDesc: 'عندما يحصل كل شيء على شريك، يكون العدد زوجيًا.', evenRule: '٢، ٤، ٦، ٨، ١٠ أعداد زوجية.',
+        oddTitle: '⭐ الأعداد الفردية', oddDesc: 'عندما لا يحصل أحد الأشياء على شريك، يكون العدد فرديًا.', oddRule: '١، ٣، ٥، ٧، ٩ أعداد فردية.',
+        practiceTitle: '👆 اضغط على عدد للتحقق',
+        practiceTip: 'نصيحة: انظر إلى آخر رقم. الأعداد المنتهية بـ ٠ أو ٢ أو ٤ أو ٦ أو ٨ زوجية. الأعداد المنتهية بـ ١ أو ٣ أو ٥ أو ٧ أو ٩ فردية.',
+        practiceDefault: 'اضغط على أي عدد من ١ إلى ٢٠.',
+        quizTitle: '🎯 اختبار سريع', correctLabel: 'صحيح', answeredLabel: 'مجاب عنها', progressLabel: 'التقدم',
+        quizQuestion: 'هل هذا العدد زوجي أم فردي؟', evenBtn: 'زوجي', oddBtn: 'فردي',
+        hearBtn: '🔊 استمع إلى السؤال', nextBtn: '← العدد التالي', quizDefault: 'اختر زوجي أو فردي.',
+        evenWord: 'زوجي', oddWord: 'فردي',
+        practiceMsg: '{n} عدد {kind}. آخر رقم فيه هو {digit}. {note}',
+        noteEven: 'يمكن تكوين أزواج متساوية منه.', noteOdd: 'يتبقى عنصر واحد بدون شريك.',
+        correctMsg: 'أحسنت! {n} عدد {kind}.',
+        wrongMsg: 'محاولة جيدة! {n} عدد {kind}. تذكّر التحقق من آخر رقم.',
+        speakQuestion: 'هل {n} زوجي أم فردي؟'
+    },
+    zh: {
+        heroTitle: '🌈 学习奇数和偶数',
+        heroDesc: '偶数可以平均分成两组。奇数总会多出一个。点击数字，观察物体，然后回答测验。',
+        evenTitle: '✅ 偶数', evenDesc: '当每个物体都能配对时，这个数就是偶数。', evenRule: '2、4、6、8、10 都是偶数。',
+        oddTitle: '⭐ 奇数', oddDesc: '当有一个物体没有配对时，这个数就是奇数。', oddRule: '1、3、5、7、9 都是奇数。',
+        practiceTitle: '👆 点击数字检查',
+        practiceTip: '小提示：看最后一位数字。以 0、2、4、6 或 8 结尾的数是偶数。以 1、3、5、7 或 9 结尾的数是奇数。',
+        practiceDefault: '点击 1 到 20 之间的任意数字。',
+        quizTitle: '🎯 快速测验', correctLabel: '正确', answeredLabel: '已答', progressLabel: '进度',
+        quizQuestion: '这个数是奇数还是偶数？', evenBtn: '偶数', oddBtn: '奇数',
+        hearBtn: '🔊 听题目', nextBtn: '下一个数字 →', quizDefault: '选择偶数或奇数。',
+        evenWord: '偶数', oddWord: '奇数',
+        practiceMsg: '{n} 是{kind}。它的最后一位是 {digit}。{note}',
+        noteEven: '它可以组成相等的对。', noteOdd: '有一个没有配对。',
+        correctMsg: '太棒了！{n} 是{kind}。',
+        wrongMsg: '再接再厉！{n} 是{kind}。记得检查最后一位数字。',
+        speakQuestion: '{n} 是奇数还是偶数？'
+    }
+};
+
 const numberStrip = document.getElementById('numberStrip');
 const practiceFeedback = document.getElementById('practiceFeedback');
 const quizNumberEl = document.getElementById('quizNumber');
@@ -143,6 +240,7 @@ let askedNumbers = [];
 
 function isEven(n) { return n % 2 === 0; }
 function kindOf(n) { return isEven(n) ? 'even' : 'odd'; }
+function kindWord(n) { return NG_LevelI18n.t(L5, isEven(n) ? 'evenWord' : 'oddWord'); }
 
 function speak(text) {
     // Use the shared Number Gear narrator so Level 5 has the same slow, child-friendly pace as the other levels.
@@ -174,7 +272,12 @@ function showPractice(n, btn) {
     document.querySelectorAll('.num-pill').forEach(b => b.classList.remove('even', 'odd'));
     btn.classList.add(kindOf(n));
     const lastDigit = n % 10;
-    const message = `${n} is ${kindOf(n)}. Its last digit is ${lastDigit}. ${isEven(n) ? 'It can make equal pairs.' : 'One is left without a partner.'}`;
+    const message = NG_LevelI18n.t(L5, 'practiceMsg', {
+        n: n,
+        kind: kindWord(n),
+        digit: lastDigit,
+        note: NG_LevelI18n.t(L5, isEven(n) ? 'noteEven' : 'noteOdd')
+    });
     practiceFeedback.textContent = message;
     speak(message);
 }
@@ -185,7 +288,7 @@ function newQuestion() {
     while (askedNumbers.includes(currentNumber) && askedNumbers.length < 20);
     askedNumbers.push(currentNumber);
     quizNumberEl.textContent = currentNumber;
-    quizFeedback.textContent = 'Choose Even or Odd.';
+    quizFeedback.textContent = NG_LevelI18n.t(L5, 'quizDefault');
 }
 
 function checkAnswer(answer) {
@@ -193,11 +296,13 @@ function checkAnswer(answer) {
     const expected = kindOf(currentNumber);
     if (answer === expected) {
         correct++;
-        quizFeedback.textContent = `Great job! ${currentNumber} is ${expected}.`;
-        speak(`Great job! ${currentNumber} is ${expected}.`);
+        const msg = NG_LevelI18n.t(L5, 'correctMsg', { n: currentNumber, kind: kindWord(currentNumber) });
+        quizFeedback.textContent = msg;
+        speak(msg);
     } else {
-        quizFeedback.textContent = `Good try! ${currentNumber} is ${expected}. Remember to check the last digit.`;
-        speak(`Good try. ${currentNumber} is ${expected}. Remember to check the last digit.`);
+        const msg = NG_LevelI18n.t(L5, 'wrongMsg', { n: currentNumber, kind: kindWord(currentNumber) });
+        quizFeedback.textContent = msg;
+        speak(msg);
     }
     updateScore();
     setTimeout(newQuestion, 1200);
@@ -212,7 +317,7 @@ function updateScore() {
 }
 
 function speakCurrent() {
-    speak(`Is ${currentNumber} even or odd?`);
+    speak(NG_LevelI18n.t(L5, 'speakQuestion', { n: currentNumber }));
 }
 
 buildNumberStrip();
