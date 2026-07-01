@@ -430,7 +430,7 @@ function toggleInstitutionField() {
     input.required = isInstitution;
     if (!isInstitution) input.value = '';
     toggleInstructorField();
-}
+}co
 document.addEventListener('DOMContentLoaded', toggleInstitutionField);
 
 function toggleInstructorField() {
