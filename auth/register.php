@@ -343,7 +343,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             <!-- Learning mode selector -->
             <div class="form-group">
-                <div class="form-label">🧭 I will be learning...</div>
+                <div class="form-label">🧭 I will be learning via...</div>
                 <div class="mode-grid">
 
                     <div>
